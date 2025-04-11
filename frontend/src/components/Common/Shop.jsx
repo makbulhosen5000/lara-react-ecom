@@ -2,6 +2,10 @@ import React from 'react'
 
 export default function Shop() {
   return (
-    <div>Shop</div>
+    <>
+       <Helmet>
+          <title>Ecom|Shop</title>
+        </Helmet>
+    </>
   )
 }
