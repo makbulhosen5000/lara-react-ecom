@@ -1,5 +1,5 @@
 # laravel and react installation
 # intervension  for image thumnails genarate
 # react router dom installtion
-# React-Toastify
-# npm i react-helmet
+# React-Toastify installation
+# npm i react-helmet installation
