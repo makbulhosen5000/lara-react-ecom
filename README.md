@@ -3,4 +3,5 @@
     # intervension  for image thumnails genarate
     # react router dom installtion
     # React-Toastify installation
-    # npm i react-helmet installation
+    # npm i react-helmet-async --force
+    
