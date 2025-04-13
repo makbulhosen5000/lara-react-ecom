@@ -2,7 +2,13 @@ import React from 'react'
 
 function Kids() {
   return (
-    <div>Kids</div>
+    <>
+        <Helmet>
+          <title>Ecom||Kids</title>
+        </Helmet>
+        <div>Kids</div>
+    </>
+
   )
 }
 
