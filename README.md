@@ -5,3 +5,4 @@
     # React-Toastify installation
     # npm i react-helmet-async --force installation
     # react icon installation
+      # react swiper installation
