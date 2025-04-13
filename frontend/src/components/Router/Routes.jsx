@@ -3,6 +3,9 @@ import Main from "../Layouts/Main";
 import ErrorMessage from "../Errors/ErrorMessage";
 import Home from "../Common/Home";
 import Shop from "../Common/Shop";
+import Mens from "../Common/Mens";
+import Women from "../Common/Women";
+import Kids from "../Common/Kids";
 
 
 
@@ -22,15 +25,15 @@ export const router = createBrowserRouter([
         },
         {
           path:"/mens",
-          element:<Shop/>
+          element:<Mens/>
         },
         {
           path:"/women",
-          element:<Shop/>
+          element:<Women/>
         },
         {
           path:"/kids",
-          element:<Shop/>
+          element:<Kids/>
         },
 
   

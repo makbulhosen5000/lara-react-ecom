@@ -80,13 +80,13 @@ import { FaShoppingCart } from "react-icons/fa";
   );
   return (
  
-      <nav className=" bg-gray-950">
+      <nav className=" bg-green-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex">
               <Link to="/">
-                <span className="text-white">MAKBUL </span>
-                <span className="font-bold text-2xl text-yellow-300">
+                <span className="font-bold text-2xl text-white">MAKBUL </span>
+                <span className="font-extrabold text-black">
                    AGRO
                 </span>
 
