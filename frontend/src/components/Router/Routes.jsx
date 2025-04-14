@@ -1,11 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layouts/Main";
 import ErrorMessage from "../Errors/ErrorMessage";
-import Home from "../Common/Home";
-import Shop from "../Common/Shop";
-import Mens from "../Common/Mens";
-import Women from "../Common/Women";
-import Kids from "../Common/Kids";
+
+import Home from "../common/Home";
+import Shop from "../common/Shop";
+import Mens from "../common/Mens";
+import Women from "../common/Women";
+import Kids from "../common/Kids";
 
 
 

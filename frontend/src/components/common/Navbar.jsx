@@ -67,7 +67,7 @@ import { FaShoppingCart } from "react-icons/fa";
       </Link>
       <Link
         to="/contact"
-        className={`text-black hover:text-yellow-500  rounded-md text-sm font-medium ${
+        className={`text-black hover:text-yellow-500  rounded-md text-sm font-bold ${
           location.pathname === "/contact"
             ? "bg-yellow-300 text-black"
             : "text-gray-100"
