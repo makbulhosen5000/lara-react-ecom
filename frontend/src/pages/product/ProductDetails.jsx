@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Star, ShoppingCart } from "lucide-react";
+import { FaRegUser } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function ProductDetails() {
   const images = [
@@ -12,10 +14,13 @@ export default function ProductDetails() {
   const [mainImage, setMainImage] = useState(images[0]);
   const [selectedSize, setSelectedSize] = useState("M");
   const [quantity, setQuantity] = useState(1);
+  const [rating,setRating] = useState(4);
+  const [user,setUser] = useState("Makbul Hosen");
 
   const sizes = ["S", "M", "L", "XL"];
 
   return (
+    <>
     <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
       {/* Left: Image Gallery */}
       <div>
@@ -44,15 +49,7 @@ export default function ProductDetails() {
         <div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Awesome Product</h2>
 
-          {/* Reviews */}
-          <div className="flex items-center text-yellow-500 mb-4">
-            {[...Array(4)].map((_, i) => (
-              <Star key={i} size={18} fill="currentColor" />
-            ))}
-            <Star size={18} className="text-gray-300" />
-            <span className="ml-2 text-sm text-gray-600">(123 reviews)</span>
-          </div>
-
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">20$ <span className="line-through">30$</span></h2>
           {/* Description */}
           <p className="text-gray-600 mb-6">
             A short and snappy product description that gets to the point and sells the key features.
@@ -100,11 +97,31 @@ export default function ProductDetails() {
         </div>
 
         {/* Add to Cart Button */}
+        <Link to="/cart">
         <button className="inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white text-sm font-semibold rounded-xl shadow hover:bg-blue-700 transition-all">
           <ShoppingCart className="mr-2" size={18} />
           Add {quantity} to Cart
         </button>
+        </Link>
       </div>
     </div>
+      {/* Reviews and Ratings */}
+    <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 my-10">
+        <h2 className="text-3xl font-bold text-gray-900 mb-2 underline">Reviews and Ratings</h2>
+        <div className="flex items-center gap-1">
+        <FaRegUser/>
+        <p className="font-bold">{user}</p>
+        </div>
+      <div className="flex items-center text-yellow-500 mb-4">
+            {[...Array(rating)].map((_, i) => (
+              <Star readonly key={i} size={18} fill="currentColor" />
+            ))}
+            <Star size={18} className="text-gray-300" />
+            <span className="ml-2 text-sm text-gray-600">(123 reviews)</span>
+          </div>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nam labore fugit voluptatibus nisi odit libero provident commodi! Quod, sequi?</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nam labore fugit voluptatibus nisi odit libero provident commodi! Quod, sequi?</p>
+    </div>
+    </>
   );
 }

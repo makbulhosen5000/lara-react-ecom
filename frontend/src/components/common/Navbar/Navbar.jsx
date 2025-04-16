@@ -1,8 +1,9 @@
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { FaCartPlus } from "react-icons/fa";
 import { FaRegUserCircle } from "react-icons/fa";
-import { FaShoppingCart } from "react-icons/fa";
+
 
  const Navbar = () => {
   const location = useLocation();
@@ -35,56 +36,24 @@ import { FaShoppingCart } from "react-icons/fa";
         Product
       </Link>
       <Link
-        to="/mens"
-        className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/mens"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100"
-        }`}
-      >
-        Mens
-      </Link>
-      
-      <Link
-        to="/women"
-        className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/women"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100"
-        }`}
-      >
-        Women
-      </Link>
-      <Link
-        to="/kids"
-        className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/kids"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100"
-        }`}
-      >
-        Kids
-      </Link>
-      <Link
         to="/contact"
-        className={`text-black hover:text-yellow-500 rounded-md text-sm font-medium ${
+        className={`text-black rounded-md text-sm font-medium ${
           location.pathname === "/contact"
-            ? "bg-yellow-300 text-black"
+            ? "bg-yellow-300 text-black p-2"
             : "text-gray-100"
         }`}
       >
-        <FaRegUserCircle />
+      <FaRegUserCircle />
       </Link>
       <Link
-        to="/contact"
-        className={`text-black hover:text-yellow-500  rounded-md text-sm font-bold ${
-          location.pathname === "/contact"
-            ? "bg-yellow-300 text-black"
+        to="/cart"
+        className={`text-black rounded-md text-sm font-medium ${
+          location.pathname === "/cart"
+            ? "bg-yellow-300 text-black p-2"
             : "text-gray-100"
         }`}
       >
-        <FaShoppingCart />
-
+         <FaCartPlus  />
       </Link>
     </>
   );

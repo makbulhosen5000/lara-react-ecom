@@ -11,6 +11,8 @@ import Lemon from "../../pages/categories/Lemon/Lemon";
 import Papaya from "../../pages/categories/Papaya/Papaya";
 import Hens from "../../pages/categories/Hens/Hens";
 import Duck from "../../pages/categories/Duck/Duck";
+import Cart from "../../pages/product/Cart";
+import Checkout from "../../pages/product/Checkout";
 
 
 export const router = createBrowserRouter([
@@ -30,6 +32,14 @@ export const router = createBrowserRouter([
         {
           path:"/productDetails",
           element:<ProductDetails/>
+        },
+        {
+          path:"/cart",
+          element:<Cart/>
+        },
+        {
+          path:"/checkout",
+          element:<Checkout/>
         },
         {
           path:"/banana",
