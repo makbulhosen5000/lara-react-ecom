@@ -1,16 +1,13 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 
-function Kids() {
+export default function Banana() {
   return (
-    <>
+     <>
         <Helmet>
-          <title>Ecom||Kids</title>
+            <title>MakbulAgro|Shop</title>
         </Helmet>
-        <div>Kids</div>
+        <p>Banana</p>
     </>
-
   )
 }
-
-export default Kids

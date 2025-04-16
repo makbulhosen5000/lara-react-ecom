@@ -1,14 +1,14 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import Slider from '../slider/Slider';
-import Product from './Product';
+import Product from '../../../pages/product/Product';
+import Slider from '../Slider/Slider';
 
 
 export default function Home() {
   return (
     <>
     <Helmet>
-      <title>Home|Ecom</title>
+      <title>MakbulAgro||Home</title>
     </Helmet>
     <Slider/>
     <Product/>

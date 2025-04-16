@@ -25,6 +25,16 @@ import { FaShoppingCart } from "react-icons/fa";
         Home
       </Link>
       <Link
+        to="/product"
+        className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
+          location.pathname === "/product"
+            ? "bg-yellow-300 text-black"
+            : "text-gray-100"
+        }`}
+      >
+        Product
+      </Link>
+      <Link
         to="/mens"
         className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
           location.pathname === "/mens"
@@ -86,7 +96,7 @@ import { FaShoppingCart } from "react-icons/fa";
             <div className="flex">
               <Link to="/">
                 <span className="font-bold text-2xl text-white">MAKBUL </span>
-                <span className="font-extrabold text-black">
+                <span className="font-extrabold text-yellow-300">
                    AGRO
                 </span>
 

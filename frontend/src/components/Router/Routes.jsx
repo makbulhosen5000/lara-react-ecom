@@ -1,13 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layouts/Main";
 import ErrorMessage from "../Errors/ErrorMessage";
-
-import Home from "../common/Home";
-import Shop from "../common/Shop";
-import Mens from "../common/Mens";
-import Women from "../common/Women";
-import Kids from "../common/Kids";
-
+import Home from "../common/Home/Home";
+import Product from "../../pages/product/Product";
+import ProductDetails from "../../pages/product/ProductDetails";
+import Banana from "../../pages/categories/Banana/Banana";
+import Coconut from "../../pages/categories/Coconut/Coconut";
+import Guava from "../../pages/categories/Guava/Guava";
+import Lemon from "../../pages/categories/Lemon/Lemon";
+import Papaya from "../../pages/categories/Papaya/Papaya";
+import Hens from "../../pages/categories/Hens/Hens";
+import Duck from "../../pages/categories/Duck/Duck";
 
 
 export const router = createBrowserRouter([
@@ -21,20 +24,40 @@ export const router = createBrowserRouter([
             element:<Home/>
         },
         {
-          path:"/shop",
-          element:<Shop/>
+          path:"/product",
+          element:<Product/>
         },
         {
-          path:"/mens",
-          element:<Mens/>
+          path:"/productDetails",
+          element:<ProductDetails/>
         },
         {
-          path:"/women",
-          element:<Women/>
+          path:"/banana",
+          element:<Banana/>
         },
         {
-          path:"/kids",
-          element:<Kids/>
+          path:"/coconut",
+          element:<Coconut/>
+        },
+        {
+          path:"/guava",
+          element:<Guava/>
+        },
+        {
+          path:"/lemon",
+          element:<Lemon/>
+        },
+        {
+          path:"/papaya",
+          element:<Papaya/>
+        },
+        {
+          path:"/hens",
+          element:<Hens/>
+        },
+        {
+          path:"/duck",
+          element:<Duck/>
         },
 
   
