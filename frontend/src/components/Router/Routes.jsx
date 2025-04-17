@@ -14,6 +14,7 @@ import Duck from "../../pages/categories/Duck/Duck";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
 import Login from "../Auth/Admin/Login";
+import Dashboard from "../Auth/Admin/Dashboard";
 
 
 export const router = createBrowserRouter([
@@ -70,9 +71,15 @@ export const router = createBrowserRouter([
           path:"/duck",
           element:<Duck/>
         },
+
+        //admin routes
         {
           path:"/admin/login",
           element:<Login/>,
+        },
+        {
+          path:"/admin/dashboard",
+          element:<Dashboard/>,
         }
       ],
     },

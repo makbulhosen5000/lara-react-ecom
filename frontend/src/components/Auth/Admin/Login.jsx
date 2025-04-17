@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
 import { useForm } from "react-hook-form"
 import { apiUrl } from '../../Http';
@@ -22,19 +22,28 @@ export default function Login() {
     formState: { errors },
   } = useForm();
   
+  const navigate = useNavigate();
+
+
   const onSubmit = async(data) => {
     console.log(data);
+
     const res = await fetch(`${apiUrl}/admin/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
-    })
-    .then((res) => res.json())
+      body: JSON.stringify(data)
+    }).then(res => res.json())
     .then(result =>{
       if(result.status == 200){
-        
+        const adminInfo = {
+          token: result.token,
+          id:result.id,
+          name: result.user,
+        }
+        localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
+        toast.success(result.message);
       }else{
         toast.error(result.message);
       }
