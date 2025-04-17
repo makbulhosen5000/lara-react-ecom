@@ -1,11 +1,15 @@
 import React, { Component} from 'react'
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 
 export default function Cart(){
 
     return (
       <>
+        <Helmet>
+          <title>MakbulAgro||Cart</title>
+        </Helmet>
       <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
           {/* <!-- 🛒 Cart Summary (Left Side) --> */}
           <div class="bg-white shadow-md rounded-xl p-6">

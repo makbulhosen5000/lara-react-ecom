@@ -7,7 +7,7 @@ const ErrorMessage = () => {
     return (
       <div className="flex flex-col place-items-center justify-center align-items-center h-screen">
         <img width="300" src={errorImg} alt="" />
-        <p className='text-red-600 font-bold underline'>Error {error.message}</p>
+        <p className='text-red-600 font-bold underline'>Error : {error.message}</p>
         <Link to="/">
           <button className="mt-5 bg-yellow-400 rounded-lg p-5 ml-3 font-bold">HOME</button>
         </Link>
