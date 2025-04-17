@@ -43,7 +43,7 @@ export default function Login() {
           name: result.user,
         }
         localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
-        toast.success(result.message);
+        navigate('/admin/dashboard');
       }else{
         toast.error(result.message);
       }
@@ -83,33 +83,29 @@ export default function Login() {
                   }
                 </div>
                 <div className="relative">
-                <label htmlFor="password" className="block mb-1 text-gray-600">Password</label>
-                  <input
-                   {
-                    ...register("password",{
-                    required: "The Password Field Is Required"
-                    })
-
-                   }  
-                    type={showPassword ? 'text' : 'password'}
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 bg-black text-white"
-                    
-                  />
-                  <button
-                    type="button"
-                    onClick={handleShowPassword}
-                    className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none" required
-                  >
-                    {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-                  </button>
-                  {
-                    errors.password && (
-                      <span className="text-red-500 text-sm">{errors.password.message}</span>
-                    )
-                  }
+                  <label htmlFor="password" className="block mb-1 text-gray-600">Password</label>
+                  <div className="relative">
+                    <input
+                    {...register("password", { required: "password is required" })}
+                      type={showPassword ? 'text' : 'password'}
+                      name="password"
+                      id="password"
+                      placeholder="Password"
+                      className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10 bg-black text-white"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleShowPassword}
+                      className="absolute top-1/2 right-3 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </button>
+                    {
+                      errors.password && (
+                        <span className="text-red-500 text-sm">{errors.password.message}</span>
+                      )
+                    }
+                  </div>
                 </div>
                
                 <Link to="/forgot-password" className="text-sm text-blue-600 hover:underline block text-end">Forgot Password?</Link>
