@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
+import React, { Children, useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
 import { useForm } from "react-hook-form"
 import { apiUrl } from '../../Http';
 import { toast } from 'react-toastify';
+import { AdminAuthContext } from '../../provider/AdminAuth';
 
 export default function Login() {
   
   const loginImg = "https://i.ibb.co.com/kcmYrjv/login2.jpg";
   const [showPassword, setShowPassword] = useState(false);
-
+  
+  const { user,login,logout } = useContext(AdminAuthContext);
+  
+  
+ 
+  
+  // hide and show password function by clicking the eye icon
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
@@ -18,7 +25,6 @@ export default function Login() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
   
