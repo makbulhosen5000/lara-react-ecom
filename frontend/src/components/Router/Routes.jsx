@@ -15,6 +15,7 @@ import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
 import Login from "../Auth/Admin/Login";
 import Dashboard from "../Auth/Admin/Dashboard";
+import AdminPrivateRoute from "./AdminPrivateRoute";
 
 
 export const router = createBrowserRouter([
@@ -79,7 +80,11 @@ export const router = createBrowserRouter([
         },
         {
           path:"/admin/dashboard",
-          element:<Dashboard/>,
+          element: (
+          <AdminPrivateRoute>
+            <Dashboard />
+          </AdminPrivateRoute>
+          ),
         }
       ],
     },
