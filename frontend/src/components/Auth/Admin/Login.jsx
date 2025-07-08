@@ -45,7 +45,7 @@ export default function Login() {
         const adminInfo = {
           token: result.token,
           id:result.id,
-          name: result.user,
+          name: result.name,
         }
         localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
         login(adminInfo);
