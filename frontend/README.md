@@ -1,12 +1,49 @@
-# React + Vite
+# 🛠️ Project Name – Full-Stack Laravel + React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A full-stack web application built with **Laravel (API)** as the backend and **React.js** as the frontend. This project demonstrates user authentication, CRUD operations, and API integration with a responsive UI using Tailwind CSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 User Authentication (Register, Login, Logout)
+- 📝 Create, Read, Update, Delete (CRUD) functionality
+- 📁 Image/File Upload
+- 🔍 Search, Sort, Pagination
+- 🛡️ Role-Based Access Control (Admin/User)
+- 🎨 Fully Responsive UI using Tailwind CSS
+- 🔗 API integration between Laravel & React using Axios
+- 📦 Protected Routes in React (Private Routes)
+- 📊 Dashboard with statistics (optional)
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🧰 Tech Stack
+
+### Backend – Laravel
+- Laravel 10+
+- Laravel Sanctum (for API Auth)
+- Eloquent ORM
+- RESTful API
+
+### Frontend – React
+- React 18+
+- React Router DOM
+- Axios for API requests
+- Tailwind CSS
+- React Hook Form / Formik
+
+---
+
+## 🔧 Installation
+
+### 1. Backend (Laravel API)
+
+```bash
+git clone https://github.com/makbulhosen5000/lara-react-ecom.git
+cd project-backend
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan serve

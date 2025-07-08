@@ -23,7 +23,7 @@ import { FaRegUserCircle } from "react-icons/fa";
             : "text-gray-100"
         }`}
       >
-        Home
+        Kids
       </Link>
       <Link
         to="/product"
@@ -33,16 +33,27 @@ import { FaRegUserCircle } from "react-icons/fa";
             : "text-gray-100"
         }`}
       >
-        Product
+        Mens
       </Link>
       <Link
-        to="/contact"
+        to="/women"
+        className={`text-black hover:text-yellow-500 px-3 py-2 rounded-md text-sm font-medium ${
+          location.pathname === "/women"
+            ? "bg-yellow-300 text-black"
+            : "text-gray-100"
+        }`}
+      >
+        Women
+      </Link>
+      <Link
+        to="/admin/login"
         className={`text-black rounded-md text-sm font-medium ${
-          location.pathname === "/contact"
+          location.pathname === "/admin/login"
             ? "bg-yellow-300 text-black p-2"
             : "text-gray-100"
         }`}
       >
+        
       <FaRegUserCircle />
       </Link>
       <Link

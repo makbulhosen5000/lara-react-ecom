@@ -2,8 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layouts/Main";
 import ErrorMessage from "../Errors/ErrorMessage";
 import Home from "../common/Home/Home";
-import Product from "../../pages/product/Product";
-import ProductDetails from "../../pages/product/ProductDetails";
 import Banana from "../../pages/categories/Banana/Banana";
 import Coconut from "../../pages/categories/Coconut/Coconut";
 import Guava from "../../pages/categories/Guava/Guava";
@@ -16,7 +14,8 @@ import Checkout from "../../pages/product/Checkout";
 import Login from "../Auth/Admin/Login";
 import Dashboard from "../Auth/Admin/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
-
+import LatestProducts from "../../pages/product/LatestProducts";
+import ProductDetails from "../../pages/product/ProductDetails";
 
 export const router = createBrowserRouter([
     {
@@ -30,7 +29,7 @@ export const router = createBrowserRouter([
         },
         {
           path:"/product",
-          element:<Product/>
+          element:<LatestProducts/>
         },
         {
           path:"/productDetails",
