@@ -40,7 +40,7 @@ A full-stack web application built with **Laravel (API)** as the backend and **R
 ### 1. Backend (Laravel API)
 
 ```bash
-git clone https://github.com/yourusername/project-backend.git
+git clone https://github.com/makbulhosen5000/lara-react-ecom.git
 cd project-backend
 composer install
 cp .env.example .env
