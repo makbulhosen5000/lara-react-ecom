@@ -1,21 +1,16 @@
 import { createBrowserRouter } from "react-router-dom";
-import Main from "../Layouts/Main";
-import ErrorMessage from "../Errors/ErrorMessage";
-import Home from "../common/Home/Home";
-import Banana from "../../pages/categories/Banana/Banana";
-import Coconut from "../../pages/categories/Coconut/Coconut";
-import Guava from "../../pages/categories/Guava/Guava";
-import Lemon from "../../pages/categories/Lemon/Lemon";
-import Papaya from "../../pages/categories/Papaya/Papaya";
-import Hens from "../../pages/categories/Hens/Hens";
-import Duck from "../../pages/categories/Duck/Duck";
+import Main from "../layouts/Main";
+import ErrorMessage from "../errors/ErrorMessage";
+import Home from "../common/home/Home";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
-import Login from "../Auth/Admin/Login";
-import Dashboard from "../Auth/Admin/Dashboard";
+import Login from "../auth/admin/Login";
+import Dashboard from "../auth/admin/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import LatestProducts from "../../pages/product/LatestProducts";
 import ProductDetails from "../../pages/product/ProductDetails";
+import Categories from "../../pages/category/Categories";
+import CreateCategory from "../../pages/category/CreateCategory";
 
 export const router = createBrowserRouter([
     {
@@ -43,36 +38,8 @@ export const router = createBrowserRouter([
           path:"/checkout",
           element:<Checkout/>
         },
-        {
-          path:"/banana",
-          element:<Banana/>
-        },
-        {
-          path:"/coconut",
-          element:<Coconut/>
-        },
-        {
-          path:"/guava",
-          element:<Guava/>
-        },
-        {
-          path:"/lemon",
-          element:<Lemon/>
-        },
-        {
-          path:"/papaya",
-          element:<Papaya/>
-        },
-        {
-          path:"/hens",
-          element:<Hens/>
-        },
-        {
-          path:"/duck",
-          element:<Duck/>
-        },
 
-        //admin routes
+        //admin routes here
         {
           path:"/admin/login",
           element:<Login/>,
@@ -82,6 +49,22 @@ export const router = createBrowserRouter([
           element: (
           <AdminPrivateRoute>
             <Dashboard />
+          </AdminPrivateRoute>
+          ),
+        },
+        {
+          path:"/admin/categories",
+          element: (
+          <AdminPrivateRoute>
+            <Categories/>
+          </AdminPrivateRoute>
+          ),
+        },
+        {
+          path:"/admin/categories/create",
+          element: (
+          <AdminPrivateRoute>
+            <CreateCategory/>
           </AdminPrivateRoute>
           ),
         }

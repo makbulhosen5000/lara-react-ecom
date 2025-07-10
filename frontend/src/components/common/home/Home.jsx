@@ -1,7 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
 import LatestProducts from '../../../pages/product/LatestProducts';
-import Slider from '../Slider/Slider';
+import Slider from '../slider/Slider';
 import FeaturesProducts from '../../../pages/product/FeaturedProducts';
 
 

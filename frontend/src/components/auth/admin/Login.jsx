@@ -31,8 +31,6 @@ export default function Login() {
 
 
   const onSubmit = async(data) => {
-    console.log(data);
-
     const res = await fetch(`${apiUrl}/admin/login`, {
       method: "POST",
       headers: {

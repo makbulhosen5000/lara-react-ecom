@@ -4,7 +4,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { AdminAuthProvider } from './components/provider/AdminAuth.jsx';
-import { router } from './components/Router/Routes.jsx';
+import { router } from './components/router/Routes.jsx';
 import './index.css';
 createRoot(document.getElementById('root')).render(
   <StrictMode>
