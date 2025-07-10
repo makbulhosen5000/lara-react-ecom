@@ -76,7 +76,18 @@ class CategoryController extends Controller
         ]);
     }
     // this method will destroy categories
-    public function destroy(){
-        //
+    public function destroy($id){
+        $category = Category::find($id);
+        if($category == null){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Category Not Found',
+            ],404);
+        }
+        $category->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Category Deleted Successfully',
+        ]);
     }
 }

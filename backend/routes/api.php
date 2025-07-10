@@ -16,4 +16,8 @@ Route::group(['middleware' => 'auth:sanctum'],function(){
     Route::post('/categories',[CategoryController::class, 'store']);
     Route::get('/categories/{id}',[CategoryController::class, 'show']);
     Route::put('/categories/{id}',[CategoryController::class, 'update']);
+    Route::delete('/categories/{id}',[CategoryController::class, 'destroy']);
+    
+    // resource routes for brands
+    Route::resource('/brands', BrandController::class);
 });
