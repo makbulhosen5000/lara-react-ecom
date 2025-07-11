@@ -56,7 +56,7 @@ export const router = createBrowserRouter([
           path:"/admin/categories",
           element: (
           <AdminPrivateRoute>
-            <Categories/>
+            <Categories/>,
           </AdminPrivateRoute>
           ),
         },

@@ -9,36 +9,46 @@ import { adminToken, apiUrl } from '../../components/Http';
 function ShowCategory() {
    // categories state declaration
    const [categories, setCategories] = useState([]); 
-   console.log("categories", categories);
+   console.log("categories =", categories);
+   //const [loading, setLoading] = useState(true);
+   // fetch categories from the API
+
    const fetchCategories = async () => {
-       const res = await fetch(`${apiUrl}/categories`,{
-              method: "GET",
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Authorization': `Bearer ${adminToken()}`,
-                },
-       }).then(res => res.json())
-       .then(result=>{
-        setCategories(result);
-       })
-   }
-    // automatically update the state with the fetched categories
-    useEffect(() => {
-      setInterval(() => {
-        // console.log("categories", categories);
-        fetchCategories();
-      }, 3000);
-    },[]);  
-         
+    try {
+      const response = await fetch(`${apiUrl}/categories`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+  
+      const result = await response.json();
+      console.log("result is", result);
+  
+      if (result.status === 200) {
+        setCategories(result.categories);  // Be sure this is correct
+      } else {
+        console.error("Failed to fetch categories");
+      }
+  
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  useEffect(() => {
+    fetchCategories();
+  }, []);
   return (
+    
      <div className="bg-gray-100 font-sans">
           <div className="min-h-screen flex">
           <Sidebar/>
-    
           {/* <!-- Main Content --> */}
           <main className="flex-1 p-8">
             <h2 className="text-3xl font-bold mb-6">Dashboard Overview</h2>
+          
             {/* <!-- Cards --> */}
             <div className="max-w-6xl mx-auto  p-4 bg-white shadow-lg rounded-lg">
                 <div className="flex items-center justify-between mb-6">
@@ -58,9 +68,29 @@ function ShowCategory() {
                         </tr>
                     </thead>
                     <tbody>
-                    
+                    {categories.map((category,index)=>{
+                        return (
+                          <tr key={category.id} className="hover:bg-gray-50">
+                            <td className="px-6 py-4">{index+1}</td>
+                            <td className="px-6 py-4">{category.name}</td>
+                            <td className="px-6 py-4">
+                              <span className={`inline-block ${category.status === 1 ? 'bg-green-600' : 'bg-red-600'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
+                                {category.status === 1 ? "Active" : "Inactive"}
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 space-x-2">
+                              <button className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
+                                <FaRegEdit />
+                              </button>
+                              <button className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
+                                <MdDelete />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                    })}
                      
-                    <tr className="hover:bg-gray-50">
+                    {/* <tr className="hover:bg-gray-50">
                       <td className="px-6 py-4">index + 1</td>
                       <td className="px-6 py-4">category?.name</td>
                       <td className="px-6 py-4">
@@ -76,7 +106,7 @@ function ShowCategory() {
                           <MdDelete />
                         </button>
                       </td>
-                    </tr>
+                    </tr> */}
                   
               </tbody>
                     </table>
