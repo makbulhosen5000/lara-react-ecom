@@ -1,6 +1,6 @@
 import { createBrowserRouter } from "react-router-dom";
 import Main from "../layouts/Main";
-import ErrorMessage from "../errors/ErrorMessage";
+import ErrorMessage from "../common/errors/ErrorMessage";
 import Home from "../common/home/Home";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
