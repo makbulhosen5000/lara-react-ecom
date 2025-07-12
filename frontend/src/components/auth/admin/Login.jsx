@@ -1,8 +1,7 @@
-import React, { Children, useContext, useState } from 'react'
+import React, {useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
-import { useForm } from "react-hook-form"
 import { apiUrl } from '../../Http';
 import { toast } from 'react-toastify';
 import { AdminAuthContext } from '../../provider/AdminAuth';
@@ -20,15 +19,17 @@ export default function Login() {
   const handleShowPassword = () => {
     setShowPassword((prev) => !prev);
   };
+
+
+  const navigate = useNavigate();
   
-  const {
+   // form handling by useForm hook
+   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   
-  const navigate = useNavigate();
-
 
   const onSubmit = async(data) => {
     const res = await fetch(`${apiUrl}/admin/login`, {
@@ -78,7 +79,7 @@ export default function Login() {
                             message: "Invalid email address"
                         } 
                     })
-                }
+                  }
                   type="email" id="email" name="email" placeholder="you@example.com" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-black text-white" required  />
                   {
                     errors.email && (
