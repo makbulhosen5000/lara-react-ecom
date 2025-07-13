@@ -6,9 +6,8 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 function CreateCategory() {
-   // disable state declaration
    const [disable, setDisable] = useState(false); 
-   const [loading, setLoading] = useState(true);
+
 
 
   const navigate = useNavigate();
@@ -22,6 +21,7 @@ function CreateCategory() {
 
   const saveCategory = async(data) => {
     setDisable(true);
+    
       try {
           const response = await fetch(`${apiUrl}/categories`, {
             method: 'POST',
@@ -34,8 +34,6 @@ function CreateCategory() {
           });
       
           const result = await response.json();
-          console.log("result is", result);
-          setCategories(result.categories); 
           setDisable(false);
           if (result.status === 200) {
             toast.success(result.message);
@@ -45,7 +43,6 @@ function CreateCategory() {
             console.log("something went wrong");
             toast.error(result.message);
           }
-          setLoading(false);
       
         } catch (error) {
           console.error("Error fetching categories:", error);
@@ -53,7 +50,7 @@ function CreateCategory() {
       };
       useEffect(() => {
         setTimeout(()=>{
-          fetchCategories();
+          saveCategory();
         },1000)
       }, []);
   
@@ -80,7 +77,7 @@ function CreateCategory() {
                       <h2 className="text-2xl font-bold text-gray-800 text-center">Add Category</h2>
 
                       <div>
-                        <label className="block text-gray-700 font-medium mb-1" for="name">Category Name</label>
+                        <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Category Name</label>
                         <input
                         {
                           ...register('name',{
@@ -100,7 +97,7 @@ function CreateCategory() {
                         }
                       </div>
                       <div>
-                        <label className="block font-medium mb-1" for="name">Status</label>
+                        <label className="block font-medium mb-1" htmlFor="name">Status</label>
                         <select
                         {
                           ...register('status',{
@@ -110,9 +107,9 @@ function CreateCategory() {
                         id="status"
                         name="status"
                         className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.status && 'is-invalid'}`}
-                        required                    
+                        required              
                       >
-                        <option value="">-- Select Status --</option>
+                        <option value selected disabled>Select Status</option>
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                       </select>

@@ -98,9 +98,10 @@ function ShowCategory() {
                                 </span>
                               </td>
                               <td className="px-6 py-4 space-x-2">
-                                <button className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
+                                <Link to={`/admin/categories/edit/${category.id}`} className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
                                   <FaRegEdit />
-                                </button>
+                                </Link>
+                              
                                 <button className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
                                   <MdDelete />
                                 </button>

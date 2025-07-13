@@ -5,6 +5,7 @@ import { Eye, EyeOff,LogIn } from 'lucide-react';
 import { apiUrl } from '../../Http';
 import { toast } from 'react-toastify';
 import { AdminAuthContext } from '../../provider/AdminAuth';
+import { useForm } from 'react-hook-form';
 
 export default function Login() {
   
@@ -23,15 +24,15 @@ export default function Login() {
 
   const navigate = useNavigate();
   
-   // form handling by useForm hook
-   const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  
+    // form handling by useForm hook
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm();
+      
 
-  const onSubmit = async(data) => {
+  const loginAuth = async(data) => {
     const res = await fetch(`${apiUrl}/admin/login`, {
       method: "POST",
       headers: {
@@ -54,6 +55,7 @@ export default function Login() {
       }
     })
   }
+
   return (
     <>
         <Helmet>
@@ -67,7 +69,7 @@ export default function Login() {
               <h2 className="text-3xl font-bold mb-4 text-gray-800">Admin Login</h2>
               <p className="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
               
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <form onSubmit={handleSubmit(loginAuth)} className="space-y-5">
                 <div>
                   <label htmlFor="email" className="block mb-1 text-gray-600">Email</label>
                   <input 

@@ -11,6 +11,7 @@ import LatestProducts from "../../pages/product/LatestProducts";
 import ProductDetails from "../../pages/product/ProductDetails";
 import Categories from "../../pages/category/Categories";
 import CreateCategory from "../../pages/category/CreateCategory";
+import EditCategory from "../../pages/category/EditCategory";
 
 export const router = createBrowserRouter([
     {
@@ -65,6 +66,14 @@ export const router = createBrowserRouter([
           element: (
           <AdminPrivateRoute>
             <CreateCategory/>
+          </AdminPrivateRoute>
+          ),
+        },
+        {
+          path:"/admin/categories/edit/:id",
+          element: (
+          <AdminPrivateRoute>
+            <EditCategory/>
           </AdminPrivateRoute>
           ),
         }
