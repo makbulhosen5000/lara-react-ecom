@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Sidebar from '../../components/auth/admin/Sidebar'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { adminToken, apiUrl } from '../../components/Http';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 
 function EditCategory() {
-   const [disable, setDisable] = useState(false); 
-
-
+  const [category,setCategory] = useState([]);
+  // useParams() used to get id from url
+  const params = useParams();
 
   const navigate = useNavigate();
   // form handling by useForm hook
@@ -16,12 +16,36 @@ function EditCategory() {
       register,
       handleSubmit,
       formState: { errors },
-    } = useForm();
-
+    } = useForm({
+      defaultValues: async () => {
+        try {
+          const response = await fetch(`${apiUrl}/categories/${params.id}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${adminToken()}`,
+            },
+          });
+      
+          const result = await response.json();
+          if (result.status === 200) {
+            console.log("result:--", result);
+            setCategory(result.message);
+            // Redirect to the categories list page
+            //navigate('/admin/categories');
+          } else {
+            console.log("something went wrong");
+            toast.error(result.message);
+          }
+      
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      }
+    });
 
   const saveCategory = async(data) => {
-    setDisable(true);
-    
       try {
           const response = await fetch(`${apiUrl}/categories`, {
             method: 'POST',
@@ -34,11 +58,10 @@ function EditCategory() {
           });
       
           const result = await response.json();
-          setDisable(false);
           if (result.status === 200) {
             toast.success(result.message);
             // Redirect to the categories list page
-            navigate('/admin/categories');
+           // navigate('/admin/categories');
           } else {
             console.log("something went wrong");
             toast.error(result.message);
@@ -122,7 +145,6 @@ function EditCategory() {
                       </div>
 
                       <button
-                      disabled={disable}
                         type="submit"
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition duration-300"
                       >
