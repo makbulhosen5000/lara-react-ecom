@@ -8,8 +8,6 @@ import { toast } from 'react-toastify';
 function CreateCategory() {
    const [disable, setDisable] = useState(false); 
 
-
-
   const navigate = useNavigate();
   // form handling by useForm hook
   const {

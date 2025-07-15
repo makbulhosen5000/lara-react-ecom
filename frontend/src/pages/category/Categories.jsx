@@ -25,7 +25,6 @@ function ShowCategory() {
       });
   
       const result = await response.json();
-      console.log("result is", result);
       setCategories(result.categories); 
       setLoading(false);
   

@@ -7,6 +7,9 @@ import { toast } from 'react-toastify';
 
 function EditCategory() {
   const [category,setCategory] = useState([]);
+  const [disable, setDisable] = useState(false); 
+  //useNavigate() used to navigate routes
+  const navigation = useNavigate();
   // useParams() used to get id from url
   const params = useParams();
 
@@ -15,6 +18,7 @@ function EditCategory() {
   const {
       register,
       handleSubmit,
+      reset,
       formState: { errors },
     } = useForm({
       defaultValues: async () => {
@@ -29,14 +33,15 @@ function EditCategory() {
           });
       
           const result = await response.json();
-          if (result.status === 200) {
-            console.log("result:--", result);
-            setCategory(result.message);
-            // Redirect to the categories list page
-            //navigate('/admin/categories');
+          setDisable(false);
+          if (result.status == 200) {
+            setCategory(result.category);
+            reset({
+              name: result.category.name,
+              status: result.category.status,
+            });
           } else {
             console.log("something went wrong");
-            toast.error(result.message);
           }
       
         } catch (error) {
@@ -47,8 +52,8 @@ function EditCategory() {
 
   const saveCategory = async(data) => {
       try {
-          const response = await fetch(`${apiUrl}/categories`, {
-            method: 'POST',
+          const response = await fetch(`${apiUrl}/categories/${params.id}`, {
+            method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
               'Accept': 'application/json',
@@ -58,13 +63,13 @@ function EditCategory() {
           });
       
           const result = await response.json();
+          setDisable(false);
           if (result.status === 200) {
             toast.success(result.message);
-            // Redirect to the categories list page
-           // navigate('/admin/categories');
+          // Redirect to the categories list page
+           navigate('/admin/categories');
           } else {
             console.log("something went wrong");
-            toast.error(result.message);
           }
       
         } catch (error) {
