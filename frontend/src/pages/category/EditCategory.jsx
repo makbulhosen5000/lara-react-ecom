@@ -14,7 +14,7 @@ function EditCategory() {
   const params = useParams();
 
   const navigate = useNavigate();
-  // form handling by useForm hook
+  // form handling by useForm hook and to get data by id
   const {
       register,
       handleSubmit,

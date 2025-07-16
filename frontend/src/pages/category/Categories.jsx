@@ -6,6 +6,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { adminToken, apiUrl } from '../../components/Http';
 import Loader from '../../components/common/loader/Loader';
 import RecordNotFound from '../../components/common/RecordNotFound';
+import { toast } from 'react-toastify';
 
 function ShowCategory() {
    // categories state declaration
@@ -37,6 +38,35 @@ function ShowCategory() {
       fetchCategories();
     },1000)
   }, []);
+
+  // delete category function
+  const deleteCategory = async (id) => {
+    if (confirm("Are you sure you want to delete this category?")) {
+      try {
+        const response = await fetch(`${apiUrl}/categories/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${adminToken()}`,
+          },
+        });
+  
+        const result = await response.json();
+        if (result.status === 200) {
+          setCategories(categories.filter(category => category.id !== id));
+          toast.success(result.message);
+        } else {
+          toast.error(result.message);
+        }
+  
+      } catch (error) {
+        console.error("Error deleting category:", error);
+      }
+    }
+     
+  }
+
   return (
     
      <div className="bg-gray-100 font-sans">
@@ -101,9 +131,9 @@ function ShowCategory() {
                                   <FaRegEdit />
                                 </Link>
                               
-                                <button className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
+                                <Link onClick={()=>deleteCategory(category.id)} className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
                                   <MdDelete />
-                                </button>
+                                </Link>
                               </td>
                             </tr>
                           ))
