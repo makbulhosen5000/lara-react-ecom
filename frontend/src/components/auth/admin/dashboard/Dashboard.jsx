@@ -1,8 +1,7 @@
 
-import React, { useContext } from 'react'
-import { AdminAuthContext } from '../../provider/AdminAuth';
+import React from 'react'
 import Sidebar from './Sidebar';
-import { Outlet } from 'react-router-dom';
+
 
 export default function Dashboard() {
 

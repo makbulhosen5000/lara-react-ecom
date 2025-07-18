@@ -8,15 +8,15 @@ import Loader from '../../../common/loader/Loader';
 import RecordNotFound from '../../../common/RecordNotFound';
 import { toast } from 'react-toastify';
 
-function ShowCategory() {
-   // categories state declaration
-   const [categories, setCategories] = useState([]); 
+function Brand() {
+   // brands state declaration
+   const [brands, setBrands] = useState([]); 
    const [loading, setLoading] = useState(true);
-   // fetch categories from the API
+   // fetch brands from the API
 
-   const fetchCategories = async () => {
+   const fetchBrands = async () => {
     try {
-      const response = await fetch(`${apiUrl}/categories`, {
+      const response = await fetch(`${apiUrl}/brands`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -26,24 +26,24 @@ function ShowCategory() {
       });
   
       const result = await response.json();
-      setCategories(result.categories); 
+      setBrands(result.brands); 
       setLoading(false);
   
     } catch (error) {
-      console.error("Error fetching categories:", error);
+      console.error("Error fetching brands:", error);
     }
   };
   useEffect(() => {
     setTimeout(()=>{
-      fetchCategories();
+      fetchBrands();
     },1000)
   }, []);
 
-  // delete category function
-  const deleteCategory = async (id) => {
-    if (confirm("Are you sure you want to delete this category?")) {
+  // delete Brand function
+  const deleteBrand = async (id) => {
+    if (confirm("Are you sure you want to delete this Brand?")) {
       try {
-        const response = await fetch(`${apiUrl}/categories/${id}`, {
+        const response = await fetch(`${apiUrl}/brands/${id}`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -54,14 +54,14 @@ function ShowCategory() {
   
         const result = await response.json();
         if (result.status === 200) {
-          setCategories(categories.filter(category => category.id !== id));
+          setBrands(brands.filter(brand => brand.id !== id));
           toast.success(result.message);
         } else {
           toast.error(result.message);
         }
   
       } catch (error) {
-        console.error("Error deleting category:", error);
+        console.error("Error deleting brand:", error);
       }
     }
      
@@ -79,9 +79,9 @@ function ShowCategory() {
             {/* <!-- Cards --> */}
             <div className="max-w-6xl mx-auto  p-4 bg-white shadow-lg rounded-lg">
                 <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-800 mb-6">Category List</h2>
-                  <Link to="/admin/categories/create" className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                    <i className="fa-solid fa-plus mr-2"></i> Add Category
+                  <h2 className="text-2xl font-bold text-gray-800 mb-6">Brand List</h2>
+                  <Link to="/admin/brands/create" className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    <i className="fa-solid fa-plus mr-2"></i> Add Brand
                   </Link>
                 </div>
                   <div className="overflow-x-auto">
@@ -104,34 +104,34 @@ function ShowCategory() {
                               </div>
                             </td>
                           </tr>
-                        ) : categories.length === 0 ? (
+                        ) : brands.length === 0 ? (
                           <tr>
                             <td colSpan={4}>
                               <div className="flex justify-center items-center h-32 text-gray-600 font-semibold">
-                                <RecordNotFound recordTitle="Category Not Found" />
+                                <RecordNotFound recordTitle="Brand Not Found" />
                               </div>
                             </td>
                           </tr>
                         ) : (
-                          categories.map((category, index) => (
-                            <tr key={category.id} className="hover:bg-gray-50">
+                          brands.map((brand, index) => (
+                            <tr key={brand.id} className="hover:bg-gray-50">
                               <td className="px-6 py-4">{index + 1}</td>
-                              <td className="px-6 py-4">{category.name}</td>
+                              <td className="px-6 py-4">{brand.name}</td>
                               <td className="px-6 py-4">
                                 <span
                                   className={`inline-block ${
-                                    category.status === 1 ? 'bg-green-600' : 'bg-red-600'
+                                    brand.status === 1 ? 'bg-green-600' : 'bg-red-600'
                                   } text-white text-xs font-semibold px-2.5 py-0.5 rounded`}
                                 >
-                                  {category.status === 1 ? 'Active' : 'Inactive'}
+                                  {brand.status === 1 ? 'Active' : 'Inactive'}
                                 </span>
                               </td>
                               <td className="px-6 py-4 space-x-2">
-                                <Link to={`/admin/categories/edit/${category.id}`} className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
+                                <Link to={`/admin/brands/edit/${brand.id}`} className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
                                   <FaRegEdit />
                                 </Link>
                               
-                                <Link onClick={()=>deleteCategory(category.id)} className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
+                                <Link onClick={()=>deleteBrand(brand.id)} className="inline-flex items-center bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 transition">
                                   <MdDelete />
                                 </Link>
                               </td>
@@ -150,4 +150,4 @@ function ShowCategory() {
   )
 }
 
-export default ShowCategory
+export default Brand

@@ -8,7 +8,7 @@ import Loader from '../../../common/loader/Loader';
 import RecordNotFound from '../../../common/RecordNotFound';
 import { toast } from 'react-toastify';
 
-function ShowCategory() {
+function Category() {
    // categories state declaration
    const [categories, setCategories] = useState([]); 
    const [loading, setLoading] = useState(true);
@@ -150,4 +150,4 @@ function ShowCategory() {
   )
 }
 
-export default ShowCategory
+export default Category

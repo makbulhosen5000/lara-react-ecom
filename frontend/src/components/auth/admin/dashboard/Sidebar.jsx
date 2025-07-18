@@ -1,7 +1,8 @@
 import { LogOut } from 'lucide-react'
 import React, { useContext } from 'react'
-import { AdminAuthContext } from '../../provider/AdminAuth';
+
 import { Link } from 'react-router-dom';
+import { AdminAuthContext } from '../../../provider/AdminAuth';
 
 export default function Sidebar() {
     const {logOut}  = useContext(AdminAuthContext);
@@ -13,7 +14,7 @@ export default function Sidebar() {
         <nav className="space-y-3">
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Dashboard</Link>
           <Link to="/admin/categories" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Categories</Link>
-          <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Brand</Link>
+          <Link to="/admin/brands" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Brand</Link>
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Users</Link>
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Setting</Link>
 

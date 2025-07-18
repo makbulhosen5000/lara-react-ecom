@@ -71,7 +71,7 @@ class BrandController extends Controller
         $brand->update();
         return response()->json([
             'status' => 200,
-            'message' => 'brand Update Successfully',
+            'message' => 'Brand Update Successfully',
             'data' => $brand,
         ]);
     }

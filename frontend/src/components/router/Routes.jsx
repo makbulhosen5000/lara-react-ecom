@@ -4,14 +4,17 @@ import ErrorMessage from "../common/errors/ErrorMessage";
 import Home from "../common/home/Home";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
-import Login from "../auth/admin/Login";
-import Dashboard from "../auth/admin/Dashboard";
+import Login from "../auth/admin/auth/Login";
+import Dashboard from "../auth/admin/dashboard/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import LatestProducts from "../../pages/product/LatestProducts";
 import ProductDetails from "../../pages/product/ProductDetails";
-import Categories from "../../pages/category/Categories";
-import CreateCategory from "../../pages/category/CreateCategory";
-import EditCategory from "../../pages/category/EditCategory";
+import Categories from "../auth/admin/category/Categories";
+import CreateCategory from "../auth/admin/category/CreateCategory";
+import EditCategory from "../auth/admin/category/EditCategory";
+import Brand from "../auth/admin/brand/Brands";
+import EditBrand from "../auth/admin/brand/EditBrand";
+import CreateBrand from "../auth/admin/brand/CreateBrand";
 
 export const router = createBrowserRouter([
     {
@@ -53,6 +56,7 @@ export const router = createBrowserRouter([
           </AdminPrivateRoute>
           ),
         },
+        // categories routes is here
         {
           path:"/admin/categories",
           element: (
@@ -74,6 +78,31 @@ export const router = createBrowserRouter([
           element: (
           <AdminPrivateRoute>
             <EditCategory/>
+          </AdminPrivateRoute>
+          ),
+        },
+        // brands routes is here
+        {
+          path:"/admin/brands",
+          element: (
+          <AdminPrivateRoute>
+            <Brand/>
+          </AdminPrivateRoute>
+          ),
+        },
+        {
+          path:"/admin/brands/create",
+          element: (
+          <AdminPrivateRoute>
+            <CreateBrand/>
+          </AdminPrivateRoute>
+          ),
+        },
+        {
+          path:"/admin/brands/edit/:id",
+          element: (
+          <AdminPrivateRoute>
+            <EditBrand/>
           </AdminPrivateRoute>
           ),
         }

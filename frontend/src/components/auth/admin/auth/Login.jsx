@@ -2,9 +2,9 @@ import React, {useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
-import { apiUrl } from '../../Http';
+import { apiUrl } from '../../../Http';
 import { toast } from 'react-toastify';
-import { AdminAuthContext } from '../../provider/AdminAuth';
+import { AdminAuthContext } from '../../../provider/AdminAuth';
 import { useForm } from 'react-hook-form';
 
 export default function Login() {
