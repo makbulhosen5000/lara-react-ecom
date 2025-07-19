@@ -12,8 +12,17 @@ function Brand() {
    // brands state declaration
    const [brands, setBrands] = useState([]); 
    const [loading, setLoading] = useState(true);
-   // fetch brands from the API
+     //pagination state declaration
+     const [currentPage, setCurrentPage] = useState(1);
+     const itemsPerPage = 10; 
+     // Calculate pagination
+     const indexOfLastItem = currentPage * itemsPerPage;
+     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+     const currentItems = brands.slice(indexOfFirstItem, indexOfLastItem);
+     const totalPages = Math.ceil(brands.length / itemsPerPage);
+     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+   // fetch brands from the API
    const fetchBrands = async () => {
     try {
       const response = await fetch(`${apiUrl}/brands`, {
@@ -113,9 +122,9 @@ function Brand() {
                             </td>
                           </tr>
                         ) : (
-                          brands.map((brand, index) => (
+                          currentItems.map((brand, index) => (
                             <tr key={brand.id} className="hover:bg-gray-50">
-                              <td className="px-6 py-4">{index + 1}</td>
+                              <td className="px-6 py-4">{indexOfFirstItem + index + 1}</td>
                               <td className="px-6 py-4">{brand.name}</td>
                               <td className="px-6 py-4">
                                 <span
@@ -139,8 +148,18 @@ function Brand() {
                           ))
                         )}
                       </tbody>
-
                   </table>
+                  <div className="flex justify-center mt-4 space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <button
+                        key={i + 1}
+                        onClick={() => paginate(i + 1)}
+                        className={`px-4 py-2 border rounded ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
                 </div>
             </div>
 

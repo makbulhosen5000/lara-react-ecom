@@ -10,11 +10,21 @@ import { toast } from 'react-toastify';
 
 function Category() {
    // categories state declaration
-   const [categories, setCategories] = useState([]); 
-   const [loading, setLoading] = useState(true);
-   // fetch categories from the API
+  const [categories, setCategories] = useState([]); 
+  const [loading, setLoading] = useState(true);
 
-   const fetchCategories = async () => {
+  //pagination state declaration
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; 
+  // Calculate pagination
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = categories.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(categories.length / itemsPerPage);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  // fetch categories from the API
+  const fetchCategories = async () => {
     try {
       const response = await fetch(`${apiUrl}/categories`, {
         method: 'GET',
@@ -113,9 +123,9 @@ function Category() {
                             </td>
                           </tr>
                         ) : (
-                          categories.map((category, index) => (
+                          currentItems.map((category, index) => (
                             <tr key={category.id} className="hover:bg-gray-50">
-                              <td className="px-6 py-4">{index + 1}</td>
+                              <td className="px-6 py-4">{indexOfFirstItem + index + 1}</td>
                               <td className="px-6 py-4">{category.name}</td>
                               <td className="px-6 py-4">
                                 <span
@@ -139,8 +149,18 @@ function Category() {
                           ))
                         )}
                       </tbody>
-
                   </table>
+                  <div className="flex justify-center mt-4 space-x-2">
+                    {Array.from({ length: totalPages }, (_, i) => (
+                      <button
+                        key={i + 1}
+                        onClick={() => paginate(i + 1)}
+                        className={`px-4 py-2 border rounded ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'}`}
+                      >
+                        {i + 1}
+                      </button>
+                    ))}
+                  </div>
                 </div>
             </div>
 
