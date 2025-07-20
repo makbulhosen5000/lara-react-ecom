@@ -14,7 +14,7 @@ class BrandController extends Controller
         $brands = brand::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 200,
-            'brands' => $brands,
+            'data' => $brands,
         ]);
     }
     // this method will  store all brands in DB
@@ -50,7 +50,7 @@ class BrandController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'brand' => $brand,
+            'data' => $brand,
         ]);
         
     }

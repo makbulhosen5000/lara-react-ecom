@@ -36,7 +36,7 @@ function Category() {
       });
   
       const result = await response.json();
-      setCategories(result.categories); 
+      setCategories(result.data); 
       setLoading(false);
   
     } catch (error) {

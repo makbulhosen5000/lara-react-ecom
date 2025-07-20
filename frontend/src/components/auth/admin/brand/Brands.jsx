@@ -35,7 +35,7 @@ function Brand() {
       });
   
       const result = await response.json();
-      setBrands(result.brands); 
+      setBrands(result.data); 
       setLoading(false);
   
     } catch (error) {

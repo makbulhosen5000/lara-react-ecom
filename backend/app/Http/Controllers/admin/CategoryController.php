@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $categories = Category::orderBy('created_at', 'desc')->get();
         return response()->json([
             'status' => 200,
-            'categories' => $categories,
+            'data' => $categories,
         ]);
     }
     // this method will  store all categories in DB
@@ -51,7 +51,7 @@ class CategoryController extends Controller
         }
         return response()->json([
             'status' => 200,
-            'category' => $category,
+            'data' => $category,
         ]);
         
     }
