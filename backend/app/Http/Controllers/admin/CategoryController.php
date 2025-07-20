@@ -21,7 +21,7 @@ class CategoryController extends Controller
     public function store(Request $request){
         $validator = Validator::make($request->all(),[
             'name' => 'required|string|max:255',
-            'status' => 'required|string|max:255',
+            'status' => 'required|numeric|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -31,8 +31,8 @@ class CategoryController extends Controller
             ], status: 400);
         }
         $category = new Category();
-        $category->name = $request->name;
-        $category->status = $request->status ;
+        $category->name = $request->input('name');
+        $category->status = $request->input('status');
         $category->save();
         return response()->json([
             'status' => 200,
@@ -67,8 +67,8 @@ class CategoryController extends Controller
             ], status: 400);
         }
         $category = Category::find($id);
-        $category->name = $request->name;
-        $category->status = $request->status ;
+        $category->name = $request->input('name');
+        $category->status = $request->input('status');
         $category->update();
         return response()->json([
             'status' => 200,

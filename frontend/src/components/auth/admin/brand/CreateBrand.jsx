@@ -107,7 +107,7 @@ function CreateBrand() {
                         className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.status && 'is-invalid'}`}
                         required              
                       >
-                        <option value selected disabled>Select Status</option>
+                        <option value="" selected disabled>Select Status</option>
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
                       </select>

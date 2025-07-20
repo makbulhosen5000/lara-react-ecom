@@ -30,8 +30,8 @@ class BrandController extends Controller
             ], status: 400);
         }
         $brand = new Brand();
-        $brand->name = $request->name;
-        $brand->status = $request->status ;
+        $brand->name = $request->input('name');
+        $brand->status = $request->input('status');
         $brand->save();
         return response()->json([
             'status' => 200,
@@ -66,8 +66,8 @@ class BrandController extends Controller
             ], status: 400);
         }
         $brand = Brand::find($id);
-        $brand->name = $request->name;
-        $brand->status = $request->status ;
+        $brand->name = $request->input('name');
+        $brand->status = $request->input('status');
         $brand->update();
         return response()->json([
             'status' => 200,
