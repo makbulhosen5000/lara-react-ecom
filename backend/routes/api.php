@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
+use App\Http\Controllers\admin\TempImageController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -29,4 +30,7 @@ Route::resource('/brands', BrandController::class);
 Route::resource('/sizes', SizeController::class);
 //routes for products
 Route::resource('/products', ProductController::class);
+// this route is for uploading temp images
+Route::post('/temp-images',[TempImageController::class, 'store']);
+    
 });
