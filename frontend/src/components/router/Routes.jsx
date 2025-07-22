@@ -15,6 +15,9 @@ import EditCategory from "../auth/admin/category/EditCategory";
 import Brand from "../auth/admin/brand/Brands";
 import EditBrand from "../auth/admin/brand/EditBrand";
 import CreateBrand from "../auth/admin/brand/CreateBrand";
+import CreateProduct from "../auth/admin/product/CreateProduct";
+import EditProduct from "../auth/admin/product/EditProduct";
+import Products from "../auth/admin/product/products";
 
 export const router = createBrowserRouter([
     {
@@ -105,7 +108,32 @@ export const router = createBrowserRouter([
             <EditBrand/>
           </AdminPrivateRoute>
           ),
-        }
+        },
+           // products routes is here
+           {
+            path:"/admin/products",
+            element: (
+            <AdminPrivateRoute>
+              <Products/>,
+            </AdminPrivateRoute>
+            ),
+          },
+          {
+            path:"/admin/products/create",
+            element: (
+            <AdminPrivateRoute>
+              <CreateProduct/>
+            </AdminPrivateRoute>
+            ),
+          },
+          {
+            path:"/admin/products/edit/:id",
+            element: (
+            <AdminPrivateRoute>
+              <EditProduct/>
+            </AdminPrivateRoute>
+            ),
+          },
       ],
     },
   ]);
