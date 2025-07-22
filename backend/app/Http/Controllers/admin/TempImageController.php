@@ -17,7 +17,7 @@ class TempImageController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         if ($validator->fails()) {
@@ -31,8 +31,8 @@ class TempImageController extends Controller
         $tempImage->save();
         
         $image = $request->file('image');
-        $imageName = time() .'.'. $image->extension();
-        $image->move(public_path('uploads/temp'), $imageName);
+        $imageName = time().'.'.$image->extension();
+        $image->move(public_path('uploads/temp/'), $imageName);
         $tempImage->name = $imageName;
         $tempImage->save();
         // save image thumbnail
