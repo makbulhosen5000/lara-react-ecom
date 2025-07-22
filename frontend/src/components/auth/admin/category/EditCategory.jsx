@@ -49,7 +49,7 @@ function EditCategory() {
   }, [id, reset]);
 
   // ✅ Submit form
-  const saveCategory = async (data) => {
+  const updateCategory = async (data) => {
     try {
       const response = await fetch(`${apiUrl}/categories/${id}`, {
         method: 'PUT',
@@ -91,7 +91,7 @@ function EditCategory() {
 
             <div className="overflow-x-auto">
               <div className="bg-gray-100 flex items-center justify-center p-6">
-                <form onSubmit={handleSubmit(saveCategory)} className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6">
+                <form onSubmit={handleSubmit(updateCategory)} className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6">
                   <div>
                     <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Category Name</label>
                     <input

@@ -16,12 +16,12 @@ function CreateProduct() {
       formState: { errors },
     } = useForm();
 
-
-  const saveCategory = async(data) => {
+  // save product function
+  const saveProduct = async(data) => {
     setDisable(true);
     
       try {
-          const response = await fetch(`${apiUrl}/categories`, {
+          const response = await fetch(`${apiUrl}/products`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -35,20 +35,20 @@ function CreateProduct() {
           setDisable(false);
           if (result.status === 200) {
             toast.success(result.message);
-            // Redirect to the categories list page
-            navigate('/admin/categories');
+            // Redirect to the products list page
+            navigate('/admin/products');
           } else {
             console.log("something went wrong");
             toast.error(result.message);
           }
       
         } catch (error) {
-          console.error("Error fetching categories:", error);
+          console.error("Error fetching products:", error);
         }
       };
       useEffect(() => {
         setTimeout(()=>{
-          saveCategory();
+          saveProduct();
         },1000)
       }, []);
   
@@ -65,27 +65,27 @@ function CreateProduct() {
             <div className="max-w-6xl mx-auto  p-4 bg-white shadow-lg rounded-lg">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-2xl font-bold text-gray-800 mb-6">Create Product</h2>
-                  <Link to="/admin/categories" className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                  <Link to="/admin/products" className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
                     <i className="fa-solid fa-plus mr-2"></i> Product List
                   </Link>
                 </div>
                 <div className="overflow-x-auto">
                   <div className=" bg-gray-100 flex items-center justify-center p-6">
-                    <form onSubmit={handleSubmit(saveCategory)} className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6">
-                      {/* <h2 className="text-2xl font-bold text-gray-800 text-center">Add Category</h2> */}
+                    <form onSubmit={handleSubmit(saveProduct)} className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6">
+                      {/* <h2 className="text-2xl font-bold text-gray-800 text-center">Add Product</h2> */}
 
                       <div>
-                        <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Category Name</label>
+                        <label className="block text-gray-700 font-medium mb-1" htmlFor="name">Product Name</label>
                         <input
                         {
-                          ...register('name',{
-                              required: "The category field is required",
+                          ...register('title',{
+                              required: "The product field is required",
                             })
                         }
-                          name="name"
+                          name="title"
                           type="text"
                           className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${errors.name && 'is-invalid'}`}
-                          placeholder="Enter Category Name"
+                          placeholder="Enter Product Name"
                           required
                         />
                         {

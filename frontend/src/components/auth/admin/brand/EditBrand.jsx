@@ -48,7 +48,7 @@ function EditBrand() {
   }, [id, reset]);
 
   // ✅ Submit form
-  const saveBrand = async (data) => {
+  const updateBrand = async (data) => {
     setDisable(true);
     try {
       const response = await fetch(`${apiUrl}/brands/${id}`, {
@@ -97,7 +97,7 @@ function EditBrand() {
             <div className="overflow-x-auto">
               <div className="bg-gray-100 flex items-center justify-center p-6">
                 <form
-                  onSubmit={handleSubmit(saveBrand)}
+                  onSubmit={handleSubmit(updateBrand)}
                   className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md space-y-6"
                 >
                   <div>
