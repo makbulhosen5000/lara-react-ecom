@@ -48,7 +48,8 @@ function Product() {
 
     return () => clearTimeout(timer);
   }, []);
-
+  
+  // delete product function
   const deleteProduct = async (id) => {
     if (window.confirm("Are you sure you want to delete this Product?")) {
       try {
@@ -98,7 +99,11 @@ function Product() {
                 <thead className="bg-gray-100 text-gray-700 uppercase text-sm">
                   <tr>
                     <th className="px-6 py-3">ID</th>
-                    <th className="px-6 py-3">Name</th>
+                    <th className="px-6 py-3">Image</th>
+                    <th className="px-6 py-3">Title</th>
+                    <th className="px-6 py-3">Price</th>
+                    <th className="px-6 py-3">Qty</th>
+                    <th className="px-6 py-3">Sku</th>
                     <th className="px-6 py-3">Status</th>
                     <th className="px-6 py-3">Action</th>
                   </tr>
@@ -124,13 +129,25 @@ function Product() {
                     currentItems.map((product, index) => (
                       <tr key={product.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4">{indexOfFirstItem + index + 1}</td>
-                        <td className="px-6 py-4">{product.title}</td>
+                        <td className="px-6 py-4">
+                          {
+                            product.image_url ? (
+                              <img src={product.image_url} alt="Product Image" width={70} />
+                            ) : (
+                              <span className="text-gray-500">No Image</span>
+                            )
+                          }
+                        </td>
+                        <td className="px-6 py-4">{product?.title}</td>
+                        <td className="px-6 py-4">{product?.price}</td>
+                        <td className="px-6 py-4">{product?.qty}</td>
+                        <td className="px-6 py-4">{product?.sku}</td>
                         <td className="px-6 py-4">
                           <span className={`inline-block ${Product.status === 1 ? 'bg-green-600' : 'bg-red-600'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
                             {product.status === 1 ? 'Active' : 'Inactive'}
                           </span>
                         </td>
-                        <td className="px-6 py-4 space-x-2">
+                        <td className="px-2 py-3 space-x-2">
                           <Link to={`/admin/products/edit/${product.id}`} className="inline-flex items-center bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 transition">
                             <FaRegEdit />
                           </Link>

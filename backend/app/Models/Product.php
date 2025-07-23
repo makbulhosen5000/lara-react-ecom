@@ -21,6 +21,17 @@ class Product extends Model
         'status',
         'is_featured'
     ];
+    
+    // get image URL
+    // This will append the image_url attribute to the model's array and JSON form
+    protected $appends = ['image_url'];
+    public function getImageUrlAttribute()
+    {
+       if($this->image == "") {
+           return ;
+       }
+       return asset('/uploads/products/small/'.$this->image);
+    }
 
     public function category()
     {
