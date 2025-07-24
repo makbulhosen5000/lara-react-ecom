@@ -10,7 +10,7 @@ export default function Sidebar() {
     <>
     {/* <!-- Sidebar --> */}
     <aside className="w-64 bg-white p-6 shadow-lg">
-        <h1 className="text-2xl font-bold text-blue-600 mb-8">SiblingsAgro Dashboard</h1>
+        <h1 className="text-2xl font-bold text-blue-600 mb-8">Dashboard</h1>
         <nav className="space-y-3">
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Dashboard</Link>
           <Link to="/admin/categories" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Categories</Link>

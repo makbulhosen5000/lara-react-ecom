@@ -50,7 +50,7 @@ class ProductController extends Controller
         $product = new Product();
         $product->title = $request->input('title');
         $product->price = $request->input(key: 'price');
-        $product->compare_price = $request->input(key: 'compare_price');
+        $product->discount_price = $request->input(key: 'discount_price');
         $product->category_id = $request->input(key: 'category_id');
         $product->brand_id = $request->input(key: 'brand_id');
         $product->sku = $request->input(key: 'sku');
@@ -146,7 +146,7 @@ class ProductController extends Controller
         }
         $product->title = $request->input('title');
         $product->price = $request->input(key: 'price');
-        $product->compare_price = $request->input(key: 'compare_price');
+        $product->discount_price = $request->input(key: 'discount_price');
         $product->category_id = $request->input(key: 'category_id');
         $product->brand_id = $request->input(key: 'brand_id');
         $product->sku = $request->input(key: 'sku');
