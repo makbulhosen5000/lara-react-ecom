@@ -32,7 +32,7 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(),[
             'title' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'category_id' => 'required|integer|max:255',
+            'category' => 'required|integer|max:255',
             'qty' => 'required|numeric|max:255',
             'sku' => 'required|unique:products,sku|max:255',
             'status' => 'required|numeric|max:255',
@@ -51,8 +51,8 @@ class ProductController extends Controller
         $product->title = $request->input('title');
         $product->price = $request->input(key: 'price');
         $product->discount_price = $request->input(key: 'discount_price');
-        $product->category_id = $request->input(key: 'category_id');
-        $product->brand_id = $request->input(key: 'brand_id');
+        $product->category_id = $request->input(key: 'category');
+        $product->brand_id = $request->input(key: 'brand');
         $product->sku = $request->input(key: 'sku');
         $product->qty = $request->input(key: 'qty');
         $product->barcode = $request->input(key: 'barcode');
@@ -122,7 +122,7 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(),[
             'title' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'category_id' => 'required|integer|max:255',
+            'category' => 'required|integer|max:255',
             'qty' => 'required|numeric|max:255',
             'sku' => 'required|unique:products,sku,'.$id.',id|max:255',
             'status' => 'required|numeric|max:255',
@@ -147,8 +147,8 @@ class ProductController extends Controller
         $product->title = $request->input('title');
         $product->price = $request->input(key: 'price');
         $product->discount_price = $request->input(key: 'discount_price');
-        $product->category_id = $request->input(key: 'category_id');
-        $product->brand_id = $request->input(key: 'brand_id');
+        $product->category_id = $request->input(key: 'category');
+        $product->brand_id = $request->input(key: 'brand');
         $product->sku = $request->input(key: 'sku');
         $product->qty = $request->input(key: 'qty');
         $product->barcode = $request->input(key: 'barcode');

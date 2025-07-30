@@ -7,120 +7,144 @@ import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
 
 function CreateProduct({ placeholder }) {
+  // category and brand state
+   const [categories, setCategories] = useState([]);
+   const [brands, setBrands] = useState([]);
+  // disable state for submit button
+  const [disable, setDisable] = useState(false); 
+
+  // JoditEditor configuration
   const editor = useRef(null);
 	const [content, setContent] = useState('');
-  // JoditEditor configuration
   const config = useMemo(() => ({
     readonly: false, // all options from https://xdsoft.net/jodit/docs/,
     placeholder: placeholder || 'Type Description...'
   }),
   [placeholder]
 );
-  // category and brand state
-   const [categories, setCategories] = useState([]);
-   const [brands, setBrands] = useState([]);
-   const [disable, setDisable] = useState(false); 
 
-      const navigate = useNavigate();
-      // form handling by useForm hook
-      const {
-      register,
-      handleSubmit,
-      watch,
-      setError,
-      formState: { errors },
-        } = useForm();
+  const navigate = useNavigate();
+  // form handling by useForm hook
+  const {
+  register,
+  handleSubmit,
+  setError,
+  watch,
+  formState: { errors },
+    } = useForm();
 
-      // save product function
-      const saveProduct = async(data) => {
-        
-      // Combine form data with content from JoditEditor
-      // This assumes that the JoditEditor is used for the 'description' field
-      // If you have a different field name, adjust accordingly
-      const formData = {...data, "description": content};
-      console.log("Form Data:", formData);
-      setDisable(true);
+  // save product function
+  const saveProduct = async(data) => {
     
-      try {
-          const response = await fetch(`${apiUrl}/products`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${adminToken()}`,
-            },
-            body: JSON.stringify(formData),
-          });
-      
-          const result = await response.json();
-          setDisable(false);
-          if (result.status === 200) {
-            toast.success(result.message);
-            // Redirect to the products list page
-            navigate('/admin/products');
-          } else {
-            // Handle validation errors
+  // Combine form data with content from JoditEditor
+  // This assumes that the JoditEditor is used for the 'description' field
+  // If you have a different field name, adjust accordingly
+  const formData = {...data, "description": content};
+  setDisable(true);
 
-            //Set errors for each field
-            const formErrors = result.errors || {};
-            Object.keys(formErrors).forEach((field) => {
-              setError(field, { message: formErrors[field][0] });
-            });
-          }
-      
-        } catch (error) {
-          console.error("Error fetching products:", error);
-          setDisable(false);
-        }
+  try {
+      const response = await fetch(`${apiUrl}/products`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      const result = await response.json();
+      setDisable(false);
+      if (result.status === 200) {
+        toast.success(result.message);
+        // Redirect to the products list page
+        navigate('/admin/products');
+      } else {
+        toast.error(result.message);
+        //Set errors for each field
+        const formErrors = result.errors || {};
+        Object.keys(formErrors).forEach((field) => {
+          setError(field, { message: formErrors[field][0] });
+        });
       }
-       //category fetch function
-      const fetchCategories = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/categories`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${adminToken()}`,
-            },
-          });
-          const result = await response.json();
-          setCategories(result.data); 
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-          return [];
-        }
-      };
-      //brand fetch function
-      const fetchBrands = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/brands`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${adminToken()}`,
-            },
-          });
-          const result = await response.json();
-          setBrands(result.data); 
-        } catch (error) {
-          console.error("Error fetching brands:", error);
-          return [];
-        }
-      };
-
-      // useEffect to fetch categories on component mount
-      useEffect(() => {
-        setTimeout(()=>{
-          //saveProduct();
-          fetchCategories();
-          fetchBrands();
-        },1000)
-      }, []);
+  
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setDisable(false);
+    }
+  }
+    //category fetch function
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/categories`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+      const result = await response.json();
+      setCategories(result.data); 
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+      return [];
+    }
+  };
+  //brand fetch function
+  const fetchBrands = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/brands`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+      const result = await response.json();
+      setBrands(result.data); 
+    } catch (error) {
+      console.error("Error fetching brands:", error);
+      return [];
+    }
+  };
+  
+  // handle file function
+  const handleFile = async (e) => { 
+    const formData = new FormData();
+    const file = e.target.files[0];
+    formData.append('image', file);
+    setDisable(true);
+    try {
+    const response = await fetch(`${apiUrl}/temp-images`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${adminToken()}`,
+      },
+      body:formData
+    });
+    const result = await response.json();
+    console.log("the result is-:", result);
+    setDisable(false);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return [];
+  }
+  }
   
  
-   
+
+  // useEffect to fetch categories on component mount
+  useEffect(() => {
+    setTimeout(()=>{
+      fetchCategories();
+      fetchBrands();
+    },1000)
+  }, []);
+
+  
   return (
     
      <div className="bg-gray-100 font-sans">
@@ -391,8 +415,12 @@ function CreateProduct({ placeholder }) {
                   <div>
                     <label className="block text-gray-700 font-medium mb-1">Product Image</label>
                     <input
+                      accept="image/*"
+                      onChange={handleFile}
+                      name="image"
+                      id="image"
                       {...register("image", {
-                        //required: "The product Image field is required",
+                        required: "The product Image field is required",
                       })}
                       type="file"
                       className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
