@@ -61,40 +61,47 @@ class ProductController extends Controller
         $product->short_description = $request->input(key: 'short_description');
         $product->status = $request->input(key: 'status');
         $product->is_featured = $request->input(key: 'is_featured');
-        $product->save();
-
+        $product->save();       
         //save the product image
+
+        /*
+        *Example of $request->gallery:
+        *$request->gallery is an array of tem_images table IDs submitted from the frontend or API request.
+        *temp_images table's id will foreach() and adjust with product table.
+        {
+            "gallery": [1, 2, 3] 
+        }
+        where 1, 2, 3 are the IDs of the images in the temp_images table.
+        */ 
         if(!empty($request->gallery)) {
             foreach($request->gallery as $key => $tempImageId) {
                 $tempImage = TempImage::find($tempImageId);
                 
-                //large thumbnail
+                //large thumbnail generate
                 $extArray = explode('.',$tempImage->name);
                 $ext = end($extArray);
 
                 $imageName = $product->id.'-'.time().'.'.$ext; // making image name
                 $manager = new ImageManager(Driver::class);
                 $img = $manager->read(public_path(path:'uploads/temp/'.$tempImage->name));
-                $img->scaleDown(1200);//width 1200px for image resize.
+                $img->scaleDown(1200); //large thumbnail size  1200X1200px.
                 $img->save(public_path('uploads/products/large/'.$imageName));
                 
-                //small thumbnail
+                //small thumbnail generate
                 $manager = new ImageManager(Driver::class);
                 $img = $manager->read(public_path(path:'uploads/temp/'.$tempImage->name));
-                $img->coverDown(400, 460); 
+                $img->coverDown(400, 460); //small thumbnail size 400x460px.
                 $img->save(public_path(path: 'uploads/products/small/'.$imageName));
                 
+                //save image in product_image table
                 $productImage = new ProductImage();
                 $productImage->image = $imageName;
                 $productImage->product_id = $product->id;
-                $productImage->save();
-                //delete temp image
-                //$tempImage->delete();
-      
+                $productImage->save(); 
 
                 if($key == 0){
-                    $product->image = $imageName;
-                    $product->save();
+                    $product->image = $imageName; //set the first image as product table main image with image name
+                    $product->save(); // 2 times save product model. 1st time save in the up.
                 }
             }
         };

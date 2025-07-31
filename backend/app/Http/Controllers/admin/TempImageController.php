@@ -26,19 +26,25 @@ class TempImageController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
+        // Create a new TempImage instance(a dummy name)
         $tempImage = new TempImage();
         $tempImage->name = "dummy temp image name";
         $tempImage->save();
-        
+
+        // Save the image in temp folder
         $image = $request->file('image');
-        $imageName = time().'.'.$image->extension();
+        $imageName = time().'.'.$image->extension(); //extension will create name, like this 25255.jpg
         $image->move(public_path('uploads/temp/'), $imageName);
         $tempImage->name = $imageName;
         $tempImage->save();
-        // save image thumbnail
+
+        // save image thumbnail by using Intervention Image
+        // Create a new ImageManager instance with the GD driver
+        // This will create a thumbnail of the image with dimensions 400x450
+        // and save it in the temp/thumb folder
         $manager = new ImageManager(Driver::class);
         $img = $manager->read(public_path(path:'uploads/temp/'.$imageName));
-        $img->coverDown(400, 450);
+        $img->coverDown(400, 450); // Resize the image to fit within 400x450 pixels
         $img->save(public_path('uploads/temp/thumb/'.$imageName));
        
         return response()->json([

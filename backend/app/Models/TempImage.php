@@ -10,9 +10,11 @@ class TempImage extends Model
     protected $appends = ['image_url'];
     public function getImageUrlAttribute()
     {
+       // If the image name is empty or null, return null
        if($this->name == "") {
            return ;
        }
+       // Or not empty, return the full URL to the image
        return asset('/uploads/temp/thumb/'.$this->name);
     }
 }

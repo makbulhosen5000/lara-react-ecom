@@ -11,6 +11,7 @@ function CreateProduct({ placeholder }) {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [disable, setDisable] = useState(false); 
+  // to store id with product for temporary images by setGallery
   const [gallery,setGallery] = useState([]);
   const [galleryImages,setGalleryImages] = useState([]);
 
@@ -110,7 +111,7 @@ function CreateProduct({ placeholder }) {
     }
   };
   
-  // handle file function
+  // handle file function -> this function store image in temporary location 
   const handleFile = async (e) => { 
     const formData = new FormData();
     const file = e.target.files[0];
@@ -120,20 +121,21 @@ function CreateProduct({ placeholder }) {
     const response = await fetch(`${apiUrl}/temp-images`, {
       method: 'POST',
       headers: {
+        // 'Content-Type': 'application/json' is not set here because we are using FormData for image
         'Accept': 'application/json',
         'Authorization': `Bearer ${adminToken()}`,
       },
       body:formData
     });
     const result = await response.json();
-    console.log("Image upload result:", result);
+    // push id in gallery array's index with saveProduct function (fromData)
     gallery.push(result.data.id);
     setGallery(gallery);
     galleryImages.push(result.data.image_url);
     setGalleryImages(galleryImages);
     setDisable(false);
-    e.target.value = ''; // Reset the file input
-
+    // Clear the file input after successful upload
+    e.target.value = ''; 
   } catch (error) {
     console.error("Error fetching product:", error);
     return [];
@@ -297,7 +299,7 @@ function CreateProduct({ placeholder }) {
                         Select Status
                       </option>
                       {
-                          categories.map((category) => (
+                          categories && categories.map((category) => (
                             <option key={category.id} value={category.id}>
                               {category?.name}
                             </option>
@@ -323,7 +325,7 @@ function CreateProduct({ placeholder }) {
                         Select Status
                       </option>
                       {
-                          brands.map((brand) => (
+                          brands && brands.map((brand) => (
                             <option key={brand.id} value={brand.id}>
                               {brand?.name}
                             </option>
