@@ -7,11 +7,12 @@ import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
 
 function CreateProduct({ placeholder }) {
-  // category and brand state
-   const [categories, setCategories] = useState([]);
-   const [brands, setBrands] = useState([]);
-  // disable state for submit button
+
+  const [categories, setCategories] = useState([]);
+  const [brands, setBrands] = useState([]);
   const [disable, setDisable] = useState(false); 
+  const [gallery,setGallery] = useState([]);
+  const [galleryImages,setGalleryImages] = useState([]);
 
   // JoditEditor configuration
   const editor = useRef(null);
@@ -35,11 +36,10 @@ function CreateProduct({ placeholder }) {
 
   // save product function
   const saveProduct = async(data) => {
-    
   // Combine form data with content from JoditEditor
   // This assumes that the JoditEditor is used for the 'description' field
   // If you have a different field name, adjust accordingly
-  const formData = {...data, "description": content};
+  const formData = {...data, "description": content,"gallery":gallery};
   setDisable(true);
 
   try {
@@ -126,15 +126,26 @@ function CreateProduct({ placeholder }) {
       body:formData
     });
     const result = await response.json();
-    console.log("the result is-:", result);
+    console.log("Image upload result:", result);
+    gallery.push(result.data.id);
+    setGallery(gallery);
+    galleryImages.push(result.data.image_url);
+    setGalleryImages(galleryImages);
     setDisable(false);
+    e.target.value = ''; // Reset the file input
+
   } catch (error) {
     console.error("Error fetching product:", error);
     return [];
   }
   }
   
- 
+
+  // delete gallery image function
+  const deleteGalleryImage = (galleryImage) => {
+    const newGallery = galleryImages.filter( gallery => gallery !== galleryImage);
+    setGalleryImages(newGallery);
+  }
 
   // useEffect to fetch categories on component mount
   useEffect(() => {
@@ -143,7 +154,8 @@ function CreateProduct({ placeholder }) {
       fetchBrands();
     },1000)
   }, []);
-
+ 
+ 
   
   return (
     
@@ -411,17 +423,35 @@ function CreateProduct({ placeholder }) {
                     {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
                     </div>
                   <h1 className='font-bold'>GALLERY</h1>
-                  {/* Product Image */}
                   <div>
-                    <label className="block text-gray-700 font-medium mb-1">Product Image</label>
+                    <label className=" block text-gray-700 font-medium mb-1">Product Image</label>
+                    <div className="flex flex-wrap gap-4">
+                          {galleryImages.map((galleryImage, index) => (
+                            <div key={index} className="flex flex-col items-center mb-4">
+                              <img
+                                src={galleryImage}
+                                alt={`Gallery ${index}`}
+                                className="w-32 h-32 object-cover rounded-lg mb-2"
+                              />
+                              <button
+                                type="button"
+                                onClick={()=> deleteGalleryImage(galleryImage)}
+                                className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 px-3 py-1 rounded transition"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          ))}
+                     </div>
                     <input
-                      accept="image/*"
                       onChange={handleFile}
+                      accept="image/*"
                       name="image"
                       id="image"
-                      {...register("image", {
-                        required: "The product Image field is required",
-                      })}
+                      //no need to register this field with react-hook-form
+                      // {...register("image", {
+                      //   required: "The product Image field is required",
+                      // })}
                       type="file"
                       className={`w-full border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                         errors.image && "border-red-500"
