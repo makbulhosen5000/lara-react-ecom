@@ -170,7 +170,7 @@ function CreateProduct({ placeholder }) {
             {/* <!-- Cards --> */}
             <div className="max-w-6xl mx-auto p-4 bg-white shadow-lg rounded-lg">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-3xl font-bold text-gray-800">Create Product</h2>
+                <h2 className="text-3xl font-bold text-gray-800"> Product / Create</h2>
                 <Link
                   to="/admin/products"
                   className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
@@ -427,8 +427,8 @@ function CreateProduct({ placeholder }) {
                   <h1 className='font-bold'>GALLERY</h1>
                   <div>
                     <label className=" block text-gray-700 font-medium mb-1">Product Image</label>
-                    <div className="flex flex-wrap gap-4">
-                          {galleryImages.map((galleryImage, index) => (
+                    <div className="flex flex-wrap gap-4 mt-2">
+                          {galleryImages && galleryImages.map((galleryImage, index) => (
                             <div key={index} className="flex flex-col items-center mb-4">
                               <img
                                 src={galleryImage}
@@ -440,7 +440,7 @@ function CreateProduct({ placeholder }) {
                                 onClick={()=> deleteGalleryImage(galleryImage)}
                                 className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 px-3 py-1 rounded transition"
                               >
-                                Delete
+                                X
                               </button>
                             </div>
                           ))}

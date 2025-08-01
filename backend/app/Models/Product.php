@@ -32,4 +32,9 @@ class Product extends Model
        // Or not empty, return the full URL to the image
        return asset('/uploads/products/small/'.$this->image);
     }
+
+    public function  product_images()
+    {
+        return $this->hasMany(ProductImage::class);
+    }
 }

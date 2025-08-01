@@ -18,7 +18,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $product = Product::orderBy('created_at', 'desc')->get();
+        $product = Product::orderBy('created_at', 'desc')
+                    ->with('product_images') // relationship to get product images from product_images table
+                    ->get();
         return response()->json([
             'status' => 200,
             'data' => $product,
@@ -118,7 +120,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::find($id);
+        $product = Product::with('product_images') // relationship to get product images from product_images table
+                    ->find($id);
         if (!$product) {
             return response()->json([
                 'status' => 404,
@@ -199,5 +202,43 @@ class ProductController extends Controller
             'status' => 200,
             'message' => 'Product deleted successfully'
           ]);
+    }
+    public function productImage(Request $request){
+        $validator = Validator::make($request->all(), [
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 400,
+                'errors' => $validator->errors(),
+            ], 400);
+        }
+        // Create a new Image instance(a dummy name)
+        
+
+        // Save the image in temp folder
+        $image = $request->file('image');
+        $imageName = time().'.'.$image->extension(); //extension will create name, like this 25255.jpg
+        $image->move(public_path('uploads/temp/'), $imageName);
+        $productImage = new ProductImage();
+        $productImage->name = $imageName;
+        $productImage->product_id = $request->product_id;
+        $productImage->save();
+
+        // save image thumbnail by using Intervention Image
+        // Create a new ImageManager instance with the GD driver
+        // This will create a thumbnail of the image with dimensions 400x450
+        // and save it in the temp/thumb folder
+        $manager = new ImageManager(Driver::class);
+        $img = $manager->read(public_path(path:'uploads/temp/'.$imageName));
+        $img->coverDown(400, 450); // Resize the image to fit within 400x450 pixels
+        $img->save(public_path('uploads/temp/thumb/'.$imageName));
+       
+        return response()->json([
+            'status' => 200,
+            'message' => "Image uploaded successfully",
+            'data' => $tempImage,
+        ], 200);
     }
 }

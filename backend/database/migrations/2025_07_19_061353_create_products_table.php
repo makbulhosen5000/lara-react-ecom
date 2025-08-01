@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->double('price',10,2); // maximum 10 digit will be price , 2 digits after decimal
             $table->double('discount_price',10,2)->nullable();
-            $table->longText('description')->nullable();
             $table->text('short_description')->nullable();
+            $table->longText('description')->nullable();
             $table->string('image')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->foreignId('brand_id')->nullable()->constrained()->onDelete('cascade');

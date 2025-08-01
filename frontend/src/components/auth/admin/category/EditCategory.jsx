@@ -48,7 +48,7 @@ function EditCategory() {
     fetchCategory();
   }, [id, reset]);
 
-  // ✅ Submit form
+  // Category update form
   const updateCategory = async (data) => {
     try {
       const response = await fetch(`${apiUrl}/categories/${id}`, {
