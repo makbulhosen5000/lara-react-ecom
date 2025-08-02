@@ -148,7 +148,7 @@ function EditProduct({ placeholder }) {
     formData.append('image', file);
     setDisable(true);
     try {
-    const response = await fetch(`${apiUrl}/temp-images`, {
+    const response = await fetch(`${apiUrl}/save-product-images`, {
       method: 'POST',
       headers: {
         // 'Content-Type': 'application/json' is not set here because we are using FormData for image
@@ -158,14 +158,17 @@ function EditProduct({ placeholder }) {
       body:formData
     });
     const result = await response.json();
-    // push id in gallery array's index with saveProduct function (fromData)
-    gallery.push(result.data.id);
-    setGallery(gallery);
-    galleryImages.push(result.data.image_url);
-    setGalleryImages(galleryImages);
-    setDisable(false);
-    // Clear the file input after successful upload
-    e.target.value = ''; 
+        console.log("Image upload result:", result);
+        if(result.status === 200){
+          productImages.push(result.data);
+          setProductImages(productImages);
+        }
+        else{
+          toast.error(result.errors.image[0]);
+        }
+        setDisable(false);
+        // Clear the file input after successful upload
+        e.target.value = ''; 
   } catch (error) {
     console.error("Error fetching product:", error);
     return [];
@@ -463,7 +466,7 @@ function EditProduct({ placeholder }) {
                             <div key={index} className="flex flex-col items-center mb-4">
                               <img
                                 src={productImage.image_url}
-                                alt={`Gallery ${index}`}
+                                alt=""
                                 className="w-32 h-32 object-cover rounded-lg mb-2"
                               />
                               <button

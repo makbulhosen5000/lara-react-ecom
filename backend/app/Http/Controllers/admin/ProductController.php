@@ -203,7 +203,8 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully'
           ]);
     }
-    public function productImage(Request $request){
+    //  product image function for updating/saving product images
+    public function saveProductImage(Request $request){
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -214,31 +215,40 @@ class ProductController extends Controller
                 'errors' => $validator->errors(),
             ], 400);
         }
-        // Create a new Image instance(a dummy name)
-        
+  
 
         // Save the image in temp folder
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->extension(); //extension will create name, like this 25255.jpg
-        $image->move(public_path('uploads/temp/'), $imageName);
-        $productImage = new ProductImage();
-        $productImage->name = $imageName;
-        $productImage->product_id = $request->product_id;
-        $productImage->save();
-
+        $image = $request->file(key: 'image');
+        $imageName = $request->product_id.'-'.time().'.'.$image->extension(); //extension will create name, like this 25255.jpg
+        
+        
         // save image thumbnail by using Intervention Image
         // Create a new ImageManager instance with the GD driver
         // This will create a thumbnail of the image with dimensions 400x450
-        // and save it in the temp/thumb folder
+        // save/update it in the uploads/products/large/ folder
+   
+        //large thumbnail generate
         $manager = new ImageManager(Driver::class);
-        $img = $manager->read(public_path(path:'uploads/temp/'.$imageName));
-        $img->coverDown(400, 450); // Resize the image to fit within 400x450 pixels
-        $img->save(public_path('uploads/temp/thumb/'.$imageName));
-       
+        $img = $manager->read($image->getPathname());
+        $img->scaleDown(1200); //large thumbnail size  1200X1200px.
+        $img->save(public_path('uploads/products/large/'.$imageName));
+        
+        //small thumbnail generate
+        $manager = new ImageManager(Driver::class);
+        $img = $manager->read($image->getPathname());
+        $img->coverDown(400, 460); //small thumbnail size 400x460px.
+        $img->save(public_path(path: 'uploads/products/small/'.$imageName));
+    
+        // insert a record in product_image table
+        $productImage = new ProductImage();
+        $productImage->image = $imageName;
+        $productImage->product_id = $request->product_id;
+        $productImage->save();
+
         return response()->json([
             'status' => 200,
-            'message' => "Image uploaded successfully",
-            'data' => $tempImage,
+            'message' => "Image updated successfully",
+            'data' => $productImage,
         ], 200);
     }
 }

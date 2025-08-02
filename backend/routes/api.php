@@ -32,5 +32,7 @@ Route::resource('/sizes', SizeController::class);
 Route::resource('/products', ProductController::class);
 // this route is for uploading temp images
 Route::post('/temp-images',[TempImageController::class, 'store']);
+// this route is for saving product images
+Route::post('/save-product-images',[ProductController::class, 'saveProductImage']);
     
 });
