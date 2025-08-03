@@ -15,7 +15,7 @@ export default function Sidebar() {
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Dashboard</Link>
           <Link to="/admin/categories" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Categories</Link>
           <Link to="/admin/brands" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Brand</Link>
-          <Link to="/admin/products" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Products</Link>
+          <Link to="/admin/products" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Products</Link>  
           <Link to="/admin/dashboard" className="block px-4 py-2 rounded-lg bg-blue-100 text-blue-700 font-medium">Setting</Link>
 
           <button className="w-48 flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" onClick={logOut}>

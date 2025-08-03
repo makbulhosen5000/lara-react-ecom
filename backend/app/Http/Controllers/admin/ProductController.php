@@ -216,26 +216,18 @@ class ProductController extends Controller
             ], 400);
         }
   
-
-        // Save the image in temp folder
         $image = $request->file(key: 'image');
         $imageName = $request->product_id.'-'.time().'.'.$image->extension(); //extension will create name, like this 25255.jpg
-        
-        
-        // save image thumbnail by using Intervention Image
-        // Create a new ImageManager instance with the GD driver
-        // This will create a thumbnail of the image with dimensions 400x450
-        // save/update it in the uploads/products/large/ folder
-   
+
         //large thumbnail generate
         $manager = new ImageManager(Driver::class);
-        $img = $manager->read($image->getPathname());
+        $img = $manager->read($image->getPathName());
         $img->scaleDown(1200); //large thumbnail size  1200X1200px.
         $img->save(public_path('uploads/products/large/'.$imageName));
         
         //small thumbnail generate
         $manager = new ImageManager(Driver::class);
-        $img = $manager->read($image->getPathname());
+        $img = $manager->read($image->getPathName());
         $img->coverDown(400, 460); //small thumbnail size 400x460px.
         $img->save(public_path(path: 'uploads/products/small/'.$imageName));
     
@@ -251,4 +243,21 @@ class ProductController extends Controller
             'data' => $productImage,
         ], 200);
     }
+    //  product image function for updating/saving product images
+    public function changeProductDefaultImage(Request $request){
+      
+      $product = Product::find($request->product_id);
+      if (!$product) {
+          return response()->json([
+              'status' => 404,
+              'message' => 'Product not found',
+          ], 404);
+      }
+      $product->image = $request->image; // set the new image name
+      $product->save(); // save the product model
+      return response()->json([
+          'status' => 200,
+          'message' => "Product default image changed successfully",
+      ], 200);
+  }
 }

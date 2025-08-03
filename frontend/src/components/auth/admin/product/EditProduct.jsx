@@ -1,7 +1,7 @@
 import React, { useEffect, useState,useRef, useMemo } from 'react'
 import Sidebar from '../dashboard/Sidebar'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { adminToken, apiUrl } from '../../../Http';
+import { apiUrl, adminToken } from '../../../Http';
 import { set, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
@@ -12,7 +12,7 @@ function EditProduct({ placeholder }) {
   const [brands, setBrands] = useState([]);
   const [disable, setDisable] = useState(false); 
   const [productImages,setProductImages] = useState([]);
-  const [galleryImages,setGalleryImages] = useState([]);
+
 
   // JoditEditor configuration
   const editor = useRef(null);
@@ -49,7 +49,7 @@ function EditProduct({ placeholder }) {
           });
   
           const result = await response.json();
-          // product_images is function of Product() model relationship with ProductImages() model/table
+          // product_images is function of Product() model relation with ProductImages() model
           setProductImages(result.data.product_images);
           console.log("Product data:", result);
           if (result.status === 200) {
@@ -65,7 +65,7 @@ function EditProduct({ placeholder }) {
               status: result.data.status.toString(),
               short_description: result.data.short_description,
               description: result.data.description,
-              is_featured: result.data.is_featured.toString(),
+              is_featured: result.data.is_featured,
             });
           } else {
             console.log("Something went wrong");
@@ -145,21 +145,22 @@ function EditProduct({ placeholder }) {
   const handleFile = async (e) => { 
     const formData = new FormData();
     const file = e.target.files[0];
+    console.log("file to -",file);
     formData.append('image', file);
     setDisable(true);
-    try {
+
     const response = await fetch(`${apiUrl}/save-product-images`, {
       method: 'POST',
       headers: {
-        // 'Content-Type': 'application/json' is not set here because we are using FormData for image
         'Accept': 'application/json',
         'Authorization': `Bearer ${adminToken()}`,
+        // DO NOT SET 'Content-Type' manually when using FormData!
       },
-      body:formData
+      body: formData
     });
     const result = await response.json();
-        console.log("Image upload result:", result);
-        if(result.status === 200){
+        //console.log("Image upload result:", result.data);
+        if(result.status == 200){
           productImages.push(result.data);
           setProductImages(productImages);
         }
@@ -169,17 +170,20 @@ function EditProduct({ placeholder }) {
         setDisable(false);
         // Clear the file input after successful upload
         e.target.value = ''; 
-  } catch (error) {
-    console.error("Error fetching product:", error);
-    return [];
+
   }
-  }
+ 
+  
   
 
   // delete gallery image function
   const deleteProductImage = (productImage) => {
     const deleteProduct = productImage.filter( gallery => gallery !== galleryImage);
     setGalleryImages(deleteProduct);
+  }
+  // change product default image function
+  const changeProductDefaultImage = (productImage) => {
+ 
   }
 
   // useEffect to fetch categories on component mount
@@ -465,17 +469,26 @@ function EditProduct({ placeholder }) {
                           {productImages && productImages.map((productImage, index) => (
                             <div key={index} className="flex flex-col items-center mb-4">
                               <img
-                                src={productImage.image_url}
+                                src={productImage?.image_url}
                                 alt=""
                                 className="w-32 h-32 object-cover rounded-lg mb-2"
                               />
+                              <div className='flex flex-col gap-2'>
                               <button
                                 type="button"
-                                onClick={()=> deleteProductImage(productImage.image_url)}
+                                onClick={()=> deleteProductImage(productImage?.image)}
                                 className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 px-3 py-1 rounded transition"
                               >
-                                X
+                                Delete Image
                               </button>
+                              <button
+                                type="button"
+                                onClick={()=> changeProductDefaultImage(productImage?.image)}
+                                className="text-blue-600 hover:text-white border border-blue-600 hover:bg-blue-600 px-3 py-1 rounded transition"
+                              >
+                                Set as a Default
+                              </button>
+                              </div>
                             </div>
                           ))}
                      </div>
