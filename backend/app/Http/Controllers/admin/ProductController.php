@@ -243,21 +243,15 @@ class ProductController extends Controller
             'data' => $productImage,
         ], 200);
     }
-    //  product image function for updating/saving product images
-    public function changeProductDefaultImage(Request $request){
+    //set product default images function
+    public function setProductDefaultImage(Request $request){
       
       $product = Product::find($request->product_id);
-      if (!$product) {
-          return response()->json([
-              'status' => 404,
-              'message' => 'Product not found',
-          ], 404);
-      }
       $product->image = $request->image; // set the new image name
       $product->save(); // save the product model
       return response()->json([
           'status' => 200,
-          'message' => "Product default image changed successfully",
+          'message' => "Product default image set successfully",
       ], 200);
-  }
+   }
 }

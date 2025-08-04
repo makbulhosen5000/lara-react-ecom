@@ -10,6 +10,7 @@ function EditProduct({ placeholder }) {
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [sizes, setSizes] = useState([]);
   const [disable, setDisable] = useState(false); 
   const [productImages,setProductImages] = useState([]);
 
@@ -36,7 +37,6 @@ function EditProduct({ placeholder }) {
     } = useForm();
   
    // Fetch existing product data
-    useEffect(() => {
       const fetchProduct = async () => {
         try {
           const response = await fetch(`${apiUrl}/products/${id}`, {
@@ -75,11 +75,8 @@ function EditProduct({ placeholder }) {
           console.error("Error fetching product:", error);
         }
       };
-  
-      fetchProduct();
-    }, [id, reset]);
-    
-      //product update form
+
+    //product update form
     const updateProduct = async (data) => {
       try {
         const response = await fetch(`${apiUrl}/products/${id}`, {
@@ -104,8 +101,8 @@ function EditProduct({ placeholder }) {
         console.error("Error updating product:", error);
       }
     };
-    //category fetch function
-  const fetchCategories = async () => {
+    //categories fetch function
+    const fetchCategories = async () => {
     try {
       const response = await fetch(`${apiUrl}/categories`, {
         method: 'GET',
@@ -121,9 +118,9 @@ function EditProduct({ placeholder }) {
       console.error("Error fetching categories:", error);
       return [];
     }
-  };
-  //brand fetch function
-  const fetchBrands = async () => {
+    };
+    //brands fetch function
+    const fetchBrands = async () => {
     try {
       const response = await fetch(`${apiUrl}/brands`, {
         method: 'GET',
@@ -139,58 +136,103 @@ function EditProduct({ placeholder }) {
       console.error("Error fetching brands:", error);
       return [];
     }
+    } ;
+    //sizes fetch function
+    const fetchSizes = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/sizes`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+      const result = await response.json();
+      console.log(result);
+      setSizes(result.data); 
+    } catch (error) {
+      console.error("Error fetching sizes:", error);
+      return [];
+    }
   };
   
   // handle file function -> this function store image in temporary location 
-  const handleFile = async (e) => { 
+  const handleFile = async (e) => {
     const formData = new FormData();
-    const file = e.target.files[0];
-    console.log("file to -",file);
+    const file = e.target.files[0]; 
     formData.append('image', file);
+    formData.append('product_id', id); // ✅ Add this line — `id` must be your current product ID
+  
     setDisable(true);
-
-    const response = await fetch(`${apiUrl}/save-product-images`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${adminToken()}`,
-        // DO NOT SET 'Content-Type' manually when using FormData!
-      },
-      body: formData
-    });
-    const result = await response.json();
-        //console.log("Image upload result:", result.data);
-        if(result.status == 200){
-          productImages.push(result.data);
-          setProductImages(productImages);
-        }
-        else{
-          toast.error(result.errors.image[0]);
-        }
-        setDisable(false);
-        // Clear the file input after successful upload
-        e.target.value = ''; 
-
-  }
+  
+    try {
+      const response = await fetch(`${apiUrl}/save-product-images`, {
+        method: 'POST',
+        headers: {
+          // DO NOT SET 'Content-Type' manually when using FormData!
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+        body: formData,
+      });
+  
+      const result = await response.json();
+  
+      if (result.status === 200) {
+        // Use functional state update to avoid push mutation
+        setProductImages((prev) => [...prev, result.data]);
+        toast.success("Image uploaded successfully!");
+      } else {
+        toast.error(result.errors?.image?.[0] || "Failed to upload image");
+      }
+    } catch (error) {
+      toast.error("Something went wrong while uploading image");
+      console.error("Upload error:", error);
+    }
+  
+    setDisable(false);
+    e.target.value = ''; // reset file input
+  };
+  
  
-  
-  
-
-  // delete gallery image function
-  const deleteProductImage = (productImage) => {
-    const deleteProduct = productImage.filter( gallery => gallery !== galleryImage);
-    setGalleryImages(deleteProduct);
+  // delete product image function
+  const deleteProductImage = (image) => {
+    const deleteProduct = image.filter( productImages => productImages !== productImages);
+    setProductImages(deleteProduct);
   }
   // change product default image function
-  const changeProductDefaultImage = (productImage) => {
- 
-  }
-
+  const setProductDefaultImage = async (image) => {
+    try {
+      const response = await fetch(`${apiUrl}/set-product-default-images?product_id=${id}&image=${image}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+  
+      const result = await response.json();
+  
+      if (response.ok) {
+        toast.success(result.message || "Product default image set successfully");
+      } else {
+        toast.error(result.error || "Failed to set product default image");
+      }
+  
+    } catch (error) {
+      console.error("Error setting default image:", error);
+      toast.error("Server error");
+    }
+  };
   // useEffect to fetch categories on component mount
   useEffect(() => {
     setTimeout(()=>{
+      fetchProduct();
       fetchCategories();
       fetchBrands();
+      fetchSizes();
     },1000)
   }, []);
  
@@ -483,7 +525,7 @@ function EditProduct({ placeholder }) {
                               </button>
                               <button
                                 type="button"
-                                onClick={()=> changeProductDefaultImage(productImage?.image)}
+                                onClick={()=> setProductDefaultImage(productImage?.image)}
                                 className="text-blue-600 hover:text-white border border-blue-600 hover:bg-blue-600 px-3 py-1 rounded transition"
                               >
                                 Set as a Default
