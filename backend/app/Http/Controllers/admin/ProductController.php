@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductSize;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,7 +20,7 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::orderBy('created_at', 'desc')
-                    ->with('product_images') // relationship to get product images from product_images table
+                    ->with(['product_images','product_sizes']) // relationship to get product images and sizes from product_images and product_sizes tables
                     ->get();
         return response()->json([
             'status' => 200,
@@ -120,7 +121,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::with('product_images') // relationship to get product images from product_images table
+        $product = Product::with(['product_images','product_sizes'])  // relationship to get product images from product_images table
                     ->find($id);
         if (!$product) {
             return response()->json([
@@ -128,9 +129,12 @@ class ProductController extends Controller
                 'message' => 'Product not found',
             ], 404);
         }
+        $productSizes = $product->product_sizes()->pluck('size_id'); // get product sizes from product_sizes table
+        $product->product_sizes = $productSizes; // add sizes to product object
         return response()->json([
             'status'=> 200,
-            'data' => $product,
+            'data' => $product,  // return products
+            'productSizes' => $productSizes, // return product sizes
         ]);
     }
 
@@ -176,7 +180,18 @@ class ProductController extends Controller
         $product->short_description = $request->input(key: 'short_description');
         $product->status = $request->input(key: 'status');
         $product->is_featured = $request->input(key: 'is_featured');
-        $product->update();
+        $product->save();
+        if(!empty($request->sizes)){
+            ProductSize::where('product_id', $product->id)->delete(); //delete all previous sizes of the product
+            foreach($request->sizes as $sizeId) {
+                $productSizes = new ProductSize();
+                $productSizes->size_id = $sizeId; //size_id is the foreign key of sizes table
+                $productSizes->product_id = $product->id; //size_id is the foreign key of sizes table   
+                $productSizes->save(); //save product size
+            }
+        } else {
+            $product->sizes()->detach(); //if no sizes selected, detach all sizes
+        }
         return response()->json([
             'status' => 200,
             'message' => 'Product update successfully',

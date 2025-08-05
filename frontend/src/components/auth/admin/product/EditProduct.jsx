@@ -11,10 +11,11 @@ function EditProduct({ placeholder }) {
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
   const [sizes, setSizes] = useState([]);
+  const [sizesChecked, setSizesChecked] = useState([]); 
   const [disable, setDisable] = useState(false); 
   const [productImages,setProductImages] = useState([]);
 
-
+   
   // JoditEditor configuration
   const editor = useRef(null);
 	const [content, setContent] = useState('');
@@ -37,7 +38,7 @@ function EditProduct({ placeholder }) {
     } = useForm();
   
    // Fetch existing product data
-      const fetchProduct = async () => {
+    const fetchProduct = async () => {
         try {
           const response = await fetch(`${apiUrl}/products/${id}`, {
             method: 'GET',
@@ -50,9 +51,10 @@ function EditProduct({ placeholder }) {
   
           const result = await response.json();
           // product_images is function of Product() model relation with ProductImages() model
-          setProductImages(result.data.product_images);
-          console.log("Product data:", result);
-          if (result.status === 200) {
+          // product_sizes is function of Product() model relation with ProductSizes() model
+          setProductImages(result?.data?.product_images);
+          setSizesChecked(result?.productSize);
+          if (result.status == 200) {
             reset({
               title: result.data.title,
               price: result.data.price,
@@ -90,6 +92,8 @@ function EditProduct({ placeholder }) {
         });
   
         const result = await response.json();
+        console.log("Update result:", result);
+       
         setDisable(false);
         if (result.status === 200) {
           toast.success(result.message);
@@ -149,7 +153,6 @@ function EditProduct({ placeholder }) {
         },
       });
       const result = await response.json();
-      console.log(result);
       setSizes(result.data); 
     } catch (error) {
       console.error("Error fetching sizes:", error);
@@ -502,6 +505,38 @@ function EditProduct({ placeholder }) {
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
                     </select>
+                    {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
+                    </div>
+                    {/* Sizes */}
+                  <div >
+                      <label className="block text-gray-700 font-medium mb-1">Sizes</label>          
+                      <div className="flex flex-wrap gap-4">
+                      {sizes && sizes.map((size) => (
+                        <div key={`psize-${size.id}`} className="flex items-center mb-2">
+                          <input
+                          {
+                            ...register("sizes", {
+                              required: "Please select at least one size",
+                            } )
+                          }
+                            type="checkbox"
+                            checked={sizesChecked?.includes(size.id)}
+                            onChange={(e) => {
+                              if(e.target.checked) {
+                                setSizesChecked([...sizesChecked, size.id]);
+                              } else {
+                                setSizesChecked(sizesChecked?.filter(sid =>  size.id != sid));
+                              }
+                            }}
+                            value={size.id}
+                            id={`size-${size.id}`}
+                            className="mr-2"
+                          />
+                          <label htmlFor={`size-${size.id}`}>{size.name}</label>
+                        </div>
+                      ))}
+                      </div>
+                      
                     {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
                     </div>
                   <h1 className='font-bold'>GALLERY</h1>

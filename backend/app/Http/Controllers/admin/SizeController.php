@@ -16,7 +16,7 @@ class SizeController extends Controller
        $sizes = Size::orderBy('name','asc')->get();
        return response()->json([
             'status' => 200,
-            'sizes' => $sizes,
+            'data' => $sizes,
        ],status: 200);
     }
 
