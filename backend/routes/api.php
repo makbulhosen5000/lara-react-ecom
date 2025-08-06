@@ -35,4 +35,5 @@ Route::post('/temp-images',[TempImageController::class, 'store']);
 // this route is for saving product images
 Route::post('/save-product-images',[ProductController::class, 'saveProductImage']);
 Route::get('/set-product-default-images', [ProductController::class, 'setProductDefaultImage']);   
+Route::delete('/delete-product-image/{id}', [ProductController::class, 'deleteProductImage']);   
 });

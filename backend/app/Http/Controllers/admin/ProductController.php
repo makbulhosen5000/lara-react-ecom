@@ -8,6 +8,7 @@ use App\Models\ProductImage;
 use App\Models\ProductSize;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -20,7 +21,8 @@ class ProductController extends Controller
     public function index()
     {
         $product = Product::orderBy('created_at', 'desc')
-                    ->with(['product_images','product_sizes']) // relationship to get product images and sizes from product_images and product_sizes tables
+        // relationship to get product images and sizes from product_images and product_sizes tables
+                    ->with(['product_images','product_sizes']) 
                     ->get();
         return response()->json([
             'status' => 200,
@@ -64,8 +66,17 @@ class ProductController extends Controller
         $product->short_description = $request->input(key: 'short_description');
         $product->status = $request->input(key: 'status');
         $product->is_featured = $request->input(key: 'is_featured');
-        $product->save();       
-        //save the product image
+        $product->save(); 
+        // if product sizes are submitted
+        // $request->sizes is an array of size IDs submitted from the frontend or API request.      
+        if(!empty($request->sizes)){
+            foreach($request->sizes as $sizeId) {
+                $productSize = new ProductSize();
+                $productSize->size_id = $sizeId; //size_id is the foreign key of sizes table
+                $productSize->product_id = $product->id; //size_id is the foreign key of sizes table   
+                $productSize->save(); //save product size
+            }
+        }
 
         /*
         *Example of $request->gallery:
@@ -83,8 +94,9 @@ class ProductController extends Controller
                 //large thumbnail generate
                 $extArray = explode('.',$tempImage->name);
                 $ext = end($extArray);
+                $rand = rand(1000,10000);
 
-                $imageName = $product->id.'-'.time().'.'.$ext; // making image name
+                $imageName = $product->id.'-'.$rand.time().'.'.$ext; // making image name
                 $manager = new ImageManager(Driver::class);
                 $img = $manager->read(public_path(path:'uploads/temp/'.$tempImage->name));
                 $img->scaleDown(1200); //large thumbnail size  1200X1200px.
@@ -121,7 +133,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = Product::with(['product_images','product_sizes'])  // relationship to get product images from product_images table
+        // relationship to get product images from product_images table
+        $product = Product::with(['product_images','product_sizes']) 
                     ->find($id);
         if (!$product) {
             return response()->json([
@@ -129,7 +142,8 @@ class ProductController extends Controller
                 'message' => 'Product not found',
             ], 404);
         }
-        $productSizes = $product->product_sizes()->pluck('size_id'); // get product sizes from product_sizes table
+        // get product sizes from product_sizes table relationship
+        $productSizes = $product->product_sizes()->pluck('size_id');
         $product->product_sizes = $productSizes; // add sizes to product object
         return response()->json([
             'status'=> 200,
@@ -184,13 +198,11 @@ class ProductController extends Controller
         if(!empty($request->sizes)){
             ProductSize::where('product_id', $product->id)->delete(); //delete all previous sizes of the product
             foreach($request->sizes as $sizeId) {
-                $productSizes = new ProductSize();
-                $productSizes->size_id = $sizeId; //size_id is the foreign key of sizes table
-                $productSizes->product_id = $product->id; //size_id is the foreign key of sizes table   
-                $productSizes->save(); //save product size
+                $productSize = new ProductSize();
+                $productSize->size_id = $sizeId; //size_id is the foreign key of sizes table
+                $productSize->product_id = $product->id; //size_id is the foreign key of sizes table   
+                $productSize->save(); //save product size
             }
-        } else {
-            $product->sizes()->detach(); //if no sizes selected, detach all sizes
         }
         return response()->json([
             'status' => 200,
@@ -218,7 +230,7 @@ class ProductController extends Controller
             'message' => 'Product deleted successfully'
           ]);
     }
-    //  product image function for updating/saving product images
+    //  product image function for saving product images
     public function saveProductImage(Request $request){
         $validator = Validator::make($request->all(), [
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -268,5 +280,24 @@ class ProductController extends Controller
           'status' => 200,
           'message' => "Product default image set successfully",
       ], 200);
-   }
+    }
+
+    // delete product image function
+    public function deleteProductImage($id){
+      
+        $productImage = ProductImage::find($id);
+        if($productImage == null){
+            return response()->json([
+                'status' => 404,
+                'message' => "Product image not found",
+            ], 404);
+        }
+        File::delete(public_path('uploads/products/large/'.$productImage->image));
+        File::delete(public_path('uploads/products/small/'.$productImage->image));
+        $productImage->delete();
+        return response()->json([
+            'status' => 200,
+            'message' => "Product Image Deleted successfully",
+        ], 200);
+     }
 }

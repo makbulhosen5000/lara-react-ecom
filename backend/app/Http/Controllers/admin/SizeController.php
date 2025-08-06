@@ -13,7 +13,7 @@ class SizeController extends Controller
      */
     public function index()
     {
-       $sizes = Size::orderBy('name','asc')->get();
+       $sizes = Size::orderBy('created_at', 'asc')->get();
        return response()->json([
             'status' => 200,
             'data' => $sizes,

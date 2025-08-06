@@ -75,9 +75,9 @@ import { FaRegUserCircle } from "react-icons/fa";
           <div className="flex items-center justify-between h-16">
             <div className="flex">
               <Link to="/">
-                <span className="font-bold text-2xl text-white">MAKBUL </span>
+                <span className="font-bold text-2xl text-white">MAK</span>
                 <span className="font-extrabold text-yellow-300">
-                   AGRO
+                   Fashion
                 </span>
 
               </Link>

@@ -131,8 +131,8 @@ function Product() {
                         <td className="px-6 py-4">{indexOfFirstItem + index + 1}</td>
                         <td className="px-6 py-4">
                           {
-                            product.image_url ? 
-                              <img src={product.image_url} alt="Product Image" width={70} />
+                            product?.image_url ? 
+                              <img src={product?.image_url} alt="Product Image" width={70} />
                              : 
                               <img src="https://placehold.co/70X70"  />
                             

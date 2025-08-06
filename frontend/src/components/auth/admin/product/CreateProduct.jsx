@@ -10,6 +10,8 @@ function CreateProduct({ placeholder }) {
 
   const [categories, setCategories] = useState([]);
   const [brands, setBrands] = useState([]);
+  const [sizes, setSizes] = useState([]);
+  const [sizesChecked, setSizesChecked] = useState([]); 
   const [disable, setDisable] = useState(false); 
   // to store id with product for temporary images by setGallery
   const [gallery,setGallery] = useState([]);
@@ -110,6 +112,25 @@ function CreateProduct({ placeholder }) {
       return [];
     }
   };
+  //sizes fetch function
+  const fetchSizes = async () => {
+  try {
+    const response = await fetch(`${apiUrl}/sizes`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${adminToken()}`,
+      },
+    });
+    const result = await response.json();
+    setSizes(result.data); 
+  } catch (error) {
+    console.error("Error fetching sizes:", error);
+    return [];
+  }
+  };
+    
   
   // handle file function -> this function store image in temporary location 
   const handleFile = async (e) => { 
@@ -154,6 +175,7 @@ function CreateProduct({ placeholder }) {
     setTimeout(()=>{
       fetchCategories();
       fetchBrands();
+      fetchSizes();
     },1000)
   }, []);
  
@@ -423,7 +445,41 @@ function CreateProduct({ placeholder }) {
                       <option value="0">No</option>
                     </select>
                     {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
-                    </div>
+                  </div>
+                  {/* Sizes */}
+                  <h1 className='font-bold'>SIZES</h1>
+                  <div>         
+                      <div className="flex flex-wrap gap-4">
+                      {sizes && sizes.map((size) => (
+                        <div key={`psize-${size.id}`} className="flex items-center mb-2">
+                          <input
+                           value={size.id}
+                           id={`size-${size.id}`}
+                          {
+                            ...register("sizes", {
+                              required: "Please select at least one size",
+                            } )
+                          }
+                            type="checkbox"
+                            checked={sizesChecked?.includes(size.id)}
+                            onChange={(e) => {
+                              if(e.target.checked) {
+                                setSizesChecked([...sizesChecked, size.id]);
+                              } else {
+                                setSizesChecked(sizesChecked?.filter(sid =>  size.id != sid));
+                              }
+                              }
+                            }
+                           
+                            className="mr-2"
+                          />
+                          <label htmlFor={`size-${size.id}`}>{size.name}</label>
+                        </div>
+                      ))}
+                      </div>
+                      
+                    {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
+                  </div>
                   <h1 className='font-bold'>GALLERY</h1>
                   <div>
                     <label className=" block text-gray-700 font-medium mb-1">Product Image</label>

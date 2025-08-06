@@ -14,7 +14,7 @@ function EditProduct({ placeholder }) {
   const [sizesChecked, setSizesChecked] = useState([]); 
   const [disable, setDisable] = useState(false); 
   const [productImages,setProductImages] = useState([]);
-
+ 
    
   // JoditEditor configuration
   const editor = useRef(null);
@@ -53,7 +53,7 @@ function EditProduct({ placeholder }) {
           // product_images is function of Product() model relation with ProductImages() model
           // product_sizes is function of Product() model relation with ProductSizes() model
           setProductImages(result?.data?.product_images);
-          setSizesChecked(result?.productSize);
+          setSizesChecked(result?.productSizes);
           if (result.status == 200) {
             reset({
               title: result.data.title,
@@ -158,7 +158,7 @@ function EditProduct({ placeholder }) {
       console.error("Error fetching sizes:", error);
       return [];
     }
-  };
+    };
   
   // handle file function -> this function store image in temporary location 
   const handleFile = async (e) => {
@@ -200,9 +200,28 @@ function EditProduct({ placeholder }) {
   
  
   // delete product image function
-  const deleteProductImage = (image) => {
-    const deleteProduct = image.filter( productImages => productImages !== productImages);
-    setProductImages(deleteProduct);
+  const deleteProductImage = async (id) => {
+    try {
+      const response = await fetch(`${apiUrl}/delete-product-image/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${adminToken()}`,
+        },
+      });
+      const result = await response.json();
+      if(result.status == 200){
+        const newProductImages = productImages.filter((productImage) => productImage.id !== id);
+        setProductImages(newProductImages);
+        toast.success(result.message || "Product image deleted successfully");
+      }else{
+        toast.error(result.error || "Failed to delete product image");
+      }
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      return [];
+    }
   }
   // change product default image function
   const setProductDefaultImage = async (image) => {
@@ -507,13 +526,15 @@ function EditProduct({ placeholder }) {
                     </select>
                     {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
                     </div>
-                    {/* Sizes */}
-                  <div >
-                      <label className="block text-gray-700 font-medium mb-1">Sizes</label>          
+                  {/* Sizes */}
+                  <h1 className='font-bold'>SIZES</h1>   
+                  <div >       
                       <div className="flex flex-wrap gap-4">
                       {sizes && sizes.map((size) => (
                         <div key={`psize-${size.id}`} className="flex items-center mb-2">
                           <input
+                           value={size.id}
+                           id={`size-${size.id}`}
                           {
                             ...register("sizes", {
                               required: "Please select at least one size",
@@ -527,9 +548,9 @@ function EditProduct({ placeholder }) {
                               } else {
                                 setSizesChecked(sizesChecked?.filter(sid =>  size.id != sid));
                               }
-                            }}
-                            value={size.id}
-                            id={`size-${size.id}`}
+                              }
+                            }
+                           
                             className="mr-2"
                           />
                           <label htmlFor={`size-${size.id}`}>{size.name}</label>
@@ -538,7 +559,7 @@ function EditProduct({ placeholder }) {
                       </div>
                       
                     {errors.is_featured && <span className="text-red-500 text-sm">{errors.is_featured.message}</span>}
-                    </div>
+                  </div>
                   <h1 className='font-bold'>GALLERY</h1>
                   <div>
                     <label className=" block text-gray-700 font-medium mb-1">Product Image</label>
@@ -553,7 +574,7 @@ function EditProduct({ placeholder }) {
                               <div className='flex flex-col gap-2'>
                               <button
                                 type="button"
-                                onClick={()=> deleteProductImage(productImage?.image)}
+                                onClick={()=> deleteProductImage(productImage?.id)}
                                 className="text-red-600 hover:text-white border border-red-600 hover:bg-red-600 px-3 py-1 rounded transition"
                               >
                                 Delete Image
