@@ -107,7 +107,7 @@ function Brand() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32">
                           <Loader />
                         </div>
@@ -115,7 +115,7 @@ function Brand() {
                     </tr>
                   ) : brands.length === 0 ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32 text-gray-600 font-semibold">
                           <RecordNotFound recordTitle="Brand Not Found" />
                         </div>

@@ -201,26 +201,31 @@ function EditProduct({ placeholder }) {
  
   // delete product image function
   const deleteProductImage = async (id) => {
-    try {
-      const response = await fetch(`${apiUrl}/delete-product-image/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${adminToken()}`,
-        },
-      });
-      const result = await response.json();
-      if(result.status == 200){
-        const newProductImages = productImages.filter((productImage) => productImage.id !== id);
-        setProductImages(newProductImages);
-        toast.success(result.message || "Product image deleted successfully");
-      }else{
-        toast.error(result.error || "Failed to delete product image");
+    if(confirm("Are you sure you want to delete this image?")) {
+      try {
+        const response = await fetch(`${apiUrl}/delete-product-image/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${adminToken()}`,
+          },
+        });
+  
+        const result = await response.json();
+        if (result.status === 200) {
+          // Filter out the deleted image from the state
+          const productDelete = productImages.filter((productImage) => productImage.id !== id);
+          setProductImages(productDelete);
+          toast.success(result.message);
+        } else {
+          toast.error(result.message || "Failed to delete Product.");
+        }
+  
+      } catch (error) {
+        console.error("Error deleting image:", error);
+        toast.error("Server error");
       }
-    } catch (error) {
-      console.error("Error fetching products:", error);
-      return [];
     }
   }
   // change product default image function

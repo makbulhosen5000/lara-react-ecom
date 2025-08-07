@@ -215,20 +215,28 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-          //delete product
-          $product = Product::find($id);
-          if (!$product) {
-              return response()->json([
-                  'status' => 404,
-                  'message' => 'Product not found',
-              ], 404);
-          }
-          $product->delete();
-         //return response
-          return response()->json([
-            'status' => 200,
-            'message' => 'Product deleted successfully'
-          ]);
+        //delete product with productImage() and TempImage() relationship
+        $product = Product::with('product_images')->find($id);
+    if (!$product) {
+        return response()->json([
+            'status' => 404,
+            'message' => 'Product not found',
+        ], 404);
+    }
+
+    // Delete product images
+    foreach ($product->product_images as $productImage) {
+        File::delete(public_path('uploads/products/large/' . $productImage->image));
+        File::delete(public_path('uploads/products/small/' . $productImage->image));
+        $productImage->delete();
+    }
+    // Delete product itself
+    $product->delete();
+
+    return response()->json([
+        'status' => 200,
+        'message' => 'Product deleted successfully',
+    ]);
     }
     //  product image function for saving product images
     public function saveProductImage(Request $request){

@@ -40,14 +40,6 @@ function Product() {
       console.error("Error fetching products:", error);
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      fetchProducts();
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
   
   // delete product function
   const deleteProduct = async (id) => {
@@ -65,8 +57,8 @@ function Product() {
         const result = await response.json();
 
         if (result.status === 200) {
-          const updated = products.filter((Product) => Product.id !== id);
-          setProducts(updated);
+          const productDelete = products.filter((product) => product.id !== id);
+          setProducts(productDelete);
           setCurrentPage(1); // Reset to page 1 after delete
           toast.success(result.message);
         } else {
@@ -78,6 +70,16 @@ function Product() {
       }
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchProducts();
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
+  
+
 
   return (
     <div className="bg-gray-100 font-sans">
@@ -111,7 +113,7 @@ function Product() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32">
                           <Loader />
                         </div>
@@ -119,7 +121,7 @@ function Product() {
                     </tr>
                   ) : products.length === 0 ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32 text-gray-600 font-semibold">
                           <RecordNotFound recordTitle="Product Not Found" />
                         </div>

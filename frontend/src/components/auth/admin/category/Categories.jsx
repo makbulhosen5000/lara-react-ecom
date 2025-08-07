@@ -106,7 +106,7 @@ function Category() {
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32">
                           <Loader />
                         </div>
@@ -114,7 +114,7 @@ function Category() {
                     </tr>
                   ) : categories.length === 0 ? (
                     <tr>
-                      <td colSpan={4}>
+                      <td colSpan={8}>
                         <div className="flex justify-center items-center h-32 text-gray-600 font-semibold">
                           <RecordNotFound recordTitle="Category Not Found" />
                         </div>

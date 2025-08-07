@@ -149,6 +149,7 @@ function CreateProduct({ placeholder }) {
       body:formData
     });
     const result = await response.json();
+    console.log("result", result);
     // push id in gallery array's index with saveProduct function (fromData)
     gallery.push(result.data.id);
     setGallery(gallery);
