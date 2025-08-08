@@ -410,7 +410,7 @@ function EditProduct({ placeholder }) {
                               {category?.name}
                             </option>
                           ))
-                        }
+                      }
                       </select>
                      { errors.category && <span className="text-red-500 text-sm">{errors.category.message}</span>}
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductSize;
@@ -73,7 +74,7 @@ class ProductController extends Controller
             foreach($request->sizes as $sizeId) {
                 $productSize = new ProductSize();
                 $productSize->size_id = $sizeId; //size_id is the foreign key of sizes table
-                $productSize->product_id = $product->id; //size_id is the foreign key of sizes table   
+                $productSize->product_id = $product->id; //size_id is the foreign key of product_sizes table   
                 $productSize->save(); //save product size
             }
         }
@@ -307,5 +308,6 @@ class ProductController extends Controller
             'status' => 200,
             'message' => "Product Image Deleted successfully",
         ], 200);
-     }
+    }  
 }
+
