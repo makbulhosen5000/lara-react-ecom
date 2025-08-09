@@ -20,6 +20,7 @@ Route::get('/get-latest-product',[FrontProductController::class, 'getLatestProdu
 Route::get('/get-featured-product',[FrontProductController::class, 'getFeaturedProduct']);
 Route::get('/get-categories',[FrontProductController::class, 'getCategories']);
 Route::get('/get-brands',[FrontProductController::class, 'getBrands']);
+Route::get('/get-products',[FrontProductController::class, 'getProducts']);
 
 // middleware for all routes
 Route::group(['middleware' => 'auth:sanctum'],function(){

@@ -1,8 +1,7 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import LatestProducts from '../../../pages/product/LatestProducts';
+import Shop from '../../../pages/product/Shop';
 import Slider from '../slider/Slider';
-import FeaturesProducts from '../../../pages/product/FeaturedProducts';
 
 
 export default function Home() {
@@ -12,8 +11,7 @@ export default function Home() {
       <title>MakbulAgro||Home</title>
     </Helmet>
     <Slider/>
-    <LatestProducts/>
-    <FeaturesProducts/>
+    <Shop/>
     </>
   )
 }

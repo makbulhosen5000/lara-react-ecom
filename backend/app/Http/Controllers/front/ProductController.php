@@ -10,6 +10,25 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function getProducts(Request $request){
+        $products = Product::orderBy('created_at','DESC')
+                    ->where('status', 1)->get();
+
+        //filter product by category
+        if((!empty($request->category))){
+            $catArray = explode(',', $request->category);
+            $products = $products->whereIn('category_id', $catArray);
+        }
+        //filter product by brand
+        if((!empty($request->brand))){
+            $brandArray = explode(',', $request->brand);
+            $products = $products->whereIn('brand_id', $brandArray);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' => $products,
+        ], 200);
+    }
     //get latest Product products function
     public function getLatestProduct(){
         $latestProduct = Product::orderBy('created_at', 'desc')

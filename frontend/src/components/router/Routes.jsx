@@ -7,7 +7,6 @@ import Checkout from "../../pages/product/Checkout";
 import Login from "../auth/admin/auth/Login";
 import Dashboard from "../auth/admin/dashboard/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
-import LatestProducts from "../../pages/product/LatestProducts";
 import ProductDetails from "../../pages/product/ProductDetails";
 import Categories from "../auth/admin/category/Categories";
 import CreateCategory from "../auth/admin/category/CreateCategory";
@@ -19,6 +18,7 @@ import CreateProduct from "../auth/admin/product/CreateProduct";
 import EditProduct from "../auth/admin/product/EditProduct";
 import Products from "../auth/admin/product/products";
 
+
 export const router = createBrowserRouter([
     {
       path: "/",
@@ -28,10 +28,6 @@ export const router = createBrowserRouter([
         {
             path:"/",
             element:<Home/>
-        },
-        {
-          path:"/product",
-          element:<LatestProducts/>
         },
         {
           path:"/productDetails",
