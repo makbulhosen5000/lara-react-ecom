@@ -12,18 +12,20 @@ class ProductController extends Controller
 {
     public function getProducts(Request $request){
         $products = Product::orderBy('created_at','DESC')
-                    ->where('status', 1)->get();
+                    ->where('status', 1);
 
         //filter product by category
-        if((!empty($request->category))){
+        if(!empty($request->category)){
             $catArray = explode(',', $request->category);
             $products = $products->whereIn('category_id', $catArray);
         }
         //filter product by brand
-        if((!empty($request->brand))){
+        if(!empty($request->brand)){
             $brandArray = explode(',', $request->brand);
             $products = $products->whereIn('brand_id', $brandArray);
         }
+        $products = $products->get();
+        
         return response()->json([
             'status' => 200,
             'data' => $products,
