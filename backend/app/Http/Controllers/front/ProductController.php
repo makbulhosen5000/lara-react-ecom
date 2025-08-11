@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    // get products function for filtering products by category and brand
     public function getProducts(Request $request){
         $products = Product::orderBy('created_at','DESC')
                     ->where('status', 1);
@@ -73,5 +74,19 @@ class ProductController extends Controller
             'status' => 200,
             'data' => $brands,
         ], 200);
-    }    
+    } 
+    // get single product function   
+    public function getProduct($id){
+        $product = Product::with('product_images','product_sizes.size')->find($id);
+        if(!$product){
+            return response()->json([
+                'status' => 404,
+                'message' => 'Product not found',
+            ], 404);
+        } 
+        return response()->json([
+            'status' => 200,
+            'data' => $product,
+        ], 200);
+    }
 }

@@ -7,7 +7,7 @@ import Checkout from "../../pages/product/Checkout";
 import Login from "../auth/admin/auth/Login";
 import Dashboard from "../auth/admin/dashboard/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
-import ProductDetails from "../../pages/product/ProductDetails";
+import Product from "../../pages/product/Product";
 import Categories from "../auth/admin/category/Categories";
 import CreateCategory from "../auth/admin/category/CreateCategory";
 import EditCategory from "../auth/admin/category/EditCategory";
@@ -30,8 +30,8 @@ export const router = createBrowserRouter([
             element:<Home/>
         },
         {
-          path:"/productDetails",
-          element:<ProductDetails/>
+          path:"/product/:id",
+          element:<Product/>
         },
         {
           path:"/cart",

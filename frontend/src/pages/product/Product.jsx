@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Star, ShoppingCart } from "lucide-react";
 import { FaRegUser } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { apiUrl } from "../../components/Http";
 
-export default function ProductDetails() {
+export default function Product() {
   const images = [
     "https://i.ibb.co.com/5hntPphG/banana1.jpg",
     "https://i.ibb.co.com/tpG5BrjK/guava1.jpg",
@@ -16,16 +17,37 @@ export default function ProductDetails() {
   const [quantity, setQuantity] = useState(1);
   const [rating,setRating] = useState(4);
   const [user,setUser] = useState("Makbul Hosen");
+  const [product, setProduct] = useState([]);
 
+  const {id} = useParams();
   const sizes = ["S", "M", "L", "XL"];
-
+  const getSingleProduct = async () => {
+          try {
+            const response = await fetch(`${apiUrl}/get-product/${id}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+            });
+            const result = await response.json(); 
+              setProduct(result.data);
+              console.log("product result--.",result);  
+          } catch (error) {
+            console.error("Error fetching categories:", error);
+          }
+      };
+      useEffect(() => {
+        getSingleProduct();
+      }
+      , []);
   return (
     <>
     <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-8 my-10">
       {/* Left: Image Gallery */}
       <div>
         <img
-          src={mainImage}
+          src={product?.image_url}
           alt="Product"
           className="w-full h-[400px] rounded-xl transition-all duration-300"
         />
@@ -47,12 +69,15 @@ export default function ProductDetails() {
       {/* Right: Product Details */}
       <div className="flex flex-col justify-between">
         <div>
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Awesome Product</h2>
-
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">20$ <span className="line-through">30$</span></h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-2">{product?.title}</h2>
+          {/* {      
+            product?.discount_price && 
+             <span className="text-lg font-semibold text-gray-800"> ${product?.discount_price}</span>
+          } */}
+          <h2 className="text-3xl font-bold text-gray-900 mb-2"> ${product?.price} <span className="line-through"> ${product?.discount_price && product?.discount_price}</span></h2>
           {/* Description */}
           <p className="text-gray-600 mb-6">
-            A short and snappy product description that gets to the point and sells the key features.
+             {product?.short_description?.slice(0, 100)}
           </p>
 
           {/* Size Selector */}

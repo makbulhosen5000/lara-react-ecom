@@ -1,6 +1,6 @@
 import React from 'react'
 import { Helmet } from 'react-helmet-async'
-import Shop from '../../../pages/product/Shop';
+import Shop from '../../../pages/product/Products';
 import Slider from '../slider/Slider';
 
 
