@@ -5,23 +5,20 @@ import { Link, useParams } from "react-router-dom";
 import { apiUrl } from "../../components/Http";
 
 export default function Product() {
-  const images = [
-    "https://i.ibb.co.com/5hntPphG/banana1.jpg",
-    "https://i.ibb.co.com/tpG5BrjK/guava1.jpg",
-    "https://i.ibb.co.com/KxRkzz5v/lemon1.jpg",
-    "https://i.ibb.co.com/YzMvb5y/papaya1.jpg",
-  ];
 
-  const [mainImage, setMainImage] = useState(images[0]);
-  const [selectedSize, setSelectedSize] = useState("M");
+
+  const [mainImage, setMainImage] = useState([]);
+  const [productSizes, setProductSizes] = useState([]);
+  const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [rating,setRating] = useState(4);
   const [user,setUser] = useState("Makbul Hosen");
   const [product, setProduct] = useState([]);
-
+  const [productImages,setProductImages] = useState([]); 
   const {id} = useParams();
-  const sizes = ["S", "M", "L", "XL"];
-  const getSingleProduct = async () => {
+
+
+  const getProduct = async () => {
           try {
             const response = await fetch(`${apiUrl}/get-product/${id}`, {
               method: 'GET',
@@ -32,13 +29,16 @@ export default function Product() {
             });
             const result = await response.json(); 
               setProduct(result.data);
-              console.log("product result--.",result);  
+              setProductImages(result.data.product_images);
+              setMainImage(result.data.image_url);
+              setProductSizes(result.data.product_sizes);
+            
           } catch (error) {
             console.error("Error fetching categories:", error);
           }
       };
       useEffect(() => {
-        getSingleProduct();
+        getProduct();
       }
       , []);
   return (
@@ -47,17 +47,17 @@ export default function Product() {
       {/* Left: Image Gallery */}
       <div>
         <img
-          src={product?.image_url}
+          src={mainImage}
           alt="Product"
           className="w-full h-[400px] rounded-xl transition-all duration-300"
         />
         <div className="flex gap-3 mt-4">
-          {images.map((img, i) => (
+          {productImages && productImages.map((img, i) => (
             <img
               key={i}
-              src={img}
+              src={img? img.image_url : "Image Not Found"}
               alt={`Thumbnail ${i}`}
-              onClick={() => setMainImage(img)}
+              onClick={() => setMainImage(img.image_url)}
               className={`w-20 h-20 rounded-lg border cursor-pointer ${
                 mainImage === img ? "border-blue-500" : "border-transparent"
               }`}
@@ -70,33 +70,37 @@ export default function Product() {
       <div className="flex flex-col justify-between">
         <div>
           <h2 className="text-3xl font-bold text-gray-900 mb-2">{product?.title}</h2>
-          {/* {      
-            product?.discount_price && 
-             <span className="text-lg font-semibold text-gray-800"> ${product?.discount_price}</span>
-          } */}
           <h2 className="text-3xl font-bold text-gray-900 mb-2"> ${product?.price} <span className="line-through"> ${product?.discount_price && product?.discount_price}</span></h2>
           {/* Description */}
           <p className="text-gray-600 mb-6">
              {product?.short_description?.slice(0, 100)}
           </p>
+          <p className="text-gray-600 mb-6">
+             sku: {product?.sku}
+          </p>
 
           {/* Size Selector */}
           <div className="mb-4">
             <label className="block text-sm font-semibold text-gray-700 mb-2">Select Size</label>
-            <div className="flex gap-2">
-              {sizes.map((size) => (
-                <button
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  className={`px-4 py-2 rounded-lg border text-sm font-medium ${
-                    selectedSize === size
-                      ? "bg-blue-600 text-white border-blue-600"
-                      : "border-gray-300 text-gray-700 hover:border-blue-400"
-                  }`}
-                >
-                  {size}
-                </button>
-              ))}
+              <div className="flex gap-2">
+               {
+                  productSizes.length > 0 ? (
+                  productSizes.map((productSize) => (
+                    <button
+                      key={productSize.id}
+                      onClick={() => setSelectedSize(productSize.id)}
+                      className={`px-4 py-2 rounded-lg border text-sm font-medium mr-2 ${
+                        selectedSize === productSize.id
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "border-gray-300 text-gray-700 hover:border-blue-400"
+                      }`}
+                    >
+                      {productSize.size.size}
+                        </button>
+                      ))
+                    ) : (
+                      <p>No sizes available</p>
+                    )}
             </div>
           </div>
 

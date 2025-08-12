@@ -45,6 +45,7 @@ export default function Products() {
 
         const result = await response.json(); 
           setCategories(result.data);  
+          setLoading(false);
       } catch (error) {
         console.error("Error fetching categories:", error);
       }
@@ -62,6 +63,7 @@ export default function Products() {
 
         const result = await response.json(); 
           setBrands(result.data);  
+          setLoading(false);
       } catch (error) {
         console.error("Error fetching brands:", error);
       }
@@ -105,25 +107,7 @@ export default function Products() {
             console.error("Error fetching products:", error);
           }
     };
-    // Fetch single product from the API
-    const getSingleProduct = async () => {
-        try {
-          const response = await fetch(`${apiUrl}/get-single-product/${id}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-            },
-          });
-  
-          const result = await response.json(); 
-          //console.log("Single Product:", result);
-            setSingleProduct(result.data);
-            setLoading(false);   
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-    };
+
     // Fetch latest product data from the API
     const getLatestProducts = async () => {
         try {
@@ -136,7 +120,8 @@ export default function Products() {
           });
   
           const result = await response.json(); 
-            setLatestProducts(result.data);   
+            setLatestProducts(result.data);  
+            setLoading(false); 
         } catch (error) {
           console.error("Error fetching latest product:", error);
         }
@@ -154,7 +139,7 @@ export default function Products() {
 
         const result = await response.json(); 
         setFeaturedProducts(result.data);
-           
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching latest product:", error);
       }
@@ -184,8 +169,6 @@ export default function Products() {
             getCategories();
             getBrands();
             getProducts();
-            getSingleProduct();
-            //setLoading(false);
         },1000);
     }, [catChecked,brandChecked]);
  

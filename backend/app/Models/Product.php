@@ -43,6 +43,4 @@ class Product extends Model
         return $this->hasMany(ProductSize::class);
     }
 
-
-
 }
