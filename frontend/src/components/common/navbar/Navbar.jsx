@@ -1,44 +1,51 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { FaCartPlus, FaRegUserCircle } from "react-icons/fa";
+import { apiUrl } from "../../Http";
 
 const Navbar = () => {
+   const [categories, setCategories] = useState([]);
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
+ 
+   // Fetch all category data from the API
+      const getCategories = async () => {
+        try {
+          const response = await fetch(`${apiUrl}/get-categories`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+            },
+          });
+  
+          const result = await response.json(); 
+            setCategories(result.data);  
+            console.log("Fetched categories:", result.data);
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
+
+     useEffect(() => {    
+        getCategories();
+      }
+      , []);
+    
 
   const navItems = (
     <>
       <Link
-        to="/"
+        to="/shop"
         className={`block px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/"
+          location.pathname === "/shop"
             ? "bg-yellow-300 text-black"
             : "text-gray-100 hover:text-yellow-500"
         }`}
+        aria-label="User Login"
       >
-        Kids
-      </Link>
-      <Link
-        to="/product"
-        className={`block px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/product"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100 hover:text-yellow-500"
-        }`}
-      >
-        Mens
-      </Link>
-      <Link
-        to="/women"
-        className={`block px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/women"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100 hover:text-yellow-500"
-        }`}
-      >
-        Women
+        Shop
       </Link>
       <Link
         to="/admin/login"

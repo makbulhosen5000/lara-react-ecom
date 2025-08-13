@@ -3,7 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { apiUrl } from '../../components/Http';
 import Loader from '../../components/common/loader/Loader';
 
-export default function Products() {
+export default function Shop() {
     // get ,category,brand, latest products,single product from the API
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);

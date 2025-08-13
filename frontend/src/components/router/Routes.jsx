@@ -17,6 +17,7 @@ import CreateBrand from "../auth/admin/brand/CreateBrand";
 import CreateProduct from "../auth/admin/product/CreateProduct";
 import EditProduct from "../auth/admin/product/EditProduct";
 import Products from "../auth/admin/product/products";
+import Shop from "../../pages/product/Shop";
 
 
 export const router = createBrowserRouter([
@@ -29,6 +30,10 @@ export const router = createBrowserRouter([
             path:"/",
             element:<Home/>
         },
+        {
+          path:"/shop",
+          element:<Shop/>
+      },
         {
           path:"/product/:id",
           element:<Product/>

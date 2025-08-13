@@ -558,7 +558,7 @@ function EditProduct({ placeholder }) {
                            
                             className="mr-2"
                           />
-                          <label htmlFor={`size-${size.id}`}>{size.name}</label>
+                          <label htmlFor={`size-${size.id}`}>{size?.size}</label>
                         </div>
                       ))}
                       </div>

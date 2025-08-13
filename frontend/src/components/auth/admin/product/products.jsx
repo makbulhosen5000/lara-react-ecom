@@ -114,7 +114,7 @@ function Product() {
                   {loading ? (
                     <tr>
                       <td colSpan={8}>
-                        <div className="flex justify-center items-center h-32">
+                        <div>
                           <Loader />
                         </div>
                       </td>
