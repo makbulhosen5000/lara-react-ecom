@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Star, ShoppingCart } from "lucide-react";
 import { FaRegUser } from "react-icons/fa";
 import { Link, useParams } from "react-router-dom";
 import { apiUrl } from "../../components/Http";
+import { toast } from "react-toastify";
+import { CartContext } from "../../components/provider/CartProvider";
 
 export default function Product() {
   const [mainImage, setMainImage] = useState("");
@@ -13,7 +15,24 @@ export default function Product() {
   const [user] = useState("Makbul Hosen");
   const [product, setProduct] = useState({});
   const [productImages, setProductImages] = useState([]);
+  const {addToCart} = useContext(CartContext);
+
   const { id } = useParams();
+  // Function to handle adding product to cart
+  const handleAddToCart =()=>{
+    if(productSizes.length > 0 ) {
+     if(!selectedSize) {
+        toast.error("Please select a size before adding to cart.");
+        return;
+      }else{
+        addToCart(product,selectedSize);
+        toast.success("Product added to cart successfully!");
+      }
+    }else{
+      addToCart(product,null);
+      toast.success("Product added to cart successfully!");
+    }
+  };
 
   const getProduct = async () => {
     try {
@@ -95,10 +114,10 @@ export default function Product() {
                 {productSizes.length > 0 ? (
                   productSizes.map((productSize) => (
                     <button
-                      key={productSize.id}
-                      onClick={() => setSelectedSize(productSize.id)}
+                      key={productSize.size_id}
+                      onClick={() => setSelectedSize(productSize.size_id)}
                       className={`px-5 py-2 rounded-xl border transition-all duration-300 ${
-                        selectedSize === productSize.id
+                        selectedSize === productSize.size_id
                           ? "bg-blue-600 text-white border-blue-600 scale-105"
                           : "border-gray-300 hover:border-blue-400"
                       }`}
@@ -136,12 +155,15 @@ export default function Product() {
           </div>
 
           {/* Add to Cart Button */}
-          <Link to="/cart">
-            <button className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-lg font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all duration-300">
+          
+            <button
+            onClick={() => handleAddToCart()}
+             className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-lg font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all duration-300"
+            >
               <ShoppingCart size={20} />
               Add {quantity} to Cart
             </button>
-          </Link>
+          
         </div>
       </div>
 
