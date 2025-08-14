@@ -7,9 +7,10 @@ import { CartContext } from '../../components/provider/CartProvider';
 export default function Cart() {
   const { cartData } = useContext(CartContext);
 
-  // Calculate totals
-  const subTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
-
+// Calculate totals
+const subTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+const shipping = 10;
+const grandTotal = subTotal + shipping;
   return (
     <>
       <Helmet>
@@ -72,13 +73,17 @@ export default function Cart() {
           {/* Totals */}
           {cartData.length > 0 && (
             <>
+            <div className="flex justify-between text-lg font-semibold mt-4">
+                <span>Shipping:</span>
+                <span>${shipping}</span>
+              </div>
               <div className="flex justify-between text-lg font-semibold mt-4">
                 <span>Sub Total:</span>
                 <span>${subTotal.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-lg font-semibold mt-4">
                 <span>Grand Total:</span>
-                <span>${subTotal.toFixed(2)}</span>
+                <span>${grandTotal.toFixed(2)}</span>
               </div>
             </>
           )}
@@ -117,7 +122,7 @@ export default function Cart() {
 
           {/* Buttons */}
           <div className="mt-6 flex flex-col md:flex-row gap-4">
-            <Link to="/product">
+            <Link to="/shop">
               <button className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-blue-700">
                 Add More Item
               </button>

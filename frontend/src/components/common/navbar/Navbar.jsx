@@ -54,10 +54,13 @@ const Navbar = () => {
         }`}
         aria-label="Cart"
       >
-        <div className="flex">
-        <FaCartPlus size={20} /> 
-        {cartData.length}
-        
+        <div className="relative inline-block">
+          <FaCartPlus size={24} />
+          {cartData.length > 0 && (
+            <span className="absolute -top-3 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
+              {cartData.length}
+            </span>
+          )}
         </div>
       </Link>
     </>
