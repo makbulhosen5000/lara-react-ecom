@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { Star, ShoppingCart } from "lucide-react";
 import { FaRegUser } from "react-icons/fa";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { apiUrl } from "../../components/Http";
 import { toast } from "react-toastify";
 import { CartContext } from "../../components/provider/CartProvider";
@@ -15,33 +15,28 @@ export default function Product() {
   const [user] = useState("Makbul Hosen");
   const [product, setProduct] = useState({});
   const [productImages, setProductImages] = useState([]);
-  const {addToCart} = useContext(CartContext);
-
+  const { addToCart } = useContext(CartContext);
   const { id } = useParams();
-  // Function to handle adding product to cart
-  const handleAddToCart =()=>{
-    if(productSizes.length > 0 ) {
-     if(!selectedSize) {
-        toast.error("Please select a size before adding to cart.");
-        return;
-      }else{
-        addToCart(product,selectedSize);
-        toast.success("Product added to cart successfully!");
-      }
-    }else{
-      addToCart(product,null);
-      toast.success("Product added to cart successfully!");
+
+  const handleAddToCart = () => {
+    if (productSizes.length > 0 && !selectedSize) {
+      toast.error("Please select a size before adding to cart.");
+      return;
     }
+    addToCart(product, selectedSize, quantity);
+    toast.success("Product added to cart successfully!");
   };
 
   const getProduct = async () => {
     try {
       const response = await fetch(`${apiUrl}/get-product/${id}`);
       const result = await response.json();
-      setProduct(result.data);
-      setProductImages(result.data.product_images || []);
-      setMainImage(result.data.image_url);
-      setProductSizes(result.data.product_sizes || []);
+      if (result?.data) {
+        setProduct(result.data);
+        setProductImages(result.data.product_images || []);
+        setMainImage(result.data.image_url || "");
+        setProductSizes(result.data.product_sizes || []);
+      }
     } catch (error) {
       console.error("Error fetching product:", error);
     }
@@ -49,7 +44,7 @@ export default function Product() {
 
   useEffect(() => {
     getProduct();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -64,7 +59,7 @@ export default function Product() {
             />
           </div>
           <div className="flex gap-3 mt-4 overflow-x-auto pb-2">
-            {productImages.map((img, i) => (
+            {productImages && productImages.map((img, i) => (
               <img
                 key={i}
                 src={img.image_url}
@@ -84,15 +79,15 @@ export default function Product() {
         <div className="flex flex-col justify-between sticky top-6">
           <div>
             <h2 className="text-4xl font-extrabold text-gray-900 mb-3">
-              {product?.title}
+              {product?.title || "Loading..."}
             </h2>
 
-            {/* Price with gradient */}
+            {/* Price */}
             <h3 className="text-3xl font-bold mb-4">
               <span className="bg-gradient-to-r from-blue-600 to-indigo-500 text-white px-4 py-1 rounded-xl shadow">
-                ${product?.discount_price}
+                ${product?.discount_price ?? product?.price ?? 0}
               </span>
-              {product?.price && (
+              {product?.price && product.discount_price && (
                 <span className="ml-3 line-through text-gray-500 text-lg">
                   ${product.price}
                 </span>
@@ -114,15 +109,15 @@ export default function Product() {
                 {productSizes.length > 0 ? (
                   productSizes.map((productSize) => (
                     <button
-                      key={productSize.size_id}
-                      onClick={() => setSelectedSize(productSize.size_id)}
+                      key={productSize.id}
+                      onClick={() => setSelectedSize(productSize?.size?.size)}
                       className={`px-5 py-2 rounded-xl border transition-all duration-300 ${
-                        selectedSize === productSize.size_id
+                        selectedSize === productSize?.size?.size
                           ? "bg-blue-600 text-white border-blue-600 scale-105"
                           : "border-gray-300 hover:border-blue-400"
                       }`}
                     >
-                      {productSize.size.size}
+                      {productSize?.size?.size}
                     </button>
                   ))
                 ) : (
@@ -155,25 +150,23 @@ export default function Product() {
           </div>
 
           {/* Add to Cart Button */}
-          
-            <button
-            onClick={() => handleAddToCart()}
-             className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-lg font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all duration-300"
-            >
-              <ShoppingCart size={20} />
-              Add {quantity} to Cart
-            </button>
-          
+          <button
+            onClick={handleAddToCart}
+            className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-blue-600 to-indigo-500 text-white text-lg font-bold rounded-2xl shadow-lg hover:opacity-90 transition-all duration-300"
+          >
+            <ShoppingCart size={20} />
+            Add {quantity} to Cart
+          </button>
         </div>
       </div>
 
       {/* Product Description */}
       <div className="max-w-6xl mx-auto bg-white rounded-3xl shadow-lg p-8 my-12">
         <h2 className="text-2xl font-bold mb-4 underline">Description</h2>
-        <p
+        <div
           className="text-gray-700 leading-relaxed"
-          dangerouslySetInnerHTML={{ __html: product?.description }}
-        ></p>
+          dangerouslySetInnerHTML={{ __html: product?.description || "" }}
+        />
       </div>
 
       {/* Reviews */}
@@ -193,14 +186,10 @@ export default function Product() {
           <span className="ml-2 text-sm text-gray-600">(123 reviews)</span>
         </div>
         <p className="text-gray-700 leading-relaxed mb-3">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nam
-          labore fugit voluptatibus nisi odit libero provident commodi! Quod,
-          sequi?
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
         </p>
         <p className="text-gray-700 leading-relaxed">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nam
-          labore fugit voluptatibus nisi odit libero provident commodi! Quod,
-          sequi?
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit.
         </p>
       </div>
     </>

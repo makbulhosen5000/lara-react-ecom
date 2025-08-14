@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <>
     <Helmet>
-      <title>MakbulAgro||Home</title>
+      <title>MAKFashion || Home</title>
     </Helmet>
     <Slider/>
     <Shop/>

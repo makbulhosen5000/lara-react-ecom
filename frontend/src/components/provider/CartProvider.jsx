@@ -1,87 +1,48 @@
 import { createContext, useState } from "react";
 
-
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartData,setCartData] = useState(JSON.parse(localStorage.getItem("cart")) || []); 
+  const [cartData, setCartData] = useState(
+    JSON.parse(localStorage.getItem("cart")) || []
+  );
 
-  
-    const addToCart = (product,size=null) => {
-         let updateCart = [...cartData];
+  const addToCart = (product, size = null, quantity = 1) => {
+    let updatedCart = [...cartData];
 
-         //if cart is empty, add the product
-            if(updateCart.length == 0){
-                updateCart.push({
-                    id:`${product.id}-${Math.floor(Math.random() * 1000)}`,
-                    product_id : product.id,
-                    size : size,
-                    title: product.title,
-                    price: product.price,
-                    qty: 1,
-                    image_url: product.image_url,
-             });
-             setCartData(updateCart);
-             localStorage.setItem("cart", JSON.stringify(updateCart));
-            }else{
-                // if size is not empty
-                if(size != null){
-                   const isProductExist = updateCart = updateCart.map((item) => 
-                        item.product_id === product.id && item.size === size
-                    );
-                    if(isProductExist){
-                        // if product with the same size exists, increase the quantity
-                        updateCart = updateCart.map((item) => {
-                            (item.product_id === product.id && item.size === size) 
-                            ?{...item,qty: item.qty + 1} 
-                            :
-                            item; 
-                        });
-                    }else{
-                        // if product and size combination not exist, add the product
-                        updateCart.push({
-                            id:`${product.id}-${Math.floor(Math.random() * 1000)}`,
-                            product_id : product.id,
-                            size : size,
-                            title: product.title,
-                            price: product.price,
-                            qty: 1,
-                            image_url: product.image_url,
-                        });
-                    }
-                }else{
-                    // if size is null
-                    const isProductExist = updateCart = updateCart.map((item) => 
-                        item.product_id === product.id
-                    );
-                    if(isProductExist){
-                        // When product found in cart, increase the quantity
-                        updateCart = updateCart.map((item) => {
-                            (item.product_id === product.id) 
-                            ?{...item,qty: item.qty + 1} 
-                            :
-                            item; 
-                        });
-                    }else{
-                        // if product not exist, add the product
-                        updateCart.push({
-                            id:`${product.id}-${Math.floor(Math.random() * 1000)}`,
-                            product_id : product.id,
-                            size : size,
-                            title: product.title,
-                            price: product.price,
-                            qty: 1,
-                            image_url: product.image_url,
-                        });
-                    }
-                }
-            }
+    // Check if the product exists (consider size if provided)
+    const existingItemIndex = updatedCart.findIndex(
+      (item) =>
+        item.product_id === product.id &&
+        (size ? item.size === size : true)
+    );
+
+    if (existingItemIndex > -1) {
+      // Update quantity if item exists
+      updatedCart[existingItemIndex] = {
+        ...updatedCart[existingItemIndex],
+        qty: updatedCart[existingItemIndex].qty + quantity,
+      };
+    } else {
+      // Add new item
+      updatedCart.push({
+        id: `${product.id}-${Math.floor(Math.random() * 1000)}`,
+        product_id: product.id,
+        size,
+        title: product.title,
+        price: product.discount_price ?? product.price,
+        qty: quantity,
+        image_url: product.image_url,
+      });
     }
-  
-  
+
+    setCartData(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
+
   return (
-    <CartContext.Provider value={{ addToCart }}>
+    <CartContext.Provider value={{ cartData, addToCart }}>
       {children}
     </CartContext.Provider>
-  )
+  );
 };

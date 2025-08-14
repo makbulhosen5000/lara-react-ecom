@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { apiUrl } from '../../components/Http';
 import Loader from '../../components/common/loader/Loader';
+import { Helmet } from 'react-helmet-async';
 
 export default function Shop() {
     // get ,category,brand, latest products,single product from the API
@@ -174,6 +175,9 @@ export default function Shop() {
  
   return (
     <>
+    <Helmet>
+    <title>MAKFashion || Shop</title>
+    </Helmet>
     <section  className="bg-gray-200 mt-5">
         <div className="container mx-auto">
           <div className='flex sm:flex-auto gap-3 justify-between items-center p-4 bg-white shadow-md rounded-lg'>

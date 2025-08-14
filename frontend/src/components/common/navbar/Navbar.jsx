@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useSearchParams } from "react-router-dom";
+import React, { useContext, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { FaCartPlus, FaRegUserCircle } from "react-icons/fa";
-import { apiUrl } from "../../Http";
+import { CartContext } from "../../provider/CartProvider";
 
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
- 
+   const { cartData } = useContext(CartContext);
     
 
   const navItems = (
@@ -22,7 +22,7 @@ const Navbar = () => {
         aria-label="User Login"
       >
         Home
-      </Link>
+    </Link>
       <Link
         to="/shop"
         className={`block px-3 py-2 rounded-md text-sm font-medium ${
@@ -54,7 +54,11 @@ const Navbar = () => {
         }`}
         aria-label="Cart"
       >
-        <FaCartPlus size={20} />
+        <div className="flex">
+        <FaCartPlus size={20} /> 
+        {cartData.length}
+        
+        </div>
       </Link>
     </>
   );
