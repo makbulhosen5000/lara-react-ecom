@@ -7,7 +7,7 @@ const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-   const { cartData } = useContext(CartContext);
+   const {getQty } = useContext(CartContext);
     
 
   const navItems = (
@@ -56,11 +56,12 @@ const Navbar = () => {
       >
         <div className="relative inline-block">
           <FaCartPlus size={24} />
-          {cartData.length > 0 && (
+          
             <span className="absolute -top-3 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
-              {cartData.length}
+              
+           { getQty()}
             </span>
-          )}
+        
         </div>
       </Link>
     </>

@@ -1,16 +1,25 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { FaRegTrashCan } from "react-icons/fa6";
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { CartContext } from '../../components/provider/CartProvider';
 
 export default function Cart() {
-  const { cartData } = useContext(CartContext);
+  const [qty, setQty] = useState({});
+  const { shipping, subTotal,grandTotal,cartData,updateCartItem,handleCartItemDelete} = useContext(CartContext);
 
-// Calculate totals
-const subTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
-const shipping = 10;
-const grandTotal = subTotal + shipping;
+  
+
+  // Handle quantity change
+  const handleQtyChange = (itemId, newQty) => {
+    if (newQty < 1) return; // prevent negative or zero
+    setQty((prevQty) => ({
+      ...prevQty,
+      [itemId]: newQty,
+    }));
+    updateCartItem(itemId,newQty);
+    };
+
   return (
     <>
       <Helmet>
@@ -19,7 +28,6 @@ const grandTotal = subTotal + shipping;
 
       <div className="max-w-6xl mx-auto p-6 grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
         
-        {/* 🛒 Cart Summary (Left Side) */}
         <div className="bg-white shadow-md rounded-xl p-6">
           <h2 className="text-2xl font-bold mb-4">Cart Summary</h2>
 
@@ -43,21 +51,36 @@ const grandTotal = subTotal + shipping;
 
                 {/* Quantity Control */}
                 <div className="flex items-center border rounded px-2 py-1">
-                  <button className="text-gray-600 hover:text-black">-</button>
-                  <input
-                    type="text"
-                    value={item.qty}
-                    readOnly
-                    className="w-10 text-center border-0 focus:outline-none"
-                  />
-                  <button className="text-gray-600 hover:text-black">+</button>
-                </div>
+                    {/* Decrease button */}
+                    <button
+                      className="text-gray-600 hover:text-black"
+                      onClick={() => handleQtyChange(item.id, (qty[item.id] || item.qty) - 1)}
+                    >
+                      -
+                    </button>
+
+                    {/* Input (editable) */}
+                    <input
+                      type="number"
+                      value={qty[item.id] || item.qty}
+                      onChange={(e) => handleQtyChange(item.id, parseInt(e.target.value) || 1)}
+                      className="w-12 text-center border-0 focus:outline-none"
+                    />
+
+                    {/* Increase button */}
+                    <button
+                      className="text-gray-600 hover:text-black"
+                      onClick={() => handleQtyChange(item.id, (qty[item.id] || item.qty) + 1)}
+                    >
+                      +
+                    </button>
+                  </div>
 
                 {/* Price & Delete */}
                 <div className="text-right flex gap-4 items-center">
                   <p className="text-lg font-medium">${(item.price * item.qty).toFixed(2)}</p>
                   <button
-                    onClick={() => alert('Are you sure you want to delete?')}
+                    onClick={() => handleCartItemDelete(item.id)}
                     title="delete"
                     className="text-red-500 hover:text-red-700"
                   >
@@ -67,7 +90,9 @@ const grandTotal = subTotal + shipping;
               </div>
             ))
           ) : (
-            <p className="text-gray-500">Your cart is empty.</p>
+            <div className="flex items-center justify-center h-64">
+              <p className="text-gray-500 font-semibold">Your cart is empty.</p>
+            </div>
           )}
 
           {/* Totals */}

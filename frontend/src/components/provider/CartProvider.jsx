@@ -39,9 +39,44 @@ export const CartProvider = ({ children }) => {
     setCartData(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
+  // Calculate subtotal and grand total
+  const subTotal = cartData.reduce((sum, item) => sum + (item.price * item.qty), 0);
+  const shipping = 10; // Fixed shipping cost
+  const grandTotal = subTotal + shipping;
+  
+  // Function to update quantity of an item in the cart
+  // This function can be used to handle quantity changes in the cart
+  const updateCartItem = (itemId, newQty) => {
+    const updatedCart = cartData.map((item) =>
+      item.id === itemId ? { ...item, qty: newQty } : item
+    );
+
+    setCartData(updatedCart);
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  }
+
+    // get quantity of items in the cart
+    const getQty = () => {
+      let qty = 0;
+      cartData.map(item =>{
+        qty +=  parseInt(item.qty)
+      });
+      return qty;
+    };
+
+    // This function removes an item from the cart and updates localStorage
+   const handleCartItemDelete = (itemId) => {
+    const updatedCart = cartData.filter(item => item.id !== itemId);
+
+    // Update state
+    setCartData(updatedCart);
+
+    // Update localStorage
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
 
   return (
-    <CartContext.Provider value={{ cartData, addToCart }}>
+    <CartContext.Provider value={{ cartData,shipping, subTotal,grandTotal, addToCart,updateCartItem,handleCartItemDelete, getQty }}>
       {children}
     </CartContext.Provider>
   );
