@@ -1,17 +1,19 @@
 import React, {useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
-import { apiUrl } from '../../../Http';
-import { toast } from 'react-toastify';
-import { AdminAuthContext } from '../../../provider/AdminAuthProvider';
-import { useForm } from 'react-hook-form';
 
-export default function Login() {
+import { toast } from 'react-toastify';
+
+import { useForm } from 'react-hook-form';
+import { apiUrl } from '../../Http';
+import { AdminAuthContext } from '../../provider/AdminAuthProvider';
+
+export default function Register() {
   
-  const loginImg = "https://i.ibb.co.com/kcmYrjv/login2.jpg";
+  const loginImg = "https://i.ibb.co.com/vjhV4YZ/register.jpg";
   const [showPassword, setShowPassword] = useState(false);
-  const location = useLocation();
+
 
   const { user,login } = useContext(AdminAuthContext);
    
@@ -32,9 +34,9 @@ export default function Login() {
     } = useForm();
       
 
-  const loginAuth = async(data) => {
-    const res = await fetch(`${apiUrl}/admin/login`, {
-      method: "POST",
+  const onSubmit = async(data) => {
+    const res = await fetch(`${apiUrl}/login`, {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
@@ -59,17 +61,47 @@ export default function Login() {
   return (
     <>
         <Helmet>
-          <title>MAKFashion||Login</title>
+          <title>MAKFashion||Customer Register</title>
         </Helmet>
         <div className="flex items-center justify-center min-h-screen bg-gray-100 my-10">
             <div className="flex w-full max-w-5xl bg-white shadow-2xl rounded-2xl overflow-hidden">
         
             {/* <!-- Left: Login Form --> */}
             <div className="w-1/2 p-10 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Admin Login</h2>
+              <h2 className="text-3xl font-bold mb-4 text-gray-800">Customer Register</h2>
               <p className="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
               
-              <form onSubmit={handleSubmit(loginAuth)} className="space-y-5">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+              <div>
+                  <label htmlFor="name" className="block mb-1 text-gray-600">Name</label>
+                  <input 
+                  {
+                    ...register('name',{
+                        required: "The name field is required",
+                    })
+                  }
+                  type="text" id="name" name="name" placeholder="Enter Your Name" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-black text-white" required  />
+                  {
+                    errors.name && (
+                      <span className="text-red-500 text-sm">{errors.name.message}</span>
+                    )
+                  }
+                </div>
+                <div>
+                  <label htmlFor="phone" className="block mb-1 text-gray-600">Phone</label>
+                  <input 
+                  {
+                    ...register('phone',{
+                        required: "The phone field is required", 
+                    })
+                  }
+                  type="number" id="phone" name="phone" placeholder="Enter Your Phone Number" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-black text-white" required  />
+                  {
+                    errors.phone && (
+                      <span className="text-red-500 text-sm">{errors.phone.message}</span>
+                    )
+                  }
+                </div>
                 <div>
                   <label htmlFor="email" className="block mb-1 text-gray-600">Email</label>
                   <input 

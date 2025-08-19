@@ -18,6 +18,7 @@ import CreateProduct from "../auth/admin/product/CreateProduct";
 import EditProduct from "../auth/admin/product/EditProduct";
 import Products from "../auth/admin/product/products";
 import Shop from "../../pages/product/Shop";
+import Register from "../auth/customer/Register";
 
 
 export const router = createBrowserRouter([
@@ -45,6 +46,12 @@ export const router = createBrowserRouter([
         {
           path:"/checkout",
           element:<Checkout/>
+        },
+
+        //customer routes here
+        {
+          path:"/account/register",
+          element:<Register/>
         },
 
         //admin routes here

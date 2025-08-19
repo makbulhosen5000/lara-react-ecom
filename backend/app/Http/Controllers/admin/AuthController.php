@@ -24,7 +24,7 @@ class AuthController extends Controller
         }
         // Check if the user is already logged in
         if(Auth::attempt(['email'=>$request->email, 'password'=>$request->password])){
-           $user = User::find(Auth::User()->id);
+           $user = User::find(Auth::user()->id);
             // Check if the user is an admin and laravel sanctum token is created   
             if($user->role == 'admin'){
                $token =  $user->createToken('token')->plainTextToken;
