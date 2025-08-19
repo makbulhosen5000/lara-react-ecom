@@ -63,7 +63,7 @@ function CreateProduct({ placeholder }) {
         // Redirect to the products list page
         navigate('/admin/products');
       } else {
-        toast.error(result.message);
+       // toast.error(result.message);
         //Set errors for each field
         const formErrors = result.errors || {};
         Object.keys(formErrors).forEach((field) => {

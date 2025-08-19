@@ -1,21 +1,21 @@
 import React, {useContext, useState } from 'react'
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff,LogIn } from 'lucide-react'; 
 
 import { toast } from 'react-toastify';
 
 import { useForm } from 'react-hook-form';
-import { apiUrl } from '../../Http';
 import { AdminAuthContext } from '../../provider/AdminAuthProvider';
+import { apiUrl } from '../../Http';
 
-export default function Register() {
+export default function Login() {
   
-  const loginImg = "https://i.ibb.co.com/vjhV4YZ/register.jpg";
+  const loginImg = "https://i.ibb.co.com/kcmYrjv/login2.jpg";
   const [showPassword, setShowPassword] = useState(false);
+  const location = useLocation();
 
-
-  const { user,login } = useContext(AdminAuthContext);
+  const { login } = useContext(AdminAuthContext);
    
   
   // hide and show password function by clicking the eye icon
@@ -30,68 +30,48 @@ export default function Register() {
     const {
       register,
       handleSubmit,
-      setError,
       formState: { errors },
     } = useForm();
       
-    // customer register function
-      const customerRegister = async(data) => {
-       try {
-           const response = await fetch(`${apiUrl}/register`, {
-             method: 'POST',
-             headers: {
-               "Content-Type": "application/json",
-             },
-             body: JSON.stringify(data),
-           });
-       
-           const result = await response.json();
-           if(result.status == 200){
-            toast.success(result.message);
-             navigate('/account/login');
-           }else{
-             //toast.error(result.message);
-             const formErrors = result.errors || {};
-             Object.keys(formErrors).forEach((field) => {
-               setError(field, { message: formErrors[field][0] });
-             });
-           }
-       
-         } catch (error) {
-           console.error("Error fetching Register:", error);
-         }
-       }
+
+  const loginAuth = async(data) => {
+    const res = await fetch(`${apiUrl}/admin/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data)
+    }).then(res => res.json())
+    .then(result =>{
+      if(result.status == 200){
+        const adminInfo = {
+          token: result.token,
+          id:result.id,
+          name: result.name,
+        }
+        localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
+        login(adminInfo);
+        navigate('/admin/dashboard');
+      }else{
+        toast.error(result.message);
+      }
+    })
+  }
 
   return (
     <>
         <Helmet>
-          <title>MAKFashion||Customer Register</title>
+          <title>MAKFashion||Customer Login</title>
         </Helmet>
         <div className="flex items-center justify-center min-h-screen bg-gray-100 my-10">
             <div className="flex w-full max-w-5xl bg-white shadow-2xl rounded-2xl overflow-hidden">
         
             {/* <!-- Left: Login Form --> */}
             <div className="w-1/2 p-10 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold mb-4 text-gray-800">Customer Register</h2>
+              <h2 className="text-3xl font-bold mb-4 text-gray-800">Customer Login</h2>
               <p className="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
               
-              <form onSubmit={handleSubmit(customerRegister)} className="space-y-5">
-              <div>
-                  <label htmlFor="name" className="block mb-1 text-gray-600">Name</label>
-                  <input 
-                  {
-                    ...register('name',{
-                        required: "The name field is required",
-                    })
-                  }
-                  type="text" id="name" name="name" placeholder="Enter Your Name" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-black text-white" required  />
-                  {
-                    errors.name && (
-                      <span className="text-red-500 text-sm">{errors.name.message}</span>
-                    )
-                  }
-                </div>
-
+              <form onSubmit={handleSubmit(loginAuth)} className="space-y-5">
                 <div>
                   <label htmlFor="email" className="block mb-1 text-gray-600">Email</label>
                   <input 
@@ -141,10 +121,10 @@ export default function Register() {
               
                 <button className="w-full flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
                   <LogIn size={20} />
-                  <span>Register</span>
+                  <span>Login</span>
                 </button>
               </form>
-              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/login" className="text-blue-600 hover:underline">Sign In</Link></p>
+              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/register" className="text-blue-600 hover:underline">Sign up</Link></p>
             </div>
 
             {/* <!-- Right: Image --> */}

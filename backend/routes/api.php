@@ -44,7 +44,7 @@ Route::post('/temp-images',[TempImageController::class, 'store']);
 Route::post('/save-product-images',[ProductController::class, 'saveProductImage']);
 Route::get('/set-product-default-images', [ProductController::class, 'setProductDefaultImage']);   
 Route::delete('/delete-product-image/{id}', [ProductController::class, 'deleteProductImage']);   
-// customer register
-Route::get('/register', [AccountController::class, 'register']);
-Route::get('/login', [AccountController::class, 'authenticate']);
+// user registration
+Route::post('/register', [AccountController::class, 'register']);
+Route::post('/login', [AccountController::class, 'authenticate']);
 });

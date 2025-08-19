@@ -23,9 +23,9 @@ class AccountController extends Controller
         $validator = Validator::make($request->all(), $rule);
         if ($validator->fails()) {
             return response()->json([
-                'status' => 400,
+                'status' => 404,
                 'message' => $validator->errors()->first(),
-            ], 400);
+            ], 404);
         }
         $user = new User();
         $user->name = $request->name;
@@ -34,10 +34,10 @@ class AccountController extends Controller
         $user->role ="customer";
         $user->save();
         return response()->json([
-            'status' => true,
+            'status' => 200,
             'message' => 'User registered successfully',
             'data' => $user,
-        ], 201);
+        ], 200);
     }
     public function authenticate(Request $request)
     {

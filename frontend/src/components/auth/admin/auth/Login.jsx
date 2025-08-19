@@ -30,17 +30,21 @@ export default function Login() {
       handleSubmit,
       formState: { errors },
     } = useForm();
-      
+    
+  // admin login function 
+  const loginAdmin = async(data) => {
+  
 
-  const loginAuth = async(data) => {
-    const res = await fetch(`${apiUrl}/admin/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data)
-    }).then(res => res.json())
-    .then(result =>{
+  try {
+      const response = await fetch(`${apiUrl}/admin/login`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+  
+      const result = await response.json();
       if(result.status == 200){
         const adminInfo = {
           token: result.token,
@@ -53,7 +57,10 @@ export default function Login() {
       }else{
         toast.error(result.message);
       }
-    })
+  
+    } catch (error) {
+      console.error("Error fetching login:", error);
+    }
   }
 
   return (
@@ -69,7 +76,7 @@ export default function Login() {
               <h2 className="text-3xl font-bold mb-4 text-gray-800">Admin Login</h2>
               <p className="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
               
-              <form onSubmit={handleSubmit(loginAuth)} className="space-y-5">
+              <form onSubmit={handleSubmit(loginAdmin)} className="space-y-5">
                 <div>
                   <label htmlFor="email" className="block mb-1 text-gray-600">Email</label>
                   <input 
