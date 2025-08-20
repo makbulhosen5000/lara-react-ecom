@@ -1,4 +1,5 @@
 import { createContext, useState } from "react";
+import { toast } from "react-toastify";
 
 
 export const AdminAuthContext = createContext();
@@ -14,6 +15,7 @@ export const AdminAuthProvider = ({ children }) => {
 
   const logOut = () => {
     localStorage.removeItem("adminInfo");
+    toast.success("Logout successful");
     setUser(null);
   }
   const adminAuthInfo = {

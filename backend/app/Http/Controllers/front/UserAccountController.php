@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 
-class AccountController extends Controller
+class UserAccountController extends Controller
 {
     public function register(Request $request)
     {

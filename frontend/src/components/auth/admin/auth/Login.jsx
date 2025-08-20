@@ -32,7 +32,7 @@ export default function Login() {
     } = useForm();
     
   // admin login function 
-  const loginAdmin = async(data) => {
+  const adminLogin = async(data) => {
   
 
   try {
@@ -40,6 +40,7 @@ export default function Login() {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
+          "Accept": "application/json",
         },
         body: JSON.stringify(data),
       });
@@ -53,6 +54,8 @@ export default function Login() {
         }
         localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
         login(adminInfo);
+        toast.success("Login successful");
+        // Redirect to the dashboard
         navigate('/admin/dashboard');
       }else{
         toast.error(result.message);
@@ -76,7 +79,7 @@ export default function Login() {
               <h2 className="text-3xl font-bold mb-4 text-gray-800">Admin Login</h2>
               <p className="text-gray-500 mb-8">Welcome back! Please enter your details.</p>
               
-              <form onSubmit={handleSubmit(loginAdmin)} className="space-y-5">
+              <form onSubmit={handleSubmit(adminLogin)} className="space-y-5">
                 <div>
                   <label htmlFor="email" className="block mb-1 text-gray-600">Email</label>
                   <input 
