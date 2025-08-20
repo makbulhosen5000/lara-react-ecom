@@ -130,7 +130,7 @@ export default function Login() {
                   <span>Login</span>
                 </button>
               </form>
-              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/register" className="text-blue-600 hover:underline">Sign up</Link></p>
+              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/user/register" className="text-blue-600 hover:underline">Sign up</Link></p>
             </div>
 
             {/* <!-- Right: Image --> */}

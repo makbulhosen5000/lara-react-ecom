@@ -90,8 +90,13 @@ export default function Cart() {
               </div>
             ))
           ) : (
-            <div className="flex items-center justify-center h-64">
+            <div className="flex flex-col items-center justify-center h-64">
               <p className="text-gray-500 font-semibold">Your cart is empty.</p>
+              <Link to="/shop">
+              <button className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+               Continue Shopping
+              </button>
+            </Link>
             </div>
           )}
 
@@ -149,7 +154,7 @@ export default function Cart() {
           <div className="mt-6 flex flex-col md:flex-row gap-4">
             <Link to="/shop">
               <button className="w-full bg-green-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-                Add More Item
+               Continue Shopping
               </button>
             </Link>
             <Link to="/checkout">

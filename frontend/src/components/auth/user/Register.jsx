@@ -142,7 +142,7 @@ export default function Register() {
                   <span>Register</span>
                 </button>
               </form>
-              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/login" className="text-blue-600 hover:underline">Sign In</Link></p>
+              <p className="mt-5 text-sm text-gray-500">Don't have an account? <Link to="/account/user/login" className="text-blue-600 hover:underline">Sign In</Link></p>
             </div>
 
             {/* <!-- Right: Image --> */}
