@@ -15,8 +15,10 @@ export default function Sidebar() {
     }
 
     return (
-        <aside className="w-64 bg-white p-6 shadow-lg">
-            <h1 className="text-2xl font-bold text-blue-600 mb-8">Dashboard</h1>
+        <aside className="w-64 bg-blue-950 p-6 shadow-lg">
+            <Link to="/admin/dashboard">
+            <h1 className="text-2xl font-bold text-white mb-8">Dashboard</h1>
+            </Link>
             <nav className="space-y-3">
                 <Link to="/admin/dashboard" className={getLinkClass("/admin/dashboard")}>Dashboard</Link>
                 <Link to="/admin/categories" className={getLinkClass("/admin/categories")}>Categories</Link>
@@ -25,7 +27,7 @@ export default function Sidebar() {
                 <Link to="/admin/settings" className={getLinkClass("/admin/settings")}>Setting</Link>
 
                 <button 
-                    className="w-48 flex items-center justify-center gap-2 bg-yellow-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition" 
+                    className="w-48 flex items-center justify-center gap-2  text-white px-4 py-2 rounded bg-red-600 hover:bg-red-800 transition" 
                     onClick={logOut}>
                     <LogOut size={20} />
                     <span>Logout</span>

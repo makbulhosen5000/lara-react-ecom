@@ -5,6 +5,8 @@ import { adminToken, apiUrl } from '../../../Http';
 import { set, useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import JoditEditor from 'jodit-react';
+import Topbar from '../dashboard/Topbar';
+import Footer from '../dashboard/Footer';
 
 function CreateProduct({ placeholder }) {
 
@@ -188,10 +190,11 @@ function CreateProduct({ placeholder }) {
           <div className="min-h-screen flex">
           <Sidebar/>
           {/* <!-- Main Content --> */}
-          <main className="flex-1 p-8">
-            <h2 className="text-3xl font-bold mb-6">Dashboard Overview</h2>
+          <main className="flex-1 pl-4">
+            {/* <!-- Topbar --> */}
+            <Topbar/>  
             {/* <!-- Cards --> */}
-            <div className="max-w-6xl mx-auto p-4 bg-white shadow-lg rounded-lg">
+            <div className="max-w-6xl mx-auto p-4 my-4 bg-white shadow-lg rounded-lg">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-3xl font-bold text-gray-800"> Product / Create</h2>
                 <Link
@@ -532,6 +535,8 @@ function CreateProduct({ placeholder }) {
                 </form>
               </div>
             </div>
+             {/* <!-- Footer --> */}
+             <Footer/>  
           </main>
           </div>
         </div>

@@ -4,6 +4,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { adminToken, apiUrl } from '../../../Http';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import Topbar from '../dashboard/Topbar';
+import Footer from '../dashboard/Footer';
 
 function CreateCategory() {
   const [disable, setDisable] = useState(false);
@@ -47,10 +49,10 @@ function CreateCategory() {
     <div className="bg-gray-100 font-sans">
       <div className="min-h-screen flex">
         <Sidebar />
-        <main className="flex-1 p-8">
-          <h2 className="text-3xl font-bold mb-6">Dashboard Overview</h2>
-
-          <div className="max-w-6xl mx-auto p-4 bg-white shadow-lg rounded-lg">
+        <main className="flex-1 pl-4">
+          {/* <!-- Topbar --> */}
+            <Topbar/>  
+          <div className="max-w-6xl mx-auto p-4 my-4 bg-white shadow-lg rounded-lg">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-800 mb-6">Create Category</h2>
               <Link
@@ -115,6 +117,8 @@ function CreateCategory() {
               </div>
             </div>
           </div>
+          {/* <!-- Footer --> */}
+          <Footer />
         </main>
       </div>
     </div>
