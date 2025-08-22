@@ -11,18 +11,19 @@ export const UserAuthProvider = ({ children }) => {
   
   const login = (user) => {
     setUser(user);
+   
   };
 
   const logOut = () => {
     localStorage.removeItem("userInfo");
     toast.success("Logout successful");
     setUser(null);
+    
   }
   const userAuthInfo = {
     user,
     login,
     logOut,
-
   };
   
   

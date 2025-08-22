@@ -6,16 +6,16 @@ import { Footer } from '../common/footer/Footer';
 import { AdminAuthContext } from '../provider/AdminAuthProvider';
 
 const Main = () => {
-    const { adminDashboardHideShow } = useContext(AdminAuthContext);
+    const { authenticate } = useContext(AdminAuthContext);
     return (
         <div className='mx-4'>
             {
-                !adminDashboardHideShow &&
+                !authenticate &&
                 <Navbar/>
             }
             <Outlet/>
             {
-                !adminDashboardHideShow &&
+                !authenticate &&
                 <Footer/>
             }
         </div>

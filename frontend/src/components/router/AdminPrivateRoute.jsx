@@ -4,8 +4,8 @@ import { Navigate } from 'react-router-dom';
 import { AdminAuthContext } from '../provider/AdminAuthProvider';
 
 export default function AdminPrivateRoute({children}) {
-    const {user} = useContext(AdminAuthContext);
-    if(!user){
+    const {admin} = useContext(AdminAuthContext);
+    if(!admin){
        return <Navigate to="/admin/login" />
     }
     return children;

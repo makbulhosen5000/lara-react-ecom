@@ -18,9 +18,9 @@ import CreateProduct from "../auth/admin/product/CreateProduct";
 import EditProduct from "../auth/admin/product/EditProduct";
 import Products from "../auth/admin/product/products";
 import Shop from "../../pages/product/Shop";
-import UserLogin from "../auth/user/Login";
-import UserRegister from "../auth/user/Register";
-import UserDashboard from "../auth/user/UserDashboard";
+import UserLogin from "../auth/user/UserLogin";
+import UserRegister from "../auth/user/UserRegister";
+import UserDashboard from "../auth/user/dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
 
 
@@ -54,19 +54,11 @@ export const router = createBrowserRouter([
         //user routes here
         {
           path:"/account/user/login",
-          element: (
-            <UserPrivateRoute>
-              <UserLogin />
-            </UserPrivateRoute>
-            ),
+          element: <UserLogin />
         },
         {
           path:"/account/user/register",
-          element: (
-            <UserPrivateRoute>
-              <UserRegister />
-            </UserPrivateRoute>
-            ),
+          element:<UserRegister />
         },
         {
           path:"/account/user/dashboard",

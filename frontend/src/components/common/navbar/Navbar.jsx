@@ -36,9 +36,9 @@ const Navbar = () => {
         Shop
       </Link>
       <Link
-        to="/admin/login"
+        to="/account/user/login"
         className={`block px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/admin/login"
+          location.pathname === "/account/user/login"
             ? "bg-yellow-300 text-black"
             : "text-gray-100 hover:text-yellow-500"
         }`}
