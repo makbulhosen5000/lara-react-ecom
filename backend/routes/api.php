@@ -7,18 +7,13 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\front\OrderController;
 use App\Http\Controllers\front\UserAccountController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
 // })->middleware(middleware: 'auth:sanctum');
-
-//login route for admin
-Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
-// login route for user
-Route::post('/register', [UserAccountController::class, 'register']);
-Route::post('/login', [UserAccountController::class, 'authenticate']);
 
 // routes for front product controller
 Route::get('/get-latest-product',[FrontProductController::class, 'getLatestProduct']);
@@ -29,10 +24,24 @@ Route::get('/get-products',[FrontProductController::class, 'getProducts']);
 Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
 
 
+//login route for admin
+Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
+// login route for user
+Route::post('/register', [UserAccountController::class, 'register']);
+Route::post('/login', [UserAccountController::class, 'authenticate']);
+
+
+Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
+    // order route
+    Route::post('/order', [OrderController::class, 'order']);
+});
+
+
+
 
 
 // middleware for all routes
-Route::group(['middleware' => 'auth:sanctum'],function(){
+Route::group(['middleware' => ['auth:sanctum','checkAdminRole']],function(){
 // categories routes
 Route::get('/categories',[CategoryController::class, 'index']);
 Route::post('/categories',[CategoryController::class, 'store']);
