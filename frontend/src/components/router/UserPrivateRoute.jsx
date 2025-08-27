@@ -7,7 +7,7 @@ export default function UserPrivateRoute({children}) {
     const {user} = useContext(UserAuthContext);
     if(!user) {
         // User is authenticated, allow access to the route
-       return <Navigate to="/shop" />
+       return <Navigate to="/account/user/login" />
     }
     return children;
 }

@@ -2,13 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { FaCartPlus, FaRegUserCircle } from "react-icons/fa";
 import { CartContext } from "../../provider/CartProvider";
+import { UserAuthContext } from "../../provider/UserAuthProvider";
 
 const Navbar = () => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
-   const {getQty } = useContext(CartContext);
-    
+  const {getQty } = useContext(CartContext);
+  const {user} = useContext(UserAuthContext);  
 
   const navItems = (
     <>
@@ -35,7 +36,21 @@ const Navbar = () => {
       >
         Shop
       </Link>
-      <Link
+      {
+        user?.name ? 
+        <Link
+        to="/account/user/dashboard"
+        className={`block px-3 py-2 rounded-md text-sm font-medium ${
+          location.pathname === "/account/user/dashboard"
+            ? "bg-yellow-300 text-black"
+            : "text-gray-100 hover:text-yellow-500"
+        }`}
+        aria-label="User Login"
+      >
+        <FaRegUserCircle size={20} />
+      </Link>
+         : 
+        <Link
         to="/account/user/login"
         className={`block px-3 py-2 rounded-md text-sm font-medium ${
           location.pathname === "/account/user/login"
@@ -46,25 +61,28 @@ const Navbar = () => {
       >
         <FaRegUserCircle size={20} />
       </Link>
-      <Link
-        to="/cart"
-        className={`block px-3 py-2 rounded-md text-sm font-medium ${
-          location.pathname === "/cart"
-            ? "bg-yellow-300 text-black"
-            : "text-gray-100 hover:text-yellow-500"
-        }`}
-        aria-label="Cart"
-      >
-        <div className="relative inline-block">
-          <FaCartPlus size={24} />
+      }
+
+        <Link
+          to="/cart"
+          className={`block px-3 py-2 rounded-md text-sm font-medium ${
+            location.pathname === "/cart"
+              ? "bg-yellow-300 text-black"
+              : "text-gray-100 hover:text-yellow-500"
+          }`}
+          aria-label="Cart"
+        >
+          <div className="relative inline-block">
+            <FaCartPlus size={24} />
+            
+              <span className="absolute -top-3 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                
+            { getQty()}
+              </span>
           
-            <span className="absolute -top-3 -right-3 bg-white text-red-600 text-xs font-bold px-1.5 py-0.5 rounded-full">
-              
-           { getQty()}
-            </span>
-        
-        </div>
-      </Link>
+          </div>
+        </Link>
+
     </>
   );
 

@@ -22,6 +22,7 @@ import UserLogin from "../auth/user/UserLogin";
 import UserRegister from "../auth/user/UserRegister";
 import UserDashboard from "../auth/user/dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
+import OrderConfirmation from "../../pages/product/OrderConfirmation";
 
 
 export const router = createBrowserRouter([
@@ -44,11 +45,27 @@ export const router = createBrowserRouter([
         },
         {
           path:"/cart",
-          element:<Cart/>
+          element:(
+            <UserPrivateRoute>
+             <Cart/>
+            </UserPrivateRoute>
+          )
         },
         {
           path:"/checkout",
-          element:<Checkout/>
+          element:(
+            <UserPrivateRoute>
+             <Checkout/>
+            </UserPrivateRoute>
+           )
+        },
+        {
+          path:"/order-confirmation/:id",
+          element:(
+            <UserPrivateRoute>
+             <OrderConfirmation/>
+            </UserPrivateRoute>
+           )
         },
 
         //user routes here

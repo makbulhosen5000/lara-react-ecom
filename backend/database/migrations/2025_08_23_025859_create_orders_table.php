@@ -19,9 +19,9 @@ return new class extends Migration
             // Customer info
             $table->string('name');
             $table->string('email');
-            $table->string('mobile');
+            $table->string('phone');
             $table->string('address');
-            $table->string('city');
+            $table->string('city')->nullable();
             $table->string('state')->nullable();
             $table->string('zip')->nullable();
 
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->double('discount', 10, 2)->default(0);
 
             // Status
-            $table->enum('payment_status', ['pending', 'paid', 'failed'])->default('pending');
+            $table->enum('payment_status', ['pending', 'paid','not paid','failed'])->default('pending');
             $table->enum('status', ['pending', 'processing', 'shipped', 'delivered', 'cancelled'])->default('pending');
 
             $table->timestamps();
