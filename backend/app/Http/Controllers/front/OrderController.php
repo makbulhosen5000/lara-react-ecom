@@ -17,7 +17,7 @@ class OrderController extends Controller
         $order->name = $request->name;
         $order->email = $request->email;
         $order->address = $request->address;
-        $order->mobile = $request->mobile;
+        $order->phone = $request->phone;
         $order->state = $request->state;
         $order->zip = $request->zip;
         $order->city = $request->city;
@@ -33,19 +33,18 @@ class OrderController extends Controller
         foreach ($request->cart as $item) {
             $orderItem = new OrderItem();
             $orderItem->order_id = $order->id;
-            $orderItem->name = $item['name'];
+            $orderItem->name = $item['title'];
             $orderItem->price = $item['qty'] * $item['price'];
             $orderItem->unit_price = $item['price'];
             $orderItem->qty = $item['qty'];
             $orderItem->product_id = $item['product_id'];
             $orderItem->size = $item['size'];
             $orderItem->save();
-            return response()->json([
-                'status' => 200,
-                'message' => 'You have order placed successfully',
-    
-            ],200);
         }
+        return response()->json([
+            'message' => 'Order placed successfully',
+            'status' => 200,
+        ], 200);
         }else{
             return response()->json([
                 'message' => 'Your cart is empty',
