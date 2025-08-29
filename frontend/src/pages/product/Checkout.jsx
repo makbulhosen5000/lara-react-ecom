@@ -41,7 +41,6 @@ export default function Checkout() {
       status: "pending",
       cart: cartData || [],
     };
-    console.log("Order Submitted ✅", newFormData);
 
     try {
           const response = await fetch(`${apiUrl}/order`, {
@@ -55,13 +54,11 @@ export default function Checkout() {
             
           })
           const result = await response.json()
-          console.log("result",result);
+          console.log("result",result.id);
           if (result.status == 200) {
-            // localStorage.setItem("userInfo", JSON.stringify(userInfo))
-            // login(userInfo)
             toast.success(result.message || "Order placed successfully!");
-            localStorage.removeItem("cart");
             navigate(`/order-confirmation/${result.id}`);
+            localStorage.removeItem("cart");
           } else {
             toast.error(result.message || "Something went wrong");
           }
@@ -162,7 +159,7 @@ export default function Checkout() {
                   })}
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  placeholder="johndoe@gmail.com"
+                  placeholder="state"
                 />
                 {errors.state && (
                   <span className="text-red-500 text-sm">{errors.state.message}</span>

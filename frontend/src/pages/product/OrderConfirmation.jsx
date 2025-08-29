@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-export default function OrderConfirmation({ orderId }) {
+export default function OrderConfirmation({ id }) {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50 p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 max-w-md w-full text-center">
@@ -30,9 +30,9 @@ export default function OrderConfirmation({ orderId }) {
         </p>
 
         {/* Order ID */}
-        {orderId && (
+        {id && (
           <div className="mt-4 bg-gray-100 text-gray-800 text-sm font-medium p-3 rounded-lg">
-            Order ID: <span className="text-gray-900">{orderId}</span>
+            Order ID: <span className="text-gray-900">{id}</span>
           </div>
         )}
 
