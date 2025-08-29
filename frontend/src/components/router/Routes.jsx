@@ -23,6 +23,7 @@ import UserRegister from "../auth/user/UserRegister";
 import UserDashboard from "../auth/user/dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
 import OrderConfirmation from "../../pages/product/OrderConfirmation";
+import OrderDetails from "../../pages/product/OrderDetails";
 
 
 export const router = createBrowserRouter([
@@ -64,6 +65,14 @@ export const router = createBrowserRouter([
           element:(
             <UserPrivateRoute>
              <OrderConfirmation/>
+            </UserPrivateRoute>
+           )
+        },
+        {
+          path:"/order-details/:id",
+          element:(
+            <UserPrivateRoute>
+             <OrderDetails/>
             </UserPrivateRoute>
            )
         },

@@ -54,11 +54,10 @@ export default function Checkout() {
             
           })
           const result = await response.json()
-          console.log("result",result.id);
           if (result.status == 200) {
             toast.success(result.message || "Order placed successfully!");
-            navigate(`/order-confirmation/${result.id}`);
             localStorage.removeItem("cart");
+            navigate(`/order-confirmation/${result.id}`);
           } else {
             toast.error(result.message || "Something went wrong");
           }
@@ -153,10 +152,7 @@ export default function Checkout() {
               <div>
                 <label className="block text-sm font-medium">State</label>
                 <input
-                  {...register("state", {
-                    required: "The state field is required",
-                
-                  })}
+                  
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
                   placeholder="state"

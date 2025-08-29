@@ -28,7 +28,7 @@ export default function UserSidebar() {
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
                     <User size={18} /> Account
                 </Link>
-                <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
+                <Link to="/order-details" className={getLinkClass("/account/user/orders")}>
                     <ShoppingCart size={18} /> Orders
                 </Link>
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>

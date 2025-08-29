@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\front;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,7 +12,8 @@ use Illuminate\Support\Facades\Validator;
 
 
 class UserAccountController extends Controller
-{
+{  
+    // get user register function
     public function register(Request $request)
     {
         $rule = [
@@ -39,6 +41,7 @@ class UserAccountController extends Controller
             'data' => $user,
         ], 200);
     }
+    // get user login function
     public function authenticate(Request $request)
     {
         // Validate request
@@ -78,4 +81,28 @@ class UserAccountController extends Controller
             'email' => $user->email,
         ], 200);
     }
+
+    // Get user order details function
+    public function getOrderDetails($id, Request $request)
+    {
+        $order = Order::where([
+                    'user_id' => $request->user()->id, 
+                    'id' => $id
+                ])
+                ->with('items') 
+                ->first();
+        if (!$order) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Order not found',
+            ], 404);
+        }
+    
+        return response()->json([
+            'status' => 200,
+            'data' => $order,
+        ], 200);
+    }
+    
+
 }
