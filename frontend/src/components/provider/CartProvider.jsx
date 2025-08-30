@@ -57,11 +57,7 @@ export const CartProvider = ({ children }) => {
 
     // get quantity of items in the cart
     const getQty = () => {
-      let qty = 0;
-      cartData.map(item =>{
-        qty +=  parseInt(item.qty)
-      });
-      return qty;
+      return cartData.reduce((total, item) => total + parseInt(item.qty, 10), 0);
     };
 
     // This function removes an item from the cart and updates localStorage

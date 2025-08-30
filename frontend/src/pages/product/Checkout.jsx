@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 export default function Checkout() {
   const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
+  
   const { cartData, shipping, subTotal, grandTotal } = useContext(CartContext);
   const navigate = useNavigate();
 
