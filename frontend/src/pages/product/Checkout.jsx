@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { CartContext } from "../../components/provider/CartProvider";
 import { Link, useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 
 export default function Checkout() {
+
   const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
   
   const { cartData, shipping, subTotal, grandTotal } = useContext(CartContext);
@@ -58,6 +59,7 @@ export default function Checkout() {
           if (result.status == 200) {
             toast.success(result.message || "Order placed successfully!");
             localStorage.removeItem("cart");
+            
             navigate(`/order-confirmation/${result.id}`);
           } else {
             toast.error(result.message || "Something went wrong");
@@ -66,6 +68,7 @@ export default function Checkout() {
           console.error("Error fetching order:", error)
         }
   };
+
 
   return (
     <>

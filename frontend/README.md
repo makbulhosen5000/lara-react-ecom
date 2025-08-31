@@ -12,9 +12,9 @@ A full-stack web application built with **Laravel (API)** as the backend and **R
 - 🔍 Search, Sort, Pagination
 - 🛡️ Role-Based Access Control (Admin/User)
 - 🎨 Fully Responsive UI using Tailwind CSS
-- 🔗 API integration between Laravel & React using Axios
+- 🔗 API integration between Laravel & React using Fetch with useEffect
 - 📦 Protected Routes in React (Private Routes)
-- 📊 Dashboard with statistics (optional)
+- 
 
 ---
 
@@ -29,7 +29,7 @@ A full-stack web application built with **Laravel (API)** as the backend and **R
 ### Frontend – React
 - React 18+
 - React Router DOM
-- Axios for API requests
+- fetch for API requests with useEffect hook
 - Tailwind CSS
 - React Hook Form / Formik
 

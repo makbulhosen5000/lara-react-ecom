@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { apiUrl, userToken } from "../../components/Http";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -25,6 +25,7 @@ export default function OrderConfirmation() {
         console.log(result.data);
         setOrder(result.data);
         setNotFound(false);
+
         toast.success(result.message);
       } else {
         setNotFound(true);
