@@ -28,10 +28,10 @@ export default function UserSidebar() {
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
                     <User size={18} /> Account
                 </Link>
-                <Link to="/order-details" className={getLinkClass("/account/user/orders")}>
+                <Link to="/admin/orders" className={getLinkClass("/admin/orders")}>
                     <ShoppingCart size={18} /> Orders
                 </Link>
-                <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
+                <Link to="/admin/orders" className={getLinkClass("/admin/orders")}>
                     <KeyRound size={18} /> Change Password
                 </Link>
                 <button

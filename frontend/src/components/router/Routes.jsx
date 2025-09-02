@@ -23,7 +23,9 @@ import UserRegister from "../auth/user/UserRegister";
 import UserDashboard from "../auth/user/dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
 import OrderConfirmation from "../../pages/product/OrderConfirmation";
-import OrderDetails from "../../pages/product/OrderDetails";
+import OrderSummery from "../../pages/product/OrderDetails";
+import Order from "../auth/admin/order/Orders";
+import OrderDetails from "../auth/admin/order/OrderDetails";
 
 
 export const router = createBrowserRouter([
@@ -72,7 +74,7 @@ export const router = createBrowserRouter([
           path:"/order-details/:id",
           element:(
             <UserPrivateRoute>
-             <OrderDetails/>
+             <OrderSummery/>
             </UserPrivateRoute>
            )
         },
@@ -180,6 +182,23 @@ export const router = createBrowserRouter([
             element: (
             <AdminPrivateRoute>
               <EditProduct/>
+            </AdminPrivateRoute>
+            ),
+          },
+          //  orders routes
+          {
+            path:"/admin/orders",
+            element: (
+            <AdminPrivateRoute>
+              <Order/>
+            </AdminPrivateRoute>
+            ),
+          },
+          {
+            path:"/admin/order-details/:id",
+            element: (
+            <AdminPrivateRoute>
+              <OrderDetails/>
             </AdminPrivateRoute>
             ),
           },

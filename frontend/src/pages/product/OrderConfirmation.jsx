@@ -67,7 +67,7 @@ export default function OrderConfirmation() {
             Sorry, we couldn’t find an order with ID: <b>{id}</b>.
           </p>
           <Link
-            to="/orders"
+            to="//admin/orders"
             className="mt-5 inline-block bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition"
           >
              ← Back to Orders
@@ -105,10 +105,14 @@ export default function OrderConfirmation() {
             <span className="font-semibold">Order ID:</span> #{order.id}
           </p>
           <p className="text-gray-700 flex items-center gap-2">
-            <span className="font-semibold">Status:</span>
             {order.status === "pending" && (
               <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-full">
                 Pending
+              </span>
+            )}
+            {order.status === "processing" && (
+              <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-800 rounded-full">
+                Processing
               </span>
             )}
             {order.status === "shipped" && (

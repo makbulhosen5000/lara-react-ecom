@@ -24,7 +24,7 @@ export default function Sidebar() {
                 <Link to="/admin/categories" className={getLinkClass("/admin/categories")}>Categories</Link>
                 <Link to="/admin/brands" className={getLinkClass("/admin/brands")}>Brand</Link>
                 <Link to="/admin/products" className={getLinkClass("/admin/products")}>Products</Link>  
-                <Link to="/admin/settings" className={getLinkClass("/admin/settings")}>Setting</Link>
+                <Link to="/admin/orders" className={getLinkClass("/admin/orders")}>Orders</Link>
 
                 <button 
                     className="w-48 flex items-center justify-center gap-2  text-white px-4 py-2 rounded bg-red-600 hover:bg-red-800 transition" 

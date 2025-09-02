@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { apiUrl, userToken } from "../../components/Http";
 import { useParams } from "react-router-dom";
 
-export default function orderDetails () {
+export default function OrderSummery () {
     const [order,setOrder] = useState([]);
     const [loading,setLoading] = useState(true);
     const {id} = useParams();
