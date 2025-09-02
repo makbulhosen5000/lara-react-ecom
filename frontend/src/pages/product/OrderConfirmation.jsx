@@ -4,7 +4,7 @@ import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function OrderConfirmation() {
-  const [order, setOrder] = useState(null);
+  const [order, setOrder] = useState([]);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const { id } = useParams();
@@ -42,8 +42,7 @@ export default function OrderConfirmation() {
   useEffect(() => {
     setTimeout(() => {
       fetchOrder();
-    }
-    , 1000);
+    }, 1000);
   }, []);
 
   if (loading) {

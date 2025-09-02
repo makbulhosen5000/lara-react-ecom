@@ -3,9 +3,7 @@ import { createContext, useState } from "react";
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartData, setCartData] = useState(
-    JSON.parse(localStorage.getItem("cart")) || []
-  );
+  const [cartData, setCartData] = useState([]);
 
   const addToCart = (product, size = null, quantity = 1) => {
     let updatedCart = [...cartData];

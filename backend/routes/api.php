@@ -4,6 +4,7 @@ use App\Http\Controllers\front\ProductController as FrontProductController;
 use App\Http\Controllers\admin\AdminAuthController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\BrandController;
+use App\Http\Controllers\admin\AdminOrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
@@ -62,4 +63,7 @@ Route::post('/temp-images',[TempImageController::class, 'store']);
 Route::post('/save-product-images',[ProductController::class, 'saveProductImage']);
 Route::get('/set-product-default-images', [ProductController::class, 'setProductDefaultImage']);   
 Route::delete('/delete-product-image/{id}', [ProductController::class, 'deleteProductImage']);   
+//routes for orders
+Route::get('/order',[AdminOrderController::class, 'orders']);
+Route::get('/order/{id}',[AdminOrderController::class, 'orderDetails']);
 });
