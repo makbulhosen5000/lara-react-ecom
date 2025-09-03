@@ -65,5 +65,6 @@ Route::get('/set-product-default-images', [ProductController::class, 'setProduct
 Route::delete('/delete-product-image/{id}', [ProductController::class, 'deleteProductImage']);   
 //routes for orders
 Route::get('/order',[AdminOrderController::class, 'orders']);
-Route::get('/order/{id}',[AdminOrderController::class, 'orderDetails']);
+Route::get('/order/{id}',action: [AdminOrderController::class, 'orderDetails']);
+Route::put('/order-update-status/{id}',[AdminOrderController::class, 'orderUpdateStatus']);
 });

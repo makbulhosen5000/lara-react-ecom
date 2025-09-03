@@ -18,7 +18,7 @@ function EditBrand() {
     formState: { errors },
   } = useForm();
 
-  // ✅ Fetch existing brand data
+  // Fetch existing brand data
   useEffect(() => {
     const fetchBrand = async () => {
       try {
@@ -68,7 +68,7 @@ function EditBrand() {
         toast.success(result.message);
         navigate('/admin/brands');
       } else {
-        toast.error(result.message || 'Update failed');
+        toast.error(result.message);
       }
     } catch (error) {
       setDisable(false);

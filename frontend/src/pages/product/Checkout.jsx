@@ -58,12 +58,12 @@ export default function Checkout() {
           })
           const result = await response.json()
           if (result.status == 200) {
-            toast.success(result.message || "Order placed successfully!");
+            toast.success(result.message);
             localStorage.removeItem("cart");
             
             navigate(`/order-confirmation/${result.id}`);
           } else {
-            toast.error(result.message || "Something went wrong");
+            toast.error(result.message);
           }
         } catch (error) {
           console.error("Error fetching order:", error)

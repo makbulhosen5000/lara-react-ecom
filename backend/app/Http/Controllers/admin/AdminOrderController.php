@@ -27,4 +27,21 @@ class AdminOrderController extends Controller
             'status' => 200
         ],200); 
     }
+    public function orderUpdateStatus(Request $request, $id){
+        $order = Order::find($id);
+        if(!$order){
+            return response()->json([
+                'message' => 'Order not found',
+                'status' => 404
+            ],404); 
+        }
+   
+        $order->status = $request->status;
+        $order->payment_status = $request->payment_status;
+        $order->save();
+        return response()->json([
+            'message' => 'Order status updated successfully',
+            'status' => 200
+        ],200); 
+    }
 }

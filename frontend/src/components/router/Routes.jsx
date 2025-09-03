@@ -23,7 +23,7 @@ import UserRegister from "../auth/user/UserRegister";
 import UserDashboard from "../auth/user/dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
 import OrderConfirmation from "../../pages/product/OrderConfirmation";
-import OrderSummery from "../../pages/product/OrderDetails";
+import OrderSummery from "../../pages/product/OrderSummery";
 import Order from "../auth/admin/order/Orders";
 import OrderDetails from "../auth/admin/order/OrderDetails";
 

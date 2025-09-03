@@ -49,10 +49,7 @@ export default function OrderSummery () {
           </p>
           <p className="text-gray-600">
             {
-              order?.status == 'pending' && <span className="px-2 py-1 bg-yellow-200 text-yellow-800 rounded-full text-sm">Pending</span> 
-            }
-            {
-              order?.status == 'processing' && <span className="px-2 py-1 bg-blue-200 text-blue-800 rounded-full text-sm">Processing</span> 
+              order?.status == 'pending' && <span className="px-2 py-1 bg-blue-200 text-blue-800 rounded-full text-sm">Pending</span> 
             }
             {
               order?.status == 'shipped' && <span className="px-2 py-1 bg-green-200 text-green-800 rounded-full text-sm">Shipped</span>

@@ -53,7 +53,6 @@ function EditProduct({ placeholder }) {
   
           const result = await response.json();
           // product_images is function of Product() model relation with ProductImages() model
-          // product_sizes is function of Product() model relation with ProductSizes() model
           setProductImages(result?.data?.product_images);
           setSizesChecked(result?.productSizes);
           if (result.status == 200) {
@@ -101,7 +100,7 @@ function EditProduct({ placeholder }) {
           toast.success(result.message);
           navigate('/admin/products');
         } else {
-          toast.error("Update failed");
+          toast.error(result.message);
         }
       } catch (error) {
         console.error("Error updating product:", error);
@@ -187,9 +186,9 @@ function EditProduct({ placeholder }) {
       if (result.status === 200) {
         // Use functional state update to avoid push mutation
         setProductImages((prev) => [...prev, result.data]);
-        toast.success("Image uploaded successfully!");
+        toast.success(result.message);
       } else {
-        toast.error(result.errors?.image?.[0] || "Failed to upload image");
+        toast.error(result.message);
       }
     } catch (error) {
       toast.error("Something went wrong while uploading image");
@@ -221,7 +220,7 @@ function EditProduct({ placeholder }) {
           setProductImages(productDelete);
           toast.success(result.message);
         } else {
-          toast.error(result.message || "Failed to delete Product.");
+          toast.error(result.message);
         }
   
       } catch (error) {
@@ -245,9 +244,9 @@ function EditProduct({ placeholder }) {
       const result = await response.json();
   
       if (response.ok) {
-        toast.success(result.message || "Product default image set successfully");
+        toast.success(result.message);
       } else {
-        toast.error(result.error || "Failed to set product default image");
+        toast.error(result.error);
       }
   
     } catch (error) {

@@ -35,7 +35,6 @@ function Order() {
       });
 
       const result = await response.json();
-      console.log("Orders fetched:", result);
       setOrders(result.data);
       setLoading(false);
     } catch (error) {
@@ -64,9 +63,7 @@ function Order() {
           <div className="max-w-6xl mx-auto p-4 my-4 bg-white shadow-lg rounded-lg">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-800">order List</h2>
-              <Link to="/admin/orders/create" className="inline-flex items-center bg-green-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
-                <i className="fa-solid fa-plus mr-2"></i> Add order
-              </Link>
+              
             </div>
 
             <div className="overflow-x-auto">
@@ -78,7 +75,7 @@ function Order() {
                     <th className="px-6 py-3">Email</th>
                     <th className="px-6 py-3">Grand Total</th>
                     <th className="px-6 py-3">Date</th>
-                    <th className="px-6 py-3">Payment</th>
+                    <th className="px-6 py-3">Payment Status</th>
                     <th className="px-6 py-3">Status</th>
                   </tr>
                 </thead>
@@ -95,14 +92,18 @@ function Order() {
                     <tr>
                       <td colSpan={8}>
                         <div className="flex justify-center items-center h-32 text-gray-600 font-semibold">
-                          <RecordNotFound recordTitle="order Not Found" />
+                          <h1>Order Not Found</h1>
                         </div>
                       </td>
                     </tr>
                   ) : (
                     currentItems.map((order, index) => (
                       <tr key={order.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4">{ index + 1}</td>
+                        <td className="px-6 py-4">
+                         <Link to={`/admin/order-details/${order.id}`}>
+                          { order.id}
+                          </Link>
+                        </td>
                         <td className="px-6 py-4">{order?.name}</td>
                         <td className="px-6 py-4">${order?.email}</td>
                         <td className="px-6 py-4">${order?.grand_total}</td>
@@ -110,27 +111,27 @@ function Order() {
                   
                         <td className="px-6 py-4">
                            <span className={`inline-block ${order.payment_status === "paid" ? 'bg-green-600' : 'bg-red-600'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
-                            {order.payment_status === 1 ? 'Paid' : 'Not Paid'}
+                            {order.payment_status === 'paid' ? 'Paid' : 'Not Paid'}
                            </span>
                         </td>
                         <td className="px-6 py-4"> 
-                            {order?.status === "pending" && (
-                            <span className="px-3 py-1 text-sm bg-yellow-400 text-yellow-700 rounded-full">
+                            {order.status === "pending" && (
+                            <span className="px-3 py-1 text-sm bg-yellow-300 text-yellow-900 rounded-full">
                                 Pending
                             </span>
                             )}
-                            {order.status === "processing" && (
-                            <span className="px-3 py-1 text-sm bg-yellow-300 text-yellow-900 rounded-full">
-                                Processing
-                            </span>
-                            )}
                             {order.status === "shipped" && (
-                            <span className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
+                            <span className="px-3 py-1 text-sm bg-green-500 text-green-900 rounded-full">
                                 Shipped
                             </span>
                             )}
+                            {order.status === "delivered" && (
+                            <span className="px-3 py-1 text-sm bg-green-600 text-green-900 rounded-full">
+                                Delivered
+                            </span>
+                            )}
                             {order.status === "cancelled" && (
-                            <span className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded-full">
+                            <span className="px-3 py-1 text-sm bg-red-600 text-red-900 rounded-full">
                                 Cancelled
                             </span>
                             )}

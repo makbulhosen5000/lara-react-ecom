@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { apiUrl, userToken } from "../../components/Http";
 import { useParams, Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import Loader from "../../components/common/loader/Loader";
 
 export default function OrderConfirmation() {
   const [order, setOrder] = useState([]);
@@ -48,9 +49,7 @@ export default function OrderConfirmation() {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-64">
-        <p className="animate-pulse text-gray-500 text-lg">
-          Loading order details...
-        </p>
+        <Loader/>
       </div>
     );
   }
@@ -105,19 +104,20 @@ export default function OrderConfirmation() {
             <span className="font-semibold">Order ID:</span> #{order.id}
           </p>
           <p className="text-gray-700 flex items-center gap-2">
+          <span className="font-semibold">Payment_Status:</span>
             {order.status === "pending" && (
               <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-700 rounded-full">
                 Pending
               </span>
             )}
-            {order.status === "processing" && (
-              <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-800 rounded-full">
-                Processing
-              </span>
-            )}
             {order.status === "shipped" && (
               <span className="px-3 py-1 text-sm bg-blue-100 text-blue-700 rounded-full">
                 Shipped
+              </span>
+            )}
+            {order.status === "delivered" && (
+              <span className="px-3 py-1 text-sm bg-yellow-100 text-yellow-800 rounded-full">
+                Delivered
               </span>
             )}
             {order.status === "cancelled" && (
