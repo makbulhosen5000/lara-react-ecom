@@ -15,7 +15,7 @@ class AdminOrderController extends Controller
         ],200); 
     }
     public function orderDetails($id){
-        $orders  = Order::with( 'items')->find($id);
+        $orders  = Order::with(  'items','items.products')->find($id);
         if(!$orders){
             return response()->json([
                 'message' => 'Order not found',
