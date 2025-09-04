@@ -4,7 +4,7 @@ import ErrorMessage from "../common/errors/ErrorMessage";
 import Home from "../common/home/Home";
 import Cart from "../../pages/product/Cart";
 import Checkout from "../../pages/product/Checkout";
-import Login from "../auth/admin/auth/Login";
+import Login from "../auth/admin/admin-auth/Login";
 import Dashboard from "../auth/admin/dashboard/Dashboard";
 import AdminPrivateRoute from "./AdminPrivateRoute";
 import Product from "../../pages/product/Product";
@@ -18,14 +18,16 @@ import CreateProduct from "../auth/admin/product/CreateProduct";
 import EditProduct from "../auth/admin/product/EditProduct";
 import Products from "../auth/admin/product/products";
 import Shop from "../../pages/product/Shop";
-import UserLogin from "../auth/user/UserLogin";
-import UserRegister from "../auth/user/UserRegister";
-import UserDashboard from "../auth/user/dashboard/UserDashboard";
+import UserLogin from "../auth/user/user-auth/UserLogin";
+import UserRegister from "../auth/user/user-auth/UserRegister";
+import UserDashboard from "../auth/user/user-dashboard/UserDashboard";
 import UserPrivateRoute from "./UserPrivateRoute";
 import OrderConfirmation from "../../pages/product/OrderConfirmation";
 import OrderSummery from "../../pages/product/OrderSummery";
 import Order from "../auth/admin/order/Orders";
 import OrderDetails from "../auth/admin/order/OrderDetails";
+import UserOrder from "../auth/user/user-order/UserOrder";
+import UserOrderDetails from "../auth/user/user-order/userOrderDetails";
 
 
 export const router = createBrowserRouter([
@@ -93,6 +95,22 @@ export const router = createBrowserRouter([
           element: (
             <UserPrivateRoute>
               <UserDashboard />
+            </UserPrivateRoute>
+            ),
+        },
+        {
+          path:"/account/user/orders",
+          element: (
+            <UserPrivateRoute>
+              <UserOrder/>
+            </UserPrivateRoute>
+            ),
+        },
+        {
+          path:"/account/user/order-details/:id",
+          element: (
+            <UserPrivateRoute>
+              <UserOrderDetails/>
             </UserPrivateRoute>
             ),
         },
