@@ -111,5 +111,47 @@ class UserAuthController extends Controller
         ], 200);
     }
     
+    // Get logged in user profile function  
+    public function userUpdateProfile(Request $request){
+        $user = User::find($request->user()->id);
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+            'phone' => 'required|max:100',
+            'address' => 'required|max:255',
+            'city' => 'required|max:100',
+
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 404,
+                'message' => $validator->errors()->first(),
+            ], 404);
+        }
+       
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found',
+            ], 404);
+        }
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->phone = $request->phone;
+        $user->address = $request->address;
+        $user->state = $request->state;
+        $user->city = $request->city;
+        $user->zip = $request->zip;
+        // if ($request->password) {
+        //     $user->password = Hash::make($request->password);
+        // }
+        $user->save();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Profile updated successfully',
+            'data' => $user,
+        ], 200);
+    }
+    
 
 }
