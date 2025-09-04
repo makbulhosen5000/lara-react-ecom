@@ -147,10 +147,9 @@ function OrderDetails() {
                     <p><span className="font-medium">Shipping:</span> ${order?.shipping}</p>
                     <p className="font-semibold"><span className="font-medium">Grand Total:</span> ${order?.grand_total}</p>
                     <p>
-                      <span className="font-medium">
-                        Payment: {order?.payment_status}
+                      <span className={`inline-block ${order.payment_status === "paid" ? 'bg-green-600' : 'bg-red-600'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
+                            {order.payment_status === 'paid' ? 'Paid' : 'Not Paid'}
                       </span>
-                     
                     </p>
                   </div>
 
@@ -160,9 +159,30 @@ function OrderDetails() {
                     <p><span className="font-medium">Order ID:</span> {order?.id}</p>
                     <p><span className="font-medium">Date:</span> {order?.created_at}</p>
                     <p>
-                      <span className="font-medium">
-                      Status: {order?.status}
-                      </span>
+                       { 
+                       order.status === "pending" && (
+                        <span className="px-3 py-1 text-sm bg-yellow-300 text-yellow-900 rounded-full">
+                            Pending
+                        </span>
+                        )}
+                        {
+                        order.status === "shipped" && (
+                        <span className="px-3 py-1 text-sm bg-green-500 text-green-900 rounded-full">
+                            Shipped
+                        </span>
+                        )}
+                        {
+                        order.status === "delivered" && (
+                        <span className="px-3 py-1 text-sm bg-green-600 text-green-900 rounded-full">
+                            Delivered
+                        </span>
+                        )}
+                        {
+                        order.status === "cancelled" && (
+                        <span className="px-3 py-1 text-sm bg-red-600 text-red-900 rounded-full">
+                            Cancelled
+                        </span>
+                        )}
                     </p>
                   </div>
 

@@ -6,12 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 
-class UserAccountController extends Controller
+class UserAuthController extends Controller
 {  
     // get user register function
     public function register(Request $request)
@@ -88,7 +87,7 @@ class UserAccountController extends Controller
                     'user_id' => $request->user()->id, 
                     'id' => $id
                 ])
-                ->with('items') 
+                ->with('items','items.products') 
                 ->first();
         if (!$order) {
             return response()->json([

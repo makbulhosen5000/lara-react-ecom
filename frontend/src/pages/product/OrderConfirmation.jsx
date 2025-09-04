@@ -203,7 +203,7 @@ export default function OrderConfirmation() {
 
             {/* Back to Orders */}
             <Link
-              to="/orders"
+              to="/account/user/orders"
               className="inline-flex items-center gap-2 px-6 py-3 text-white  bg-blue-400  
                         rounded-xl shadow-md hover:bg-blue-600 hover:shadow-lg transition-all duration-300"
             >

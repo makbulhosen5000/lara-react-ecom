@@ -9,7 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\front\OrderController;
-use App\Http\Controllers\front\UserAccountController;
+use App\Http\Controllers\front\UserAuthController;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/user', function (Request $request) {
@@ -28,15 +28,15 @@ Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
 //login route for admin
 Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
 // login route for user
-Route::post('/user/register', [UserAccountController::class, 'register']);
-Route::post('/user/login', [UserAccountController::class, 'authenticate']);
+Route::post('/user/register', [UserAuthController::class, 'register']);
+Route::post('/user/login', [UserAuthController::class, 'authenticate']);
 
 
 Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
     // order route
     Route::post('/order', [OrderController::class, 'order']);
-    Route::get('/get-orders', [UserAccountController::class, 'getOrders']);
-    Route::get('/get-order-details/{id}', [UserAccountController::class, 'getOrderDetails']);
+    Route::get('/get-orders', [UserAuthController::class, 'getOrders']);
+    Route::get('/get-order-details/{id}', [UserAuthController::class, 'getOrderDetails']);
 });
 
 
