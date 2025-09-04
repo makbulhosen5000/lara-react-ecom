@@ -25,8 +25,8 @@ export default function UserSidebar() {
             </div>
             
             <nav className="space-y-3">
-                <Link to="/account/user/dashboard" className={getLinkClass("/account/user/dashboard")}>
-                    <User size={18} /> Account
+                <Link to="/account/user/profile" className={getLinkClass("/account/user/profile")}>
+                    <User size={18} /> Profile
                 </Link>
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
                     <ShoppingCart size={18} /> Orders

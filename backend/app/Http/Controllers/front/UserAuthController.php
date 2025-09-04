@@ -112,7 +112,7 @@ class UserAuthController extends Controller
     }
     
     // Get logged in user profile function  
-    public function userUpdateProfile(Request $request){
+    public function userProfile(Request $request){
         $user = User::find($request->user()->id);
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

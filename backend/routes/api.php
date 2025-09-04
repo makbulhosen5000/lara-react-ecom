@@ -37,7 +37,7 @@ Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
     Route::post('/order', [OrderController::class, 'order']);
     Route::get('/get-orders', [UserAuthController::class, 'getOrders']);
     Route::get('/get-order-details/{id}', [UserAuthController::class, 'getOrderDetails']);
-    Route::post('/user-update-profile', [UserAuthController::class, 'userUpdateProfile']);
+    Route::post('/user-profile', [UserAuthController::class, 'userProfile']);
 });
 
 

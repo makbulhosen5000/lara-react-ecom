@@ -28,6 +28,7 @@ import Order from "../auth/admin/order/Orders";
 import OrderDetails from "../auth/admin/order/OrderDetails";
 import UserOrder from "../auth/user/user-order/UserOrder";
 import UserOrderDetails from "../auth/user/user-order/userOrderDetails";
+import UserProfile from "../auth/user/user-profile/UserProfile";
 
 
 export const router = createBrowserRouter([
@@ -111,6 +112,14 @@ export const router = createBrowserRouter([
           element: (
             <UserPrivateRoute>
               <UserOrderDetails/>
+            </UserPrivateRoute>
+            ),
+        },
+        {
+          path:"/account/user/profile",
+          element: (
+            <UserPrivateRoute>
+              <UserProfile/>
             </UserPrivateRoute>
             ),
         },
