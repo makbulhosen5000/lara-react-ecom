@@ -49,10 +49,8 @@ class UserAccountController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
-
         // Find user by email
         $user = User::where('email', $request->email)->first();
-
         // Check credentials
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -60,18 +58,17 @@ class UserAccountController extends Controller
                 'message' => 'Either email or password is incorrect',
             ], 401);
         }
-
-        // Optional: check if user is admin
-        // if ($user->role !== 'admin') {
-        //     return response()->json([
-        //         'status' => '403',
-        //         'message' => 'Unauthorized',
-        //     ], 403);
-        // }
+        // Block admin users from logging in here
+        if ($user->role === 'admin') {
+            return response()->json([
+                'status' => '403',
+                'message' => 'Admin are not allowed to access this login.',
+            ], 403);
+        }
 
         // Create Sanctum token
         $token = $user->createToken('token')->plainTextToken;
-
+        
         // Return response
         return response()->json([
             'status' => '200',
@@ -80,6 +77,7 @@ class UserAccountController extends Controller
             'name' => $user->name,
             'email' => $user->email,
         ], 200);
+
     }
 
     // Get user order details function
