@@ -23,7 +23,7 @@ export default function UserLogin() {
 
   const userLogin = async (data) => {
     try {
-      const response = await fetch(`${apiUrl}/login`, {
+      const response = await fetch(`${apiUrl}/user/login`, {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

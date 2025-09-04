@@ -23,7 +23,7 @@ export default function UserRegister() {
 
   const userRegister = async (data) => {
     try {
-      const response = await fetch(`${apiUrl}/register`, {
+      const response = await fetch(`${apiUrl}/user/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -28,8 +28,8 @@ Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
 //login route for admin
 Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
 // login route for user
-Route::post('/register', [UserAccountController::class, 'register']);
-Route::post('/login', [UserAccountController::class, 'authenticate']);
+Route::post('/user/register', [UserAccountController::class, 'register']);
+Route::post('/user/login', [UserAccountController::class, 'authenticate']);
 
 
 Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
