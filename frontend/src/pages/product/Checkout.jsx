@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
-
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { CreditCard, MapPin, ShoppingBag } from "lucide-react";
@@ -8,12 +7,9 @@ import { apiUrl, userToken } from "../../components/Http";
 import { toast } from "react-toastify";
 import { CartContext } from "../../components/provider/CartProvider";
 
-
 export default function Checkout() {
-
   const [paymentMethod, setPaymentMethod] = useState("cash_on_delivery");
-  
-  const { cartData, shipping, subTotal, grandTotal } = useContext(CartContext);
+  const { cartData, shipping, subTotal, grandTotal, clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   const handlePaymentMethod = (e) => {
@@ -23,17 +19,44 @@ export default function Checkout() {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: async () => {
+      try {
+        const response = await fetch(`${apiUrl}/get-user-profile-details`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${userToken()}`,
+          },
+        });
 
-   // process order function
-   const processOrder = async (formValue) => {
+        const result = await response.json();
+        reset({
+          name: result.data.name,
+          phone: result.data.phone,
+          email: result.data.email,
+          address: result.data.address,
+          state: result.data.state,
+          city: result.data.city,
+          zip: result.data.zip,
+        });
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    },
+  });
+
+  // process order function
+  const processOrder = async (formValue) => {
     if (paymentMethod === "cash_on_delivery") {
       await saveOrder(formValue, "not paid");
     }
   };
 
-  const saveOrder = async(formData,paymentStatus) => {
+  const saveOrder = async (formData, paymentStatus) => {
     const newFormData = {
       ...formData,
       shipping: shipping || 0,
@@ -46,30 +69,29 @@ export default function Checkout() {
     };
 
     try {
-          const response = await fetch(`${apiUrl}/order`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization':`Bearer ${userToken()}`,
-            },
-            body: JSON.stringify(newFormData),
-            
-          })
-          const result = await response.json()
-          if (result.status == 200) {
-            toast.success(result.message);
-            localStorage.removeItem("cart");
-            
-            navigate(`/order-confirmation/${result.id}`);
-          } else {
-            toast.error(result.message);
-          }
-        } catch (error) {
-          console.error("Error fetching order:", error)
-        }
-  };
+      const response = await fetch(`${apiUrl}/order`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${userToken()}`,
+        },
+        body: JSON.stringify(newFormData),
+      });
 
+      const result = await response.json();
+
+      if (result.status == 200) {
+        toast.success(result.message);
+        clearCart(); // ✅ clears state + localStorage
+        navigate(`/order-confirmation/${result.id}`);
+      } else {
+        toast.error(result.message);
+      }
+    } catch (error) {
+      console.error("Error saving order:", error);
+    }
+  };
 
   return (
     <>
@@ -91,31 +113,27 @@ export default function Checkout() {
             </h2>
 
             <div className="flex justify-between gap-2 mb-4">
-            <div>
-              <label className="block text-sm font-medium">Full Name</label>
-              <input
-                {...register("name", { required: "The name field is required" })}
-                type="text"
-                className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                placeholder="John Doe"
-              />
-              {errors.name && (
-                <span className="text-red-500 text-sm">{errors.name.message}</span>
-              )}
-            </div>
+              <div>
+                <label className="block text-sm font-medium">Full Name</label>
+                <input
+                  {...register("name", { required: "The name field is required" })}
+                  type="text"
+                  className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                  placeholder="John Doe"
+                />
+                {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
+              </div>
 
-            <div>
-              <label className="block text-sm font-medium">Phone Number</label>
-              <input
-                {...register("phone", { required: "The phone field is required" })}
-                type="tel"
-                className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                placeholder="+8801XXXXXXXXX"
-              />
-              {errors.phone && (
-                <span className="text-red-500 text-sm">{errors.phone.message}</span>
-              )}
-            </div>
+              <div>
+                <label className="block text-sm font-medium">Phone Number</label>
+                <input
+                  {...register("phone", { required: "The phone field is required" })}
+                  type="tel"
+                  className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                  placeholder="+8801XXXXXXXXX"
+                />
+                {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
+              </div>
             </div>
 
             <div className="flex justify-between gap-2 mb-4">
@@ -133,65 +151,54 @@ export default function Checkout() {
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
                   placeholder="johndoe@gmail.com"
                 />
-                {errors.email && (
-                  <span className="text-red-500 text-sm">{errors.email.message}</span>
-                )}
+                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
               </div>
+
               <div>
                 <label className="block text-sm font-medium">City</label>
                 <input
-                  {...register("city", {
-                    required: "The city field is required",
-              
-                  })}
+                  {...register("city", { required: "The city field is required" })}
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
                   placeholder="Dhaka"
                 />
-                {errors.city && (
-                  <span className="text-red-500 text-sm">{errors.city.message}</span>
-                )}
-              </div>         
+                {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
+              </div>
             </div>
+
             <div className="flex justify-between gap-2 mb-4">
               <div>
                 <label className="block text-sm font-medium">State</label>
                 <input
-                  
+                  {...register("state", { required: "The state field is required" })}
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  placeholder="state"
+                  placeholder="State"
                 />
-                {errors.state && (
-                  <span className="text-red-500 text-sm">{errors.state.message}</span>
-                )}
+                {errors.state && <span className="text-red-500 text-sm">{errors.state.message}</span>}
               </div>
+
               <div>
                 <label className="block text-sm font-medium">Zip</label>
                 <input
-                  {...register("zip", {
-                    required: "The zip field is required",
-                  })}
+                  {...register("zip", { required: "The zip field is required" })}
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  placeholder="Dhaka"
+                  placeholder="1234"
                 />
-                {errors.zip && (
-                  <span className="text-red-500 text-sm">{errors.zip.message}</span>
-                )}
-              </div>         
+                {errors.zip && <span className="text-red-500 text-sm">{errors.zip.message}</span>}
+              </div>
             </div>
+
             <div>
-                <label className="block text-sm font-medium">Shipping Address</label>
-                <textarea
-                  {...register("address", { required: "The address field is required" })}
-                  rows="3"
-                  className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
-                  placeholder="123 Main St, City, Country"
-                ></textarea>
-                {errors.address && (
-                  <span className="text-red-500 text-sm">{errors.address.message}</span>
-                )}
+              <label className="block text-sm font-medium">Shipping Address</label>
+              <textarea
+                {...register("address", { required: "The address field is required" })}
+                rows="3"
+                className="mt-1 w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-green-500 outline-none"
+                placeholder="123 Main St, City, Country"
+              ></textarea>
+              {errors.address && <span className="text-red-500 text-sm">{errors.address.message}</span>}
             </div>
           </div>
 
@@ -201,8 +208,8 @@ export default function Checkout() {
               <CreditCard className="w-5 h-5 text-green-600" />
               Payment Methods
             </h2>
-            <div className="space-y-3 flex  justify-between">
-              {["cash_on_delivery", "bkash","stripe"].map((method) => (
+            <div className="space-y-3 flex justify-between">
+              {["cash_on_delivery", "bkash", "stripe"].map((method) => (
                 <label
                   key={method}
                   className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-green-600 transition"
@@ -214,9 +221,7 @@ export default function Checkout() {
                     onChange={handlePaymentMethod}
                     className="h-5 w-5 text-green-600 focus:ring-green-500"
                   />
-                  <span className="capitalize font-medium">
-                    {method.replace(/_/g, " ")}
-                  </span>
+                  <span className="capitalize font-medium">{method.replace(/_/g, " ")}</span>
                 </label>
               ))}
             </div>

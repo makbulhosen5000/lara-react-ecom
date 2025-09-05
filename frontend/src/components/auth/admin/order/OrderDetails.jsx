@@ -7,7 +7,6 @@ import Topbar from "../dashboard/Topbar";
 import Footer from "../dashboard/Footer";
 import Loader from "../../../common/loader/Loader";
 import { useForm } from "react-hook-form";
-import RecordNotFound from "../../../common/RecordNotFound";
 import { toast } from "react-toastify";
 
 

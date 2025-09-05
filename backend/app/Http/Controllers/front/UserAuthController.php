@@ -152,6 +152,20 @@ class UserAuthController extends Controller
             'data' => $user,
         ], 200);
     }
+    // Get logged in user profile details function
+    public function getUserProfileDetails(Request $request){
+        $user = User::find($request->user()->id);
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found',
+            ], 404);
+        }
+        return response()->json([
+            'status' => 200,
+            'data' => $user,
+        ], 200);
+    }
     
 
 }

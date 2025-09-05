@@ -5,7 +5,7 @@ import { UserAuthContext } from '../provider/UserAuthProvider';
 
 export default function UserPrivateRoute({children}) {
     const {user} = useContext(UserAuthContext);
-    if(!user || !user.token){
+    if(!user){
         // User is authenticated, allow access to the route
        return <Navigate to="/account/user/login" />
     }
