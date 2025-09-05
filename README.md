@@ -16,8 +16,8 @@
 
 ### Backend (Laravel)
 - Laravel (PHP framework) for RESTful API
-- Sanctum or JWT for authentication
-- MySQL or other relational database
+- Sanctum for authentication
+- MySQL relational database
 - API endpoints for: products, cart, checkout, orders, user profiles
 
 ### Frontend (React)
