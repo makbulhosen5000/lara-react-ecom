@@ -1,4 +1,4 @@
-# Laravel-React E-Commerce (`lara-react-ecom`)
+# Laravel-React E-Commerce
 
 **Full-stack e-commerce application** with:
 - **Frontend:** React.js
