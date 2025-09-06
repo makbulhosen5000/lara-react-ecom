@@ -1,9 +1,11 @@
 import { createContext, useState, useEffect } from "react";
+import { apiUrl, userToken } from "../Http";
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
+  const [shipping, setShipping] = useState([]);
 
   // Load cart from localStorage on first render
   useEffect(() => {
@@ -48,7 +50,7 @@ export const CartProvider = ({ children }) => {
 
   // Calculate subtotal and grand total
   const subTotal = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
-  const shipping = 10; // Fixed shipping cost
+  
   const grandTotal = subTotal + shipping;
 
   // Update quantity of an item
@@ -78,6 +80,29 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
+  // load shipping from backend
+  useEffect(() => { 
+          fetch(`${apiUrl}/user-get-shipping`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json',
+              'Authorization': `Bearer ${userToken()}`,
+            },
+        }).then(res => res.json())
+        .then(result =>{
+          if (result.status === 200) {
+            setShipping(result.data.shipping_charge);
+          } else {
+            setShipping(0);
+            console.log("Something went wrong while fetching shipping data");
+          }
+        })
+
+         
+
+   },[]);
+
   return (
     <CartContext.Provider
       value={{
@@ -89,7 +114,7 @@ export const CartProvider = ({ children }) => {
         updateCartItem,
         handleCartItemDelete,
         getQty,
-        clearCart, // ✅ expose clearCart
+        clearCart, 
       }}
     >
       {children}

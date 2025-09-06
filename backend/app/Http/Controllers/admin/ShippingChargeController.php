@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ShippingChargeController extends Controller
 {
+    // Get shipping charge function
     public function getShipping(){
         $shipping = shippingCharge::first();
         return response()->json([
@@ -16,6 +17,7 @@ class ShippingChargeController extends Controller
             'data' => $shipping,
         ],200);
     }
+    // save shipping charge function
     public function saveShipping(Request $request){
 
         $validator = Validator::make($request->all(), 
@@ -34,15 +36,6 @@ class ShippingChargeController extends Controller
             ['shipping_charge' => $request->shipping_charge]
         );
 
-        // $shipping = ShippingCharge::find(1);
-        // if(!$shipping){
-        //     $updateShipping = new shippingCharge();
-        //     $updateShipping->shipping_charge = $request->shipping_charge;
-        //     $updateShipping->save();
-        // }else{
-        //     $shipping->shipping_charge = $request->shipping_charge;
-        //     $shipping->save();
-        // }
         return response()->json([
             'status' => 200,
             'message' => 'Shipping saved successfully',

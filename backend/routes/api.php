@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
 use App\Http\Controllers\admin\ShippingChargeController;
+use App\Http\Controllers\front\ShippingChargeController as FrontShippingChargeController;
 use App\Http\Controllers\front\OrderController;
 use App\Http\Controllers\front\UserAuthController;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +29,11 @@ Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
 
 //login route for admin
 Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
+
 // login route for user
 Route::post('/user/register', [UserAuthController::class, 'register']);
 Route::post('/user/login', [UserAuthController::class, 'authenticate']);
-
+Route::get('/user-get-shipping',[FrontShippingChargeController::class, 'getShipping']);
 
 Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
     // order route
@@ -41,10 +43,6 @@ Route::group(['middleware' => ['auth:sanctum','checkUserRole']],function(){
     Route::post('/user-profile', [UserAuthController::class, 'userProfile']);
     Route::get('/get-user-profile-details', [UserAuthController::class, 'getUserProfileDetails']);
 });
-
-
-
-
 
 // middleware for all routes
 Route::group(['middleware' => ['auth:sanctum','checkAdminRole']],function(){

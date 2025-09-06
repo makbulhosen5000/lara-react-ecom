@@ -38,7 +38,7 @@ export default function CreateShipping() {
               toast.error(result.message || "Something went wrong");
             }
           } catch (error) {
-            console.error("Error creating category:", error);
+            console.error("Error creating shipping:", error);
             toast.error("An error occurred while creating the category.");
           }
     }

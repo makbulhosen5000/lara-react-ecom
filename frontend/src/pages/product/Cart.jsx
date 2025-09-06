@@ -126,49 +126,54 @@ export default function Cart() {
           )}
         </div>
 
-        {/* 📦 Right Side: Summary */}
+        {/* Right Side: Summary */}
         <div className="bg-white rounded-2xl shadow-lg p-6 h-fit">
-          {cartData.length > 0 ? (
-            <>
-              <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-6">
-                <CreditCard className="w-5 h-5 text-green-600" />
-                Order Summary
-              </h2>
+        {cartData.length > 0 ? (
+          <>
+            <h2 className="flex items-center gap-2 text-xl font-bold text-gray-800 mb-6">
+              <CreditCard className="w-5 h-5 text-green-600" />
+              Order Summary
+            </h2>
 
-              <div className="space-y-3 text-lg font-semibold">
-                <div className="flex justify-between">
-                  <span className="flex items-center gap-2 text-gray-600">
-                    <Truck className="w-4 h-4 text-gray-500" />
-                    Shipping:
-                  </span>
-                  <span>${shipping}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Sub Total:</span>
-                  <span>${subTotal.toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between text-green-700 border-t pt-3">
-                  <span>Total:</span>
-                  <span>${grandTotal.toFixed(2)}</span>
-                </div>
+            <div className="space-y-3 text-lg font-semibold">
+              <div className="flex justify-between">
+                <span className="flex items-center gap-2 text-gray-600">
+                  <Truck className="w-4 h-4 text-gray-500" />
+                  Shipping:
+                </span>
+                <span>${shipping}</span>
               </div>
+              <div className="flex justify-between">
+                <span className="text-gray-600">Sub Total:</span>
+                <span>${subTotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-green-700 border-t pt-3">
+                <span>Total:</span>
+                <span>${grandTotal.toFixed(2)}</span>
+              </div>
+            </div>
 
-              {/* Buttons */}
-              <div className="mt-6 flex flex-col gap-4">
-                <Link to="/shop">
-                  <button className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition">
-                    Continue Shopping
-                  </button>
-                </Link>
-                <Link to={`/checkout`}>
-                  <button className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition">
-                    Proceed to Checkout
-                  </button>
-                </Link>
-              </div>
-            </>
-          ) : null}
-        </div>
+            {/* Buttons */}
+            <div className="mt-6 flex flex-col gap-4">
+              <Link to="/shop">
+                <button className="w-full bg-gray-100 text-gray-700 py-2 px-4 rounded-lg hover:bg-gray-200 transition">
+                  Continue Shopping
+                </button>
+              </Link>
+              <Link to={`/checkout`}>
+                <button className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 transition">
+                  Proceed to Checkout
+                </button>
+              </Link>
+            </div>
+          </>
+        ) : (
+          <div className="text-center text-gray-500 text-lg font-medium py-10">
+            Your cart is empty
+          </div>
+       )}
+</div>
+
       </div>
     </>
   );
