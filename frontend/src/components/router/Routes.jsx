@@ -30,6 +30,7 @@ import UserOrder from "../auth/user/user-order/UserOrder";
 import UserOrderDetails from "../auth/user/user-order/userOrderDetails";
 import UserProfile from "../auth/user/user-profile/UserProfile";
 import CreateShipping from "../auth/admin/shipping/CreateShipping";
+import UserPasswordChange from "../auth/user/user-profile/UserPasswordChange";
 
 
 export const router = createBrowserRouter([
@@ -121,6 +122,14 @@ export const router = createBrowserRouter([
           element: (
             <UserPrivateRoute>
               <UserProfile/>
+            </UserPrivateRoute>
+            ),
+        },
+        {
+          path:"/account/user/change-password",
+          element: (
+            <UserPrivateRoute>
+              <UserPasswordChange/>
             </UserPrivateRoute>
             ),
         },

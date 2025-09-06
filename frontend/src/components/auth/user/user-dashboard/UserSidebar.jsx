@@ -31,7 +31,7 @@ export default function UserSidebar() {
                 <Link to="/account/user/orders" className={getLinkClass("/account/user/orders")}>
                     <ShoppingCart size={18} /> Orders
                 </Link>
-                <Link to="/account/user/change-password" className={getLinkClass("/admin/orders")}>
+                <Link to="/account/user/change-password" className={getLinkClass("/account/user/change-password")}>
                     <KeyRound size={18} /> Change Password
                 </Link>
                 <button
