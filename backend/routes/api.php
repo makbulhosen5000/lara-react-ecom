@@ -8,6 +8,7 @@ use App\Http\Controllers\admin\AdminOrderController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\SizeController;
 use App\Http\Controllers\admin\TempImageController;
+use App\Http\Controllers\admin\ShippingChargeController;
 use App\Http\Controllers\front\OrderController;
 use App\Http\Controllers\front\UserAuthController;
 use Illuminate\Support\Facades\Route;
@@ -70,4 +71,6 @@ Route::delete('/delete-product-image/{id}', [ProductController::class, 'deletePr
 Route::get('/order',[AdminOrderController::class, 'orders']);
 Route::get('/order/{id}',action: [AdminOrderController::class, 'orderDetails']);
 Route::put('/order-update-status/{id}',[AdminOrderController::class, 'orderUpdateStatus']);
+Route::get('/get-shipping',[ShippingChargeController::class, 'getShipping']);
+Route::post('/save-shipping',[ShippingChargeController::class, 'saveShipping']);
 });

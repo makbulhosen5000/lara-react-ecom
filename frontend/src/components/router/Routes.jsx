@@ -29,6 +29,7 @@ import OrderDetails from "../auth/admin/order/OrderDetails";
 import UserOrder from "../auth/user/user-order/UserOrder";
 import UserOrderDetails from "../auth/user/user-order/userOrderDetails";
 import UserProfile from "../auth/user/user-profile/UserProfile";
+import CreateShipping from "../auth/admin/shipping/CreateShipping";
 
 
 export const router = createBrowserRouter([
@@ -226,6 +227,14 @@ export const router = createBrowserRouter([
             element: (
             <AdminPrivateRoute>
               <OrderDetails/>
+            </AdminPrivateRoute>
+            ),
+          },
+          {
+            path:"/admin/create-shipping",
+            element: (
+            <AdminPrivateRoute>
+              <CreateShipping/>
             </AdminPrivateRoute>
             ),
           },
