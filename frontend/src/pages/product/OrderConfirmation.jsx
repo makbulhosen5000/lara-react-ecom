@@ -130,7 +130,7 @@ export default function OrderConfirmation() {
             <span className="font-semibold">User ID:</span> {order.user_id}
           </p>
           <p className="text-gray-700">
-            <span className="font-semibold">Customer:</span> {order?.name}
+            <span className="font-semibold">Customer Name:</span> {order?.name}
           </p>
           <p className="text-gray-700">
             <span className="font-semibold">Email:</span> {order?.email}

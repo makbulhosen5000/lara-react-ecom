@@ -80,6 +80,7 @@ export default function Checkout() {
       });
 
       const result = await response.json();
+      console.log(" user info",result);
 
       if (result.status == 200) {
         toast.success(result.message);
@@ -170,7 +171,7 @@ export default function Checkout() {
               <div>
                 <label className="block text-sm font-medium">State</label>
                 <input
-                  {...register("state", { required: "The state field is required" })}
+                  {...register("state")}
                   type="text"
                   className="mt-1 w-full border rounded-lg px-8 py-2 focus:ring-2 focus:ring-green-500 outline-none"
                   placeholder="State"
@@ -209,7 +210,7 @@ export default function Checkout() {
               Payment Methods
             </h2>
             <div className="space-y-3 flex justify-between">
-              {["cash_on_delivery", "bkash", "stripe"].map((method) => (
+              {["cash_on_delivery", "stripe"].map((method) => (
                 <label
                   key={method}
                   className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:border-green-600 transition"

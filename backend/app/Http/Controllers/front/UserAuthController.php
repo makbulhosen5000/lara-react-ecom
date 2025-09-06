@@ -166,6 +166,40 @@ class UserAuthController extends Controller
             'data' => $user,
         ], 200);
     }
+
+    // Change logged in user password function
+    public function changeUserPassword(Request $request){
+        $user = User::find($request->user()->id);
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'new_password' => 'required|min:6|different:old_password',
+            'confirm_password' => 'required|same:new_password',
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 404,
+                'message' => $validator->errors()->first(),
+            ], 404);
+        }
+        if (!$user) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'User not found',
+            ], 404);
+        }
+        if (!Hash::check($request->old_password, $user->password)) {
+            return response()->json([
+                'status' => 400,
+                'message' => 'Old password is incorrect',
+            ], 400);
+        }
+        $user->password = Hash::make($request->new_password);
+        $user->save();
+        return response()->json([
+            'status' => 200,
+            'message' => 'Password changed successfully',
+        ], 200);
+    }
     
 
 }
