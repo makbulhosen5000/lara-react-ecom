@@ -25,11 +25,13 @@ Route::get('/get-categories',[FrontProductController::class, 'getCategories']);
 Route::get('/get-brands',[FrontProductController::class, 'getBrands']);
 Route::get('/get-products',[FrontProductController::class, 'getProducts']);
 Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
+// route for payment Gateway
+Route::post('/create-payment-intent',[OrderController::class, 'createPaymentIntent']);
+
 
 
 //login route for admin
 Route::post('/admin/login',[AdminAuthController::class, 'authenticate']);
-
 // login route for user
 Route::post('/user/register', [UserAuthController::class, 'register']);
 Route::post('/user/login', [UserAuthController::class, 'authenticate']);

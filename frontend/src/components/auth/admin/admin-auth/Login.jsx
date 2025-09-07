@@ -54,7 +54,7 @@ export default function Login() {
         }
         localStorage.setItem("adminInfo", JSON.stringify(adminInfo));
         login(adminInfo);
-        toast.success("Login successful");
+        toast.success(result.message);
         // Redirect to the dashboard
         navigate('/admin/dashboard');
       }else{

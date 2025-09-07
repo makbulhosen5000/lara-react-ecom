@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use Illuminate\Http\Request;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
 
 class OrderController extends Controller
 {
@@ -52,7 +54,39 @@ class OrderController extends Controller
                 'status' => 400,
             ], 400);
         }
-    
-       
     }
+    // create payment intent function for stripe payment gateway
+    public function createPaymentIntent(Request $request)
+    {
+        try {
+            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+
+            $amount = $request->input('amount');
+            if (!$amount || $amount <= 0) {
+                return response()->json(['status' => 400, 'message' => 'Invalid amount'], 400);
+            }
+
+            // Stripe expects amount in cents
+            $amountInCents = $amount * 100;
+
+            $paymentIntent = PaymentIntent::create([
+                'amount' => $amountInCents,
+                'currency' => 'usd', // change if needed
+                'payment_method_types' => ['card'],
+            ]);
+
+            return response()->json([
+                'status' => 200,
+                'client_secret' => $paymentIntent->client_secret,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => $e->getMessage(),
+            ]);
+        }
+    }
+
+
 }

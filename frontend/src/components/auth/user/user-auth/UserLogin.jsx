@@ -41,7 +41,7 @@ export default function UserLogin() {
         }
         localStorage.setItem("userInfo", JSON.stringify(userInfo))
         login(userInfo)
-        toast.success("Login successful")
+         toast.success(result.message);
         navigate('/account/user/dashboard')
       } else {
         toast.error(result.message)
