@@ -18,37 +18,31 @@ export default function StripePaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
 
-  const handlePaymentMethod = (e) => {
-    setPaymentMethod(e.target.value);
-  };
+  const { register, handleSubmit, reset, formState: { errors } } = useForm();
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const handlePaymentMethod = (e) => setPaymentMethod(e.target.value);
 
   // Fetch user profile on mount
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`${apiUrl}/get-user-profile-details`, {
+        const res = await fetch(`${apiUrl}/get-user-profile-details`, {
+          method: "GET",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
             Authorization: `Bearer ${userToken()}`,
           },
         });
-        const result = await response.json();
+        const result = await res.json();
         reset({
-          name: result.data.name,
-          phone: result.data.phone,
-          email: result.data.email,
-          address: result.data.address,
-          state: result.data.state,
-          city: result.data.city,
-          zip: result.data.zip,
+          name: result.data.name || "",
+          phone: result.data.phone || "",
+          email: result.data.email || "",
+          address: result.data.address || "",
+          state: result.data.state || "",
+          city: result.data.city || "",
+          zip: result.data.zip || "",
         });
       } catch (err) {
         console.error("Error fetching profile:", err);
@@ -57,14 +51,14 @@ export default function StripePaymentForm() {
     fetchProfile();
   }, [reset]);
 
-  const processOrder = async (formValue) => {
+  const processOrder = async (data) => {
     if (paymentMethod === "cash_on_delivery") {
-      await saveOrder(formValue, "not paid");
+      await saveOrder(data, "not paid");
       return;
     }
 
     if (!stripe || !elements) {
-      toast.error("Stripe is not loaded yet.");
+      toast.error("Stripe is not ready. Please try again later.");
       return;
     }
 
@@ -82,37 +76,37 @@ export default function StripePaymentForm() {
         body: JSON.stringify({ amount: grandTotal * 100 }),
       });
 
-      const data = await res.json();
+      const result = await res.json();
+      const clientSecret = result.clientSecret;
 
-      if (!data.client_secret) {
-        toast.error("Unable to process payment. Try again.");
+      if (!clientSecret) {
+        toast.error("Unable to process payment. Please try again.");
         setLoading(false);
         return;
       }
 
       const cardElement = elements.getElement(CardElement);
-
-      const paymentResult = await stripe.confirmCardPayment(data.client_secret, {
+      const paymentResult = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card: cardElement,
           billing_details: {
-            name: formValue.name,
-            email: formValue.email,
+            name: data.name,
+            email: data.email,
             address: {
-              line1: formValue.address,
-              city: formValue.city,
-              state: formValue.state,
-              postal_code: formValue.zip || "",
+              line1: data.address,
+              city: data.city,
+              state: data.state,
+              postal_code: data.zip || "0000", // fallback postal code
             },
           },
         },
       });
 
       if (paymentResult.error) {
-        toast.error(paymentResult.error.message);
+        toast.error(`Payment failed: ${paymentResult.error.message}`);
       } else if (paymentResult.paymentIntent.status === "succeeded") {
         toast.success("Payment successful!");
-        await saveOrder(formValue, "paid");
+        await saveOrder(data, "paid");
       }
     } catch (err) {
       console.error("Payment error:", err);
@@ -204,8 +198,11 @@ export default function StripePaymentForm() {
               </div>
               <div>
                 <label>Zip</label>
-                <input {...register("zip", { required: true })} className="mt-1 w-full border rounded-lg px-3 py-2"/>
-                {errors.zip && <span className="text-red-500 text-sm">Required</span>}
+                <input 
+                  {...register("zip", { required: "Postal code is required", minLength: { value: 4, message: "Enter at least 4 digits" } })} 
+                  className="mt-1 w-full border rounded-lg px-3 py-2"
+                />
+                {errors.zip && <span className="text-red-500 text-sm">{errors.zip.message}</span>}
               </div>
             </div>
 

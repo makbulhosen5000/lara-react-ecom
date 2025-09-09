@@ -1,21 +1,26 @@
 import { createContext, useState, useEffect } from "react";
 import { apiUrl, userToken } from "../Http";
 
-
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartData, setCartData] = useState([]);
-  const [shipping, setShipping] = useState([]);
+  const [shipping, setShipping] = useState(0); // ✅ default should be 0
 
   // Load cart from localStorage on first render
   useEffect(() => {
-    const storedCart = localStorage.getItem("cart");
-    if (storedCart) {
-      setCartData(JSON.parse(storedCart));
+    try {
+      const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        setCartData(JSON.parse(storedCart));
+      }
+    } catch (err) {
+      console.error("Failed to parse cart data from localStorage:", err);
+      localStorage.removeItem("cart"); // reset if broken
     }
   }, []);
 
+  // Add product to cart
   const addToCart = (product, size = null, quantity = 1) => {
     let updatedCart = [...cartData];
 
@@ -23,7 +28,7 @@ export const CartProvider = ({ children }) => {
     const existingItemIndex = updatedCart.findIndex(
       (item) =>
         item.product_id === product.id &&
-        (size ? item.size === size : true)
+        (size ? item.size === size : !item.size)
     );
 
     if (existingItemIndex > -1) {
@@ -35,7 +40,7 @@ export const CartProvider = ({ children }) => {
     } else {
       // Add new item
       updatedCart.push({
-        id: `${product.id}-${Math.floor(Math.random() * 1000)}`,
+        id: `${product.id}-${Date.now()}`, // ✅ unique id
         product_id: product.id,
         size,
         title: product.title,
@@ -51,11 +56,14 @@ export const CartProvider = ({ children }) => {
 
   // Calculate subtotal and grand total
   const subTotal = cartData.reduce((sum, item) => sum + item.price * item.qty, 0);
-  
   const grandTotal = subTotal + shipping;
 
   // Update quantity of an item
   const updateCartItem = (itemId, newQty) => {
+    if (newQty <= 0) {
+      handleCartItemDelete(itemId);
+      return;
+    }
     const updatedCart = cartData.map((item) =>
       item.id === itemId ? { ...item, qty: newQty } : item
     );
@@ -81,28 +89,42 @@ export const CartProvider = ({ children }) => {
     localStorage.removeItem("cart");
   };
 
-  // load shipping from backend
-  useEffect(() => { 
-          fetch(`${apiUrl}/user-get-shipping`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json',
-              'Accept': 'application/json',
-              'Authorization': `Bearer ${userToken()}`,
-            },
-        }).then(res => res.json())
-        .then(result =>{
+  // Load shipping charge from backend
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchShipping = async () => {
+      try {
+        const res = await fetch(`${apiUrl}/user-get-shipping`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${userToken()}`,
+          },
+        });
+
+        const result = await res.json();
+
+        if (isMounted) {
           if (result.status === 200) {
-            setShipping(result.data.shipping_charge);
+            setShipping(result.data.shipping_charge || 0);
           } else {
             setShipping(0);
-            console.log("Something went wrong while fetching shipping data");
+            console.warn("Shipping fetch failed:", result.message);
           }
-        })
+        }
+      } catch (err) {
+        console.error("Error fetching shipping:", err);
+        setShipping(0);
+      }
+    };
 
-         
-
-   },[]);
+    fetchShipping();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <CartContext.Provider
@@ -115,7 +137,7 @@ export const CartProvider = ({ children }) => {
         updateCartItem,
         handleCartItemDelete,
         getQty,
-        clearCart, 
+        clearCart,
       }}
     >
       {children}

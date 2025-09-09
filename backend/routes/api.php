@@ -25,7 +25,7 @@ Route::get('/get-categories',[FrontProductController::class, 'getCategories']);
 Route::get('/get-brands',[FrontProductController::class, 'getBrands']);
 Route::get('/get-products',[FrontProductController::class, 'getProducts']);
 Route::get('/get-product/{id}',[FrontProductController::class, 'getProduct']);
-// route for payment Gateway
+// route for stripe payment Gateway
 Route::post('/create-payment-intent',[OrderController::class, 'createPaymentIntent']);
 
 

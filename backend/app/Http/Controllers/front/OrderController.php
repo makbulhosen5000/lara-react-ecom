@@ -59,32 +59,28 @@ class OrderController extends Controller
     public function createPaymentIntent(Request $request)
     {
         try {
-            Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-
-            $amount = $request->input('amount');
-            if (!$amount || $amount <= 0) {
-                return response()->json(['status' => 400, 'message' => 'Invalid amount'], 400);
+            if($request->amount > 0){
+                Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+                $paymentIntent = PaymentIntent::create([
+                    'amount' => $request->amount, //* 100, // amount in cents
+                    'currency' => 'usd',
+                    'payment_method_types' => ['card'],
+                ]);
+                // paymentIntent return client secret code
+                $clientSecret = $paymentIntent->client_secret;
+                return response()->json([
+                    'clientSecret' => $clientSecret,
+                    'status' => 200,
+                ], 200);
+            }else{
+                return response()->json([
+                    'message' => 'Amount must be greater than 0',
+                    'status' => 400,
+                ], 400);
             }
-
-            // Stripe expects amount in cents
-            $amountInCents = $amount * 100;
-
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $amountInCents,
-                'currency' => 'usd', // change if needed
-                'payment_method_types' => ['card'],
-            ]);
-
-            return response()->json([
-                'status' => 200,
-                'client_secret' => $paymentIntent->client_secret,
-            ]);
-
+        
         } catch (\Exception $e) {
-            return response()->json([
-                'status' => 500,
-                'message' => $e->getMessage(),
-            ]);
+           
         }
     }
 
