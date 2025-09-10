@@ -96,7 +96,7 @@ export default function StripePaymentForm() {
               line1: data.address,
               city: data.city,
               state: data.state,
-              postal_code: data.zip || "0000", // fallback postal code
+              postal_code: data.zip || "0000",
             },
           },
         },
@@ -124,6 +124,7 @@ export default function StripePaymentForm() {
       grand_total: grandTotal || 0,
       discount: 0,
       payment_status: paymentStatus,
+      payment_method: paymentMethod,
       status: "pending",
       cart: cartData || [],
     };

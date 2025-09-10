@@ -28,6 +28,7 @@ class OrderController extends Controller
         $order->shipping = $request->shipping;
         $order->discount = $request->discount;
         $order->payment_status = $request->payment_status;
+        $order->payment_method = $request->payment_method;
         $order->status = $request->status;
         $order->user_id = $request->user()->id;
         $order->save();

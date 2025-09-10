@@ -127,6 +127,19 @@ export default function OrderConfirmation() {
             )}
           </p>
           <p className="text-gray-700">
+            <span className="font-semibold">Payment Status:
+            {order.payment_method === "stripe" ? 
+              <span className="px-3 py-1 text-sm bg-red-100 text-red-400 rounded-full">
+                Stripe
+              </span>
+              :
+              <span className="px-3 py-1 text-sm bg-red-100 text-red-700 rounded-full">
+                Case On Delivery
+              </span>
+              }
+            </span>
+          </p>
+          <p className="text-gray-700">
             <span className="font-semibold">User ID:</span> {order.user_id}
           </p>
           <p className="text-gray-700">

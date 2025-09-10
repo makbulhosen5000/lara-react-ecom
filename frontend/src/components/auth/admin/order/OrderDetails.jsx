@@ -128,7 +128,7 @@ function OrderDetails() {
                 {/* LEFT SIDE */}
                 <div className="lg:col-span-2 space-y-6">
                   {/* Customer Info */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                   <div>
                     <h3 className="font-semibold text-lg mb-3 text-gray-700">
                       Customer Info
@@ -146,10 +146,17 @@ function OrderDetails() {
                     <p><span className="font-medium">Shipping:</span> ${order?.shipping}</p>
                     <p className="font-semibold"><span className="font-medium">Grand Total:</span> ${order?.grand_total}</p>
                     <p>
+                    Payment Status:
                       <span className={`inline-block ${order.payment_status === "paid" ? 'bg-green-600' : 'bg-red-600'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
                             {order.payment_status === 'paid' ? 'Paid' : 'Not Paid'}
                       </span>
                     </p>
+                    <p>
+                    Payment Method:
+                    <span className={`inline-block ${order.payment_method === "stripe" ? 'bg-green-800' : 'bg-red-900'} text-white text-xs font-semibold px-2.5 py-0.5 rounded`}>
+                            {order.payment_method === 'stripe' ? 'stripe' : 'case_on_delivery'}
+                    </span>
+                  </p>
                   </div>
 
                   {/* Order Info */}
