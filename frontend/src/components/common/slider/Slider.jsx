@@ -4,10 +4,10 @@ import "swiper/css/scrollbar";
 import "swiper/css";
 import "./slider.css";
 import { Scrollbar } from "swiper/modules";
-import slider1 from "../../../assets/slider/lemon1.jpg";
-import slider2 from "../../../assets/slider/banana1.jpg";
-import slider3 from "../../../assets/slider/coco1.jpg";
-import slider4 from "../../../assets/slider/papaya1.jpg";
+import slider1 from "../../../assets/slider/shop3.jpg";
+import slider2 from "../../../assets/slider/shop2.jpg";
+import slider3 from "../../../assets/slider/shop1.jpg";
+import slider4 from "../../../assets/slider/shop4.jpg";
 
 
 const Slider = () => {
